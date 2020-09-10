@@ -35,13 +35,8 @@ import com.google.android.gms.tasks.Task;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private LocationManager locationManager;
     Location location;
-    double Lat, Lon;
    FusedLocationProviderClient fusedLocationProviderClient;
-    private LocationRequest locationRequest;
-    LocationCallback locationCallback;
-    public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 101;
     private boolean locationPermissionGranted;
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
 
@@ -67,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 String s = button.getText().toString();
-                System.out.println(" HERE " +s);
+
                 switch (s){
                     case "CHECK IN":
                         button.setText(R.string.check_ut);
@@ -89,7 +84,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-       // mMap = googleMap;
         this.mMap = googleMap;
 
         getPermession();
@@ -98,7 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "Map Is Ready!",Toast.LENGTH_SHORT);
         View view = toast.getView();
         view.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.SCREEN);
-        toast.setGravity(Gravity.BOTTOM,0,300);
+        toast.setGravity(Gravity.BOTTOM,0,400);
         view.animate();
         toast.show();
 
@@ -126,12 +120,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(location.getLatitude(),
                                                 location.getLongitude()), 15));
+
                             }
                         } else {
                             Log.d("Name", "Current location is null. ");
                             Log.e("Name", "Exception: %s", task.getException());
                             mMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(defaultLocation, 15));
+                                    .newLatLngZoom(defaultLocation, 25));
                             mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     }
