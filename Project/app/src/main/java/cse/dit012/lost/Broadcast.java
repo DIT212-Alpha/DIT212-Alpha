@@ -5,12 +5,14 @@ import android.location.Location;
 public class Broadcast {
     private Course course;
     private String description;
-    private Location location;
+    private double longitude;
+    private double latitude;
 
-    public Broadcast(Course course, String description, Location location) {
+    public Broadcast(Course course, String description, double longitude, double latitude) {
         this.course = course;
         this.description = description;
-        this.location = location;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public Course getCourse() {
@@ -29,11 +31,19 @@ public class Broadcast {
         this.description = description;
     }
 
-    public Location getLocation() {
-        return location;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }
