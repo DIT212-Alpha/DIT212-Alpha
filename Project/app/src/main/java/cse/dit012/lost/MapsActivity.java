@@ -7,10 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,15 +16,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -36,8 +30,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import javax.security.auth.Subject;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -53,7 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference conditionReference = reference.child("LatLong");
+    DatabaseReference databaseLat = reference.child("Lat");
+    DatabaseReference databaseLon = reference.child("Lon");
 
 
 
@@ -84,11 +77,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onStart() {
         super.onStart();
 
-        conditionReference.addValueEventListener(new ValueEventListener() {
+        databaseLat.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String location = snapshot.getValue(String.class);
-                System.out.println("The Location is :"+location);;
+
+
+
+                System.out.println("The Location is Lat :"+location);;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        databaseLon.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String location = snapshot.getValue(String.class);
+
+                System.out.println("The Location is Long :"+ location);
             }
 
             @Override
@@ -107,14 +117,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 switch (s){
                     case "CHECK IN":
                         checkIn.setText(R.string.check_ut);
-                        //conditionReference.setValue(location.getLatitude()+","+location.getLongitude());
-                        conditionReference.setValue("Sunny");
+                        databaseLat.setValue(location.getLatitude()+"");
+
                         break;
 
                     case "CHECK OUT":
                         checkIn.setText(R.string.check_in);
-                        //conditionReference.setValue((location.getLatitude()+","+location.getLongitude()));
-                        conditionReference.setValue("Foggy");
+                        databaseLon.setValue((location.getLongitude()+""));
+
                         break;
                 }
 
