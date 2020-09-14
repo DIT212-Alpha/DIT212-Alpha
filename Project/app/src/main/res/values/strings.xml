@@ -3,4 +3,9 @@
     <string name="title_activity_maps">Map</string>
     <string name="check_in">CHECK IN</string>
     <string name="check_ut">CHECK OUT</string>
+    <string name="add_broadcast">Add Broadcast</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="description">Description</string>
+
 </resources>
