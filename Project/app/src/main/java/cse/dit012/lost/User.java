@@ -5,16 +5,17 @@ import java.util.List;
 
 public class User {
     private String name;
-    private List<Course> courses;
+    private List<BroadcastObject> broadcastObjects;
+    // something to handle the user´s gps location?
 
     public User(String name){
         this.name = name;
-        courses = new ArrayList<>();
+        broadcastObjects = new ArrayList<>();
     }
 
-    public User(String name,List<Course> courses){
+    public User(String name,List<BroadcastObject> broadcastObjects){
         this.name = name;
-        this.courses = courses;
+        this.broadcastObjects = broadcastObjects;
     }
 
     public String getName(){
@@ -26,11 +27,11 @@ public class User {
     }
 
     public void addCourse(Course course){
-        courses.add(course);
+        broadcastObjects.add(course);
     }
 
     public void deleteCourse(int i){
-        courses.remove(i);
+        broadcastObjects.remove(i);
     }
 
 }
