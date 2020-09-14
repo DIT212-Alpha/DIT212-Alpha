@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "940130227894",
+    "firebase_url": "https://steady-vine-288516.firebaseio.com",
+    "project_id": "steady-vine-288516",
+    "storage_bucket": "steady-vine-288516.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940130227894:android:e1fcb39b9564162392b817",
+        "android_client_info": {
+          "package_name": "cse.dit012.lost"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940130227894-kevh0j8fqcsa27jjsfivh9q5ha2uvt1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKgJCTIIKhE5uqlHr5x_0-Wt3_ZGMc-Hw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940130227894-kevh0j8fqcsa27jjsfivh9q5ha2uvt1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

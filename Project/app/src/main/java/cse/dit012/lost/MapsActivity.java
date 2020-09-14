@@ -27,9 +27,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import javax.security.auth.Subject;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -39,6 +47,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
    FusedLocationProviderClient fusedLocationProviderClient;
     private boolean locationPermissionGranted;
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private FirebaseAnalytics analytics;
+    private Button checkIn;
+
+
+
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference conditionReference = reference.child("LatLong");
+
+
+
 
 
 
@@ -46,29 +64,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.location_map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-
+        analytics = FirebaseAnalytics.getInstance(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        final Button button =  findViewById(R.id.button1);
+         checkIn =  findViewById(R.id.button1);
+
+    }
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        conditionReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String location = snapshot.getValue(String.class);
+                System.out.println("The Location is :"+location);;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+        checkIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = button.getText().toString();
+                String s = checkIn.getText().toString();
 
                 switch (s){
                     case "CHECK IN":
-                        button.setText(R.string.check_ut);
+                        checkIn.setText(R.string.check_ut);
+                        //conditionReference.setValue(location.getLatitude()+","+location.getLongitude());
+                        conditionReference.setValue("Sunny");
                         break;
+
                     case "CHECK OUT":
-                        button.setText(R.string.check_in);
+                        checkIn.setText(R.string.check_in);
+                        //conditionReference.setValue((location.getLatitude()+","+location.getLongitude()));
+                        conditionReference.setValue("Foggy");
                         break;
                 }
 
@@ -79,8 +125,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
-    }
 
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -90,10 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Toast toast = Toast.makeText(getApplicationContext(),
                 "Map Is Ready!",Toast.LENGTH_SHORT);
-        View view = toast.getView();
-        view.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.SCREEN);
         toast.setGravity(Gravity.BOTTOM,0,400);
-        view.animate();
         toast.show();
 
         updateLocation();
@@ -120,6 +163,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(location.getLatitude(),
                                                 location.getLongitude()), 15));
+                                LatLng current = new LatLng(location.getLatitude(),location.getLongitude());
+
+                               // mMap.addMarker(new MarkerOptions().position(current));
+
 
                             }
                         } else {
