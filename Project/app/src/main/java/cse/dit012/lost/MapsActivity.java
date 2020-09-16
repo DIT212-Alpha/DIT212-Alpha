@@ -22,6 +22,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -40,18 +42,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean locationPermissionGranted;
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
     private FirebaseAnalytics analytics;
-    private Button checkIn;
+    boolean hasClicked = false;
 
-
-
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference databaseLat = reference.child("Lat");
-    DatabaseReference databaseLon = reference.child("Lon");
-
-
-
-
-
+    Database dataBase;
+    Broadcast broadcastt;
+    Button broadcast;
+    //DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
 
     @Override
@@ -67,8 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         analytics = FirebaseAnalytics.getInstance(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-         checkIn =  findViewById(R.id.button1);
+        broadcast =  findViewById(R.id.broadcast_btn);
 
     }
 
@@ -77,63 +72,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onStart() {
         super.onStart();
 
-        databaseLat.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String location = snapshot.getValue(String.class);
-
-
-
-                System.out.println("The Location is Lat :"+location);;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        databaseLon.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String location = snapshot.getValue(String.class);
-
-                System.out.println("The Location is Long :"+ location);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-
-        checkIn.setOnClickListener(new View.OnClickListener() {
+        broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = checkIn.getText().toString();
+                System.out.println("PRESSED PRESSED PRESSED");
+                if (locationPermissionGranted){
+                    dataBase = new Database(location.getLatitude(),location.getLongitude());
+                dataBase.databaseLat.setValue(location.getLatitude()+"");
 
-                switch (s){
-                    case "CHECK IN":
-                        checkIn.setText(R.string.check_ut);
-                        databaseLat.setValue(location.getLatitude()+"");
-
-                        break;
-
-                    case "CHECK OUT":
-                        checkIn.setText(R.string.check_in);
-                        databaseLon.setValue((location.getLongitude()+""));
-
-                        break;
+                dataBase.databaseLon.setValue((location.getLongitude()+""));
+                    hasClicked = true;
                 }
 
-                getCurrentLocation();
+                if ( hasClicked){
+                    System.out.println("Has Clicked");
+                    LatLng current = new LatLng(location.getLatitude(),location.getLongitude());
+                    broadcastt = new Broadcast(new Course("Dit257"),"Need someone to study with",location.getLatitude(),location.getLongitude());
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())));
+                    marker.setSnippet(broadcastt.getDescription());
+                    marker.showInfoWindow();
+                }
+
 
             }
 
-
         });
+
 
 
     }
