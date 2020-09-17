@@ -1,6 +1,30 @@
 {
   "rules": {
-    ".read": "true",  // 2020-10-12
-    ".write": "true",  // 2020-10-12
+    ".read": "true",
+    ".validate": "newData.hasChildren(['broadcasts'])",
+
+    "broadcasts": {
+      ".write": "!data.exists()",
+
+      "$broadcastId": {
+        ".validate": "newData.hasChildren(['createdAt', 'lat', 'long', 'courseCode', 'description'])",
+
+        "createdAt": {
+          ".validate": "newData.val() === now"
+        },
+        "lat": {
+          ".validate": "newData.isNumber()"
+        },
+        "long": {
+          ".validate": "newData.isNumber()"
+        },
+        "courseCode": {
+          ".validate": "newData.isString()"
+        },
+        "description": {
+          ".validate": "newData.isString()"
+        }
+      }
+    }
   }
 }
