@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cse.dit012.lost">
+
+    <application>
+        <activity
+            android:name=".android.ui.screen.map.MapScreenActivity"
+            android:exported="true" />
+    </application>
+
+</manifest>
