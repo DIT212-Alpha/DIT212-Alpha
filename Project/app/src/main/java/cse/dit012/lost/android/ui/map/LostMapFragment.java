@@ -16,19 +16,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.appolica.interactiveinfowindow.InfoWindow;
+import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 
 import androidx.lifecycle.ViewModelProvider;
+import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.ui.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
@@ -38,6 +43,7 @@ public class LostMapFragment extends Fragment {
 
     private FragmentLostMapBinding lostMapBinding;
 
+    private MapInfoWindowFragment mapFragment;
     private GoogleMap googleMap;
 
     private MapViewModel model;
@@ -60,19 +66,17 @@ public class LostMapFragment extends Fragment {
 
         model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
 
-        // TODO: Debug
-        model.getActiveBroadcasts().observe(getActivity(), broadcasts -> {
-            System.out.println(broadcasts.get(0).getCourse().getName());
-            System.out.println(broadcasts.get(0).getDescription());
-            System.out.println(broadcasts.get(0).getLatitude());
-            System.out.println(broadcasts.get(0).getLongitude());
-        });
-
         initializeGoogleMap();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        lostMapBinding = null;
+    }
+
     private void initializeGoogleMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
+        mapFragment = (MapInfoWindowFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this::onGoogleMapReady);
         }
@@ -81,8 +85,10 @@ public class LostMapFragment extends Fragment {
     private void onGoogleMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         requestGeolocationPermissions();
+
+        setupBroadcastsOnMap();
     }
-    
+
     private void requestGeolocationPermissions() {
         if (!PermissionUtil.hasPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -91,28 +97,6 @@ public class LostMapFragment extends Fragment {
             onLocationPermessionAndMapReady();
         }
     }
-
-    @SuppressLint("MissingPermission")
-    private void gotoCurrentLocation() {
-        try {
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener(getActivity(), task -> {
-                if (task.isSuccessful()) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(location.getLatitude(),
-                                        location.getLongitude()), 15));
-                    }
-
-                }
-            });
-        }catch (Exception e){
-            e.getMessage();
-        }
-    }
-
 
     private void onPermissionRequestResult(boolean granted) {
         if (granted) {
@@ -131,9 +115,49 @@ public class LostMapFragment extends Fragment {
         gotoCurrentLocation();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        lostMapBinding = null;
+    @SuppressLint("MissingPermission")
+    private void gotoCurrentLocation() {
+        try {
+            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+            locationResult.addOnCompleteListener(getActivity(), task -> {
+                if (task.isSuccessful()) {
+                    Location location = task.getResult();
+                    if (location != null) {
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(location.getLatitude(),
+                                        location.getLongitude()), 15));
+                    }
+
+                }
+            });
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
+    private void setupBroadcastsOnMap() {
+        model.getActiveBroadcasts().observe(getActivity(), broadcasts -> {
+            googleMap.clear();
+
+            for (Broadcast broadcast : broadcasts) {
+                LatLng pos = new LatLng(broadcast.getLatitude(), broadcast.getLongitude());
+                Marker marker = googleMap.addMarker(new MarkerOptions()
+                                        .position(pos)
+                                        .title(broadcast.getCourse().getName()));
+                marker.setTag(broadcast);
+            }
+        });
+
+        googleMap.setOnMarkerClickListener(marker -> {
+            Broadcast broadcast = (Broadcast) marker.getTag();
+
+            InfoWindow.MarkerSpecification markerSpec = new InfoWindow.MarkerSpecification(0, 70);
+            BroadcastInfoWindowFragment windowFragment = BroadcastInfoWindowFragment.newInstance(broadcast);
+            InfoWindow infoWindow = new InfoWindow(marker, markerSpec, windowFragment);
+            mapFragment.infoWindowManager().show(infoWindow, true);
+
+            return true;
+        });
     }
 }

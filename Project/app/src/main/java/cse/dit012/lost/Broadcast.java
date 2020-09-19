@@ -15,7 +15,7 @@ public class Broadcast {
     private double longitude;
     private double latitude;
 
-    public Broadcast(Course course, String description, double longitude, double latitude) {
+    public Broadcast(Course course, String description, double latitude, double longitude) {
         this.course = course;
         this.description = description;
         this.longitude = longitude;
