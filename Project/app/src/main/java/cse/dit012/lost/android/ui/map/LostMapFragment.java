@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -27,8 +28,10 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.concurrent.Executor;
 
+import androidx.lifecycle.ViewModelProvider;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.ui.PermissionUtil;
+import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
 
 public class LostMapFragment extends Fragment {
@@ -36,8 +39,8 @@ public class LostMapFragment extends Fragment {
     private FragmentLostMapBinding lostMapBinding;
 
     private GoogleMap googleMap;
-    Location location;
 
+    private MapViewModel model;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new RequestPermission(), this::onPermissionRequestResult);
@@ -55,6 +58,16 @@ public class LostMapFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
+
+        // TODO: Debug
+        model.getActiveBroadcasts().observe(getActivity(), broadcasts -> {
+            System.out.println(broadcasts.get(0).getCourse().getName());
+            System.out.println(broadcasts.get(0).getDescription());
+            System.out.println(broadcasts.get(0).getLatitude());
+            System.out.println(broadcasts.get(0).getLongitude());
+        });
+
         initializeGoogleMap();
     }
 
@@ -68,12 +81,8 @@ public class LostMapFragment extends Fragment {
     private void onGoogleMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         requestGeolocationPermissions();
-
-
     }
-
-
-
+    
     private void requestGeolocationPermissions() {
         if (!PermissionUtil.hasPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -84,13 +93,13 @@ public class LostMapFragment extends Fragment {
     }
 
     @SuppressLint("MissingPermission")
-    private void getCurrentLocation() {
+    private void gotoCurrentLocation() {
         try {
             FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
             Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
             locationResult.addOnCompleteListener(getActivity(), task -> {
                 if (task.isSuccessful()) {
-                    location = task.getResult();
+                    Location location = task.getResult();
                     if (location != null) {
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(location.getLatitude(),
@@ -119,7 +128,7 @@ public class LostMapFragment extends Fragment {
     }
 
     private void onLocationPermessionAndMapReady(){
-        getCurrentLocation();
+        gotoCurrentLocation();
     }
 
     @Override
