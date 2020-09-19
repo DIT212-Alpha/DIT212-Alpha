@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.annotation.NonNull;
 
-public class Database extends FragmentActivity {
+public class Database  {
 
     private double Longitude;
     private double Latitude;
@@ -59,13 +59,7 @@ public class Database extends FragmentActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getDataOnChange();
 
-
-    }
 
     public double getLongitude() {
         return Longitude;
