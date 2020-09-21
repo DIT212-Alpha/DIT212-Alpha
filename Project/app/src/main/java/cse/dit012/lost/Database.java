@@ -24,23 +24,20 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.annotation.NonNull;
 
-public class Database extends FragmentActivity {
+public class Database  {
 
     private double Longitude;
     private double Latitude;
 
-
-
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference databaseLat = reference.child("Lat");
-    DatabaseReference databaseLon = reference.child("Lon");
+   public FirebaseDatabase root;
+    public  DatabaseReference reference;
 
 
 
 
-    public Database(double Longitude, double Latidude){
-        this.Longitude = Longitude;
-        this.Latitude = Latidude;
+
+    public Database(){
+
     }
 
     private void getDataOnChange(){
@@ -59,13 +56,7 @@ public class Database extends FragmentActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getDataOnChange();
 
-
-    }
 
     public double getLongitude() {
         return Longitude;

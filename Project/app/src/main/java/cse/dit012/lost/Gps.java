@@ -51,6 +51,15 @@ public class Gps {
             Log.e("Exception: %s", e.getMessage(), e);
         }
     }
+
+    public double retrieveLatitude(){
+        return (location.getLatitude());
+
+    }
+
+    public double retrieveLongitude(){
+        return (location.getLongitude());
+    }
     /*
 
     private void getPermession(){

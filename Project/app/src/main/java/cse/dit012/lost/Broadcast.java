@@ -9,33 +9,17 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-public class Broadcast extends FragmentActivity {
+public class Broadcast {
     private Course course;
     private String description;
     private double longitude;
     private double latitude;
-    Database dataBase;
-    Location location;
 
-    public Broadcast(Course course, String description, double longitude, double latitude) {
+    public Broadcast(Course course, String description, double latitude, double longitude) {
         this.course = course;
         this.description = description;
         this.longitude = longitude;
         this.latitude = latitude;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-
     }
 
     public Course getCourse() {
