@@ -17,14 +17,21 @@ import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 
+/**
+ * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
+ */
 public class BroadcastInfoWindowFragment extends Fragment {
     private static final String PARAM_COURSE = "course";
     private static final String PARAM_DESCRIPTION = "description";
 
+    // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
 
-    private BroadcastInfoWindowViewModel model;
-
+    /**
+     * Creates a new broadcast info window fragment displaying the information of the given {@link Broadcast}.
+     * @param broadcast the broadcast to be displayed
+     * @return the created broadcast info window fragment
+     */
     public static BroadcastInfoWindowFragment newInstance(Broadcast broadcast) {
         BroadcastInfoWindowFragment fragment = new BroadcastInfoWindowFragment();
 
@@ -40,6 +47,7 @@ public class BroadcastInfoWindowFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Setup view from layout file
         layoutBinding = FragmentBroadcastInfoWindowBinding.inflate(inflater, container, false);
         return layoutBinding.getRoot();
     }
@@ -48,8 +56,7 @@ public class BroadcastInfoWindowFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        model = new ViewModelProvider(getActivity()).get(BroadcastInfoWindowViewModel.class);
-
+        // Update text fields to display info about broadcast given in parameters
         String course = getArguments().getString(PARAM_COURSE);
         String description = getArguments().getString(PARAM_DESCRIPTION);
         layoutBinding.course.setText(course);

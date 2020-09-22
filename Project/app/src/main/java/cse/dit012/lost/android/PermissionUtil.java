@@ -1,4 +1,4 @@
-package cse.dit012.lost.android.ui;
+package cse.dit012.lost.android;
 
 import android.Manifest;
 import android.content.Context;
