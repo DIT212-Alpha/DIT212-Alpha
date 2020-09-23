@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.concurrent.TimeUnit;
+
 import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
@@ -41,9 +46,8 @@ public class LostMapFragment extends Fragment {
 
     // View Binding for layout file
     private FragmentLostMapBinding layoutBinding;
-    private User u;
+    private User user;
     private Gps gps;
-    private FusedLocationProviderClient fusedLocationProviderClient;
 
 
     // Google map
@@ -62,13 +66,6 @@ public class LostMapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        //initialise fusedLocation... for gps class
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        //initialise user for gps class to track position for
-        u = new User("default");
-        //initialise gps with this activity fusedLocationProviderClient and the user
-        gps = new Gps(getActivity(),fusedLocationProviderClient,u);
         // Setup view from layout file
         layoutBinding = FragmentLostMapBinding.inflate(inflater, container, false);
         return layoutBinding.getRoot();
@@ -80,7 +77,15 @@ public class LostMapFragment extends Fragment {
 
         // Retrieve view model for map
         model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
+        //initialise fusedLocation... for gps class
+        //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        //initialise user for gps class to track position for
+        user = model.getUser();
+        //initialise gps with this activity fusedLocationProviderClient and the user
 
+        LocationManager locationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
+        gps = new Gps(this,user,locationManager);
+        gps.startGps();
         initializeGoogleMap();
     }
 
@@ -112,7 +117,7 @@ public class LostMapFragment extends Fragment {
      * If the user has not given geolocation permission, ask for permission.
      * If the user has already given permission, enable features requiring geolocation.
      */
-    private void requestGeolocationPermissions() {
+    public void requestGeolocationPermissions() {
         if (!PermissionUtil.hasPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
@@ -125,7 +130,7 @@ public class LostMapFragment extends Fragment {
      * When geolocation permission request comes back after asking for it, enable features requiring geolocation if granted.
      * @param granted true if the permission was granted
      */
-    private void onPermissionRequestResult(boolean granted) {
+    public void onPermissionRequestResult(boolean granted) {
         if (granted) {
             enableGeolocationDependentFeatures();
             onLocationPermissionAndMapReady();
@@ -136,7 +141,7 @@ public class LostMapFragment extends Fragment {
      * Enables geolocation dependant features.
      */
     @SuppressLint("MissingPermission")
-    private void enableGeolocationDependentFeatures() {
+    public void enableGeolocationDependentFeatures() {
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
@@ -144,7 +149,7 @@ public class LostMapFragment extends Fragment {
     /**
      * Called when *both* map is ready and geolocation permission was given.
      */
-    private void onLocationPermissionAndMapReady() {
+    public void onLocationPermissionAndMapReady() {
         gotoCurrentLocation();
     }
 
@@ -153,9 +158,15 @@ public class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        gps.update();
-        if(u.getLocation()!= null){
-            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(u.getLocation(),15)));
+        if(user.getLocation()!= null){
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(user.getLocation(),15)));
+        }
+        else{
+            try {
+                TimeUnit.SECONDS.sleep(5);
+                gotoCurrentLocation();
+            }
+            catch (Exception e){}
         }
     }
 

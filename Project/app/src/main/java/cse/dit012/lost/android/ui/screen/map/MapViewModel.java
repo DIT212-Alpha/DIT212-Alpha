@@ -8,12 +8,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.BroadcastRepository;
+import cse.dit012.lost.User;
 
 /**
  * View model handling data to be displayed on the map screen.
  */
 public class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = new BroadcastRepository();
+    private User user = new User("default");
 
     // Cached reference to active broadcasts
     private LiveData<List<Broadcast>> broadcasts;
@@ -27,5 +29,8 @@ public class MapViewModel extends ViewModel {
             broadcasts = broadcastRepository.getActiveBroadcasts();
         }
         return broadcasts;
+    }
+    public User getUser(){
+        return user;
     }
 }
