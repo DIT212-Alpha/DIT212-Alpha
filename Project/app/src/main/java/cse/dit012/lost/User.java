@@ -14,13 +14,11 @@ public class User {
     public User(String name){
         this.name = name;
         broadcastObjects = new ArrayList<>();
-        gps = new Gps();
     }
 
     public User(String name,List<BroadcastObject> broadcastObjects){
         this.name = name;
         this.broadcastObjects = broadcastObjects;
-        gps = new Gps();
     }
 
     public String getName(){
@@ -39,14 +37,8 @@ public class User {
         broadcastObjects.remove(i);
     }
 
-    public Location getLocation(){
-        return location;
+    public BroadcastObject getObject(int i){
+        return broadcastObjects.get(i);
     }
-
-    public void updateLocation(){
-        gps.updateLocation();
-        location = gps.getLocation();
-    }
-
 
 }

@@ -10,19 +10,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 public class Broadcast {
-    private Course course;
+    private BroadcastObject course;
     private String description;
     private double longitude;
     private double latitude;
 
-    public Broadcast(Course course, String description, double latitude, double longitude) {
+    public Broadcast(BroadcastObject course, String description, double latitude, double longitude) {
         this.course = course;
         this.description = description;
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public Course getCourse() {
+    public BroadcastObject getCourse() {
         return course;
     }
 
