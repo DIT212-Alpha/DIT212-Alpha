@@ -44,6 +44,6 @@ public class Model implements Observable {
     }
 
     public void getLocation(){
-        callback.onPropertyChanged();
+        //callback.onPropertyChanged();
     }
 }

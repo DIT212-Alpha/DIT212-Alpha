@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.R;
@@ -25,10 +26,6 @@ import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 public class BroadcastInfoWindowFragment extends Fragment {
     private static final String PARAM_COURSE = "course";
     private static final String PARAM_DESCRIPTION = "description";
-    private Button editInfoWindowButton;
-    private Button infoWindowCloseButton;
-    //private AlertDialog.Builder dialogBuilder;
-    //private AlertDialog dialog;
 
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
@@ -62,40 +59,44 @@ public class BroadcastInfoWindowFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //dialogBuilder = new AlertDialog.Builder(this);
-        //final View popupInfoBox = getLayoutInflater().inflate(R.layout.fragment_broadcast_info_window, null);
+        //Hide the EditText in InfoWindow
+        layoutBinding.editViewInfoBox.setVisibility(View.GONE);
 
         // Update text fields to display info about broadcast given in parameters
         String course = getArguments().getString(PARAM_COURSE);
         String description = getArguments().getString(PARAM_DESCRIPTION);
         layoutBinding.course.setText(course);
         layoutBinding.description.setText(description);
+        layoutBinding.editCourseText.setText(course);
+        layoutBinding.editDescriptionText.setText(description);
 
-        infoWindowCloseButton = (Button) layoutBinding.infoWindowCloseButton;
-        editInfoWindowButton = (Button) layoutBinding.editInfoWindowButton;
-
-        //dialogBuilder.setView(popupInfoBox);
-        //dialog = dialogBuilder.create();
-        //dialog.show();
-
-        infoWindowCloseButton.setOnClickListener(new View.OnClickListener() {
+        //EDIT button: Makes it possible for the user to Edit Course and Description
+        layoutBinding.editInfoWindowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //close View
-                //dialog.dismiss();
-                getActivity().getFragmentManager().popBackStack(); //ska stänga fönstret men funkar ej
+                layoutBinding.textViewInfoBox.setVisibility(View.GONE);
+                layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
             }
         });
 
-        editInfoWindowButton.setOnClickListener(new View.OnClickListener() {
+        //SAVE button: Saves the edit
+        layoutBinding.saveInfoWindowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //editButton - Delete course and description and add EditText?
+                //TODO should save the edit into current TextView
+                //TODO should save it in the database as well and change the variables there
+                //TODO should check if the course code is valid. e.g. ABC123
             }
         });
 
-
+        //CANCEL button: Cancels the edit
+        layoutBinding.cancelInfoWindowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutBinding.editViewInfoBox.setVisibility(View.GONE);
+                layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);
+            }
+        });
 
     }
 
