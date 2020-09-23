@@ -27,7 +27,9 @@ import com.google.android.gms.tasks.Task;
 
 import androidx.lifecycle.ViewModelProvider;
 import cse.dit012.lost.Broadcast;
+import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
+import cse.dit012.lost.User;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
@@ -39,6 +41,10 @@ public class LostMapFragment extends Fragment {
 
     // View Binding for layout file
     private FragmentLostMapBinding layoutBinding;
+    private User u;
+    private Gps gps;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
 
     // Google map
     private MapInfoWindowFragment mapFragment;
@@ -56,6 +62,13 @@ public class LostMapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        //initialise fusedLocation... for gps class
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        //initialise user for gps class to track position for
+        u = new User("default");
+        //initialise gps with this activity fusedLocationProviderClient and the user
+        gps = new Gps(getActivity(),fusedLocationProviderClient,u);
         // Setup view from layout file
         layoutBinding = FragmentLostMapBinding.inflate(inflater, container, false);
         return layoutBinding.getRoot();
@@ -140,22 +153,9 @@ public class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        try {
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener(getActivity(), task -> {
-                if (task.isSuccessful()) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(location.getLatitude(),
-                                        location.getLongitude()), 15));
-                    }
-
-                }
-            });
-        } catch (Exception e) {
-            e.getMessage();
+        gps.update();
+        if(u.getLocation()!= null){
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(u.getLocation(),15)));
         }
     }
 
