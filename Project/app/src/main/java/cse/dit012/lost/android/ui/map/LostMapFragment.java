@@ -1,20 +1,12 @@
 package cse.dit012.lost.android.ui.map;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
@@ -22,16 +14,16 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.List;
-import java.util.concurrent.Executor;
-
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.R;
@@ -42,6 +34,7 @@ import cse.dit012.lost.databinding.FragmentLostMapBinding;
 public class LostMapFragment extends Fragment {
 
     private FragmentLostMapBinding lostMapBinding;
+
 
     private MapInfoWindowFragment mapFragment;
     private GoogleMap googleMap;
@@ -117,7 +110,7 @@ public class LostMapFragment extends Fragment {
 
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        try {
+
             FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
             Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
             locationResult.addOnCompleteListener(getActivity(), task -> {
@@ -131,21 +124,24 @@ public class LostMapFragment extends Fragment {
 
                 }
             });
-        } catch (Exception e) {
-            e.getMessage();
-        }
     }
 
+
     private void setupBroadcastsOnMap() {
+
+
+
         model.getActiveBroadcasts().observe(getActivity(), broadcasts -> {
             googleMap.clear();
 
             for (Broadcast broadcast : broadcasts) {
-                LatLng pos = new LatLng(broadcast.getLatitude(), broadcast.getLongitude());
-                Marker marker = googleMap.addMarker(new MarkerOptions()
-                                        .position(pos)
-                                        .title(broadcast.getCourse().getName()));
-                marker.setTag(broadcast);
+                if (broadcast.getCourse().getName().equals(model.getCurrentName().getValue())) {
+                    LatLng pos = new LatLng(broadcast.getLatitude(), broadcast.getLongitude());
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(pos)
+                            .title(broadcast.getCourse().getName()));
+                    marker.setTag(broadcast);
+                }
             }
         });
 
@@ -160,4 +156,9 @@ public class LostMapFragment extends Fragment {
             return true;
         });
     }
+
+
+
+
+
 }

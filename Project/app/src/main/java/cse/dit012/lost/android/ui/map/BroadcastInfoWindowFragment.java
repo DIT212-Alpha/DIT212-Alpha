@@ -1,7 +1,6 @@
 package cse.dit012.lost.android.ui.map;
 
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 

@@ -24,20 +24,19 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.annotation.NonNull;
 
-public class Database  {
+public class Database {
 
     private double Longitude;
     private double Latitude;
 
-   public FirebaseDatabase root;
-    public  DatabaseReference reference;
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
 
 
 
-
-    public Database(){
-
+    public Database(double Longitude, double Latidude){
+        this.Longitude = Longitude;
+        this.Latitude = Latidude;
     }
 
     private void getDataOnChange(){
@@ -55,6 +54,8 @@ public class Database  {
             }
         });
     }
+
+
 
 
 
