@@ -44,8 +44,10 @@ public class Gps {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                updateLocation(location);
-                updateUserLocation();
+                if(location != null) {
+                    updateLocation(location);
+                    updateUserLocation();
+                }
             }
 
             @Override

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.BroadcastRepository;
+import cse.dit012.lost.Gps;
 import cse.dit012.lost.User;
 
 /**
@@ -19,7 +20,6 @@ public class MapViewModel extends ViewModel {
 
     // Cached reference to active broadcasts
     private LiveData<List<Broadcast>> broadcasts;
-
     /**
      * Retrieves an immutable live list of all currently active broadcasts.
      * @return the list of broadcasts
