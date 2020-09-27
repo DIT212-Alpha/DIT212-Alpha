@@ -26,8 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
 import androidx.lifecycle.ViewModelProvider;
-import cse.dit012.lost.Broadcast;
-import cse.dit012.lost.BroadcastRepository;
+import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
@@ -171,10 +170,10 @@ public class LostMapFragment extends Fragment {
 
             // For every broadcast, place a marker on the map
             for (Broadcast broadcast : broadcasts) {
-                LatLng pos = new LatLng(broadcast.getLatitude(), broadcast.getLongitude());
+                LatLng pos = new LatLng(broadcast.getCoordinates().getLatitude(), broadcast.getCoordinates().getLongitude());
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                                         .position(pos)
-                                        .title(broadcast.getCourse().getName()));
+                                        .title(broadcast.getCourse().toString()));
                 marker.setTag(broadcast);
             }
         });

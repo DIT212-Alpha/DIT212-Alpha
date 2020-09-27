@@ -1,11 +1,11 @@
-package cse.dit012.lost;
+package cse.dit012.lost.model;
 
 import androidx.databinding.Observable;
 
-import com.google.android.gms.common.data.DataBufferObserver;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.Observer;
+import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.user.User;
 
 public class Model implements Observable {
     private User user;

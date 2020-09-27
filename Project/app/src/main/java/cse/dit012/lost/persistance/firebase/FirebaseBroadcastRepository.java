@@ -1,22 +1,37 @@
-package cse.dit012.lost;
+package cse.dit012.lost.persistance.firebase;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
-import cse.dit012.lost.firebase.FirebaseQueryLiveData;
+import cse.dit012.lost.model.MapCoordinates;
+import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.broadcast.BroadcastId;
+import cse.dit012.lost.model.broadcast.BroadcastRepository;
+import cse.dit012.lost.model.course.CourseCode;
+import java9.util.concurrent.CompletableFuture;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Repository responsible for storing and retrieving information about broadcasts.
+ * Firebase implementation of repository responsible for storing and retrieving information about broadcasts.
  */
 public class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys
@@ -31,7 +46,59 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
 
     // Firebase database instance
-    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase db;
+
+    public FirebaseBroadcastRepository(FirebaseDatabase firebase) {
+        db = checkNotNull(firebase);
+    }
+
+    @Override
+    public BroadcastId nextIdentity() {
+        return new BroadcastId(UUID.randomUUID().toString().toLowerCase());
+    }
+
+    private DatabaseReference getBroadcastReference(BroadcastId id) {
+        return db.getReference(BROADCASTS_KEY).child(id.toString());
+    }
+
+    @Override
+    public CompletableFuture<Broadcast> getById(BroadcastId id) {
+        CompletableFuture<Broadcast> future = new CompletableFuture<>();
+
+        getBroadcastReference(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                future.complete(deserializeBroadcastFromDataSnapshot(snapshot));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+
+        return future;
+    }
+
+    @Override
+    public void store(Broadcast broadcast) {
+        getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
+                currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
+                currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
+                currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
+                currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+            }
+        });
+    }
 
     @Override
     public LiveData<List<Broadcast>> getActiveBroadcasts() {
@@ -75,7 +142,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     /**
      * Extracts information about a single broadcast in database into a {@link Broadcast} object.
      * @param broadcastSnapshot the {@link DataSnapshot} representing a single broadcast
-     * @return the corresponding {@link Course}
+     * @return the corresponding {@link Broadcast}
      */
     private Broadcast deserializeBroadcastFromDataSnapshot(DataSnapshot broadcastSnapshot) {
         String id = broadcastSnapshot.getKey();
@@ -85,13 +152,13 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
         String course = broadcastSnapshot.child(BROADCAST_COURSECODE_KEY).getValue(String.class);
         String description = broadcastSnapshot.child(BROADCAST_DESCRIPTION_KEY).getValue(String.class);
 
-        return new Broadcast(this,
-                id,
-                new Date(lastActive * 1000),
-                lat,
-                lon,
-                new Course(course),
-                description);
+        return new Broadcast(
+            new BroadcastId(id),
+            new Date(lastActive * 1000),
+            new MapCoordinates(lat, lon),
+            new CourseCode(course),
+            description
+        );
     }
 
     /**
@@ -105,11 +172,5 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
             broadcasts.add(deserializeBroadcastFromDataSnapshot(broadcastSnapshot));
         }
         return broadcasts;
-    }
-
-    @Override
-    public Broadcast createBroadcast(double latitude, double longitude, BroadcastObject course, String description) {
-        // TODO: Implement
-        throw new java.lang.UnsupportedOperationException("Not yet implemented!");
     }
 }

@@ -1,8 +1,5 @@
 package cse.dit012.lost.android.ui.map;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cse.dit012.lost.Broadcast;
-import cse.dit012.lost.R;
+import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 
 /**
@@ -36,7 +32,7 @@ public class BroadcastInfoWindowFragment extends Fragment {
         BroadcastInfoWindowFragment fragment = new BroadcastInfoWindowFragment();
 
         Bundle args = new Bundle();
-        args.putString(PARAM_COURSE, broadcast.getCourse().getName());
+        args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
         fragment.setArguments(args);
 
