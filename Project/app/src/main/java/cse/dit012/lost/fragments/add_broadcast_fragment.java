@@ -67,13 +67,10 @@ public class add_broadcast_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(!courseSpinner.getSelectedItem().toString().isEmpty() && !descriptionEditText.getText().toString().isEmpty()){
-
-                    Toast.makeText(getActivity(), courseSpinner.getSelectedItem().toString() + "\n"+descriptionEditText.getText().toString(), Toast.LENGTH_LONG).show();
-                    Course course = new Course(courseSpinner.getSelectedItem().toString());
-
                     try {
                         //Todo
                         // Gps.getGps.getLocation();
+                        Course course = new Course(courseSpinner.getSelectedItem().toString());
 
                         //Broadcast broadcastToAdd = new Broadcast(course, descriptionEditText.getText().toString(), Gps.getGps.getLocation().getLatitude(), Gps.getGps.getLocation().getLongitude());
                         Broadcast broadcastToAdd = new Broadcast(course, descriptionEditText.getText().toString(), 22, 44);
@@ -84,21 +81,18 @@ public class add_broadcast_fragment extends Fragment {
                         // DatabaseReference dbRef = dbRef.getReference(BROADCAST_KEY)
 
                         Toast.makeText(getActivity(), courseSpinner.getSelectedItem().toString() + "\n"+descriptionEditText.getText().toString()+"\nAdded", Toast.LENGTH_LONG).show();
+
+                        //When the broadcast is added the user is taken back to the map view
+                        navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
 
-                    //When the broadcast is added the user is taken back to the map view
-                    navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
                 }
                 else
                 {
                     Toast.makeText(getActivity(), "select a course and set a description", Toast.LENGTH_LONG).show();
                 }
-
-
-                //When done adding a broadcast the view is changed back to the map
-               // navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
             }
         });
 
