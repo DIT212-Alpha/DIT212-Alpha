@@ -11,7 +11,8 @@
         android:layout_height="68dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="36dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:entries="@array/StringCourses"/>
 
     <Button
         android:id="@+id/addBtn"
@@ -36,9 +37,9 @@
         android:text="@string/cancelBtn" />
 
     <EditText
-        android:id="@+id/descriptionTextBox"
+        android:id="@+id/descriptionEdittext"
         android:layout_width="239dp"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/courseSpinner"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
@@ -48,10 +49,10 @@
         android:layout_marginTop="165dp"
         android:layout_marginEnd="81dp"
         android:layout_marginBottom="363dp"
+        android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/description"
-        android:inputType="textMultiLine"
-        android:autofillHints="" />
+        android:inputType="textMultiLine" />
 
 </RelativeLayout>
