@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +28,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.concurrent.TimeUnit;
+
 import cse.dit012.lost.Broadcast;
+import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
+import cse.dit012.lost.User;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
@@ -39,6 +46,9 @@ public class LostMapFragment extends Fragment {
 
     // View Binding for layout file
     private FragmentLostMapBinding layoutBinding;
+    private User user;
+    private Gps gps;
+
 
     // Google map
     private MapInfoWindowFragment mapFragment;
@@ -64,9 +74,26 @@ public class LostMapFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // Retrieve view model for map
         model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
+        //Gets the user from the model
+        user = model.getUser();
+        //Create a location manager from this activity
+        LocationManager locationManager = (LocationManager) requireContext().getSystemService(getContext().LOCATION_SERVICE);
+        gps = new Gps(this,user,locationManager);
+        gps.startGps();
+
+        //A while loop to give gps some time to get a location if needed
+        int i = 2;
+        while(i>0){
+            if(user.getLocation() == null) {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (Exception e) {
+                }
+            }
+            i--;
+        }
 
         initializeGoogleMap();
     }
@@ -99,7 +126,7 @@ public class LostMapFragment extends Fragment {
      * If the user has not given geolocation permission, ask for permission.
      * If the user has already given permission, enable features requiring geolocation.
      */
-    private void requestGeolocationPermissions() {
+    public void requestGeolocationPermissions() {
         if (!PermissionUtil.hasPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
@@ -112,7 +139,7 @@ public class LostMapFragment extends Fragment {
      * When geolocation permission request comes back after asking for it, enable features requiring geolocation if granted.
      * @param granted true if the permission was granted
      */
-    private void onPermissionRequestResult(boolean granted) {
+    public void onPermissionRequestResult(boolean granted) {
         if (granted) {
             enableGeolocationDependentFeatures();
             onLocationPermissionAndMapReady();
@@ -123,7 +150,7 @@ public class LostMapFragment extends Fragment {
      * Enables geolocation dependant features.
      */
     @SuppressLint("MissingPermission")
-    private void enableGeolocationDependentFeatures() {
+    public void enableGeolocationDependentFeatures() {
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
@@ -131,7 +158,7 @@ public class LostMapFragment extends Fragment {
     /**
      * Called when *both* map is ready and geolocation permission was given.
      */
-    private void onLocationPermissionAndMapReady() {
+    public void onLocationPermissionAndMapReady() {
         gotoCurrentLocation();
     }
 
@@ -140,22 +167,8 @@ public class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        try {
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener(getActivity(), task -> {
-                if (task.isSuccessful()) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(location.getLatitude(),
-                                        location.getLongitude()), 15));
-                    }
-
-                }
-            });
-        } catch (Exception e) {
-            e.getMessage();
+        if(user.getLocation()!= null){
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(user.getLocation(),15)));
         }
     }
 
