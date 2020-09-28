@@ -47,16 +47,10 @@ public class LostMapFragment extends Fragment {
 
     // View Binding for layout file
     private FragmentLostMapBinding layoutBinding;
-    private User user;
-    private Gps gps;
-
-
     private MapInfoWindowFragment mapFragment;
     private GoogleMap googleMap;
-
     // View model for map screen
     private MapViewModel model;
-
     // Activity launcher used to ask for geolocation permission
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new RequestPermission(), this::onPermissionRequestResult);
@@ -76,25 +70,6 @@ public class LostMapFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Retrieve view model for map
         model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
-        //Gets the user from the model
-        user = model.getUser();
-        //Create a location manager from this activity
-        LocationManager locationManager = (LocationManager) requireContext().getSystemService(getContext().LOCATION_SERVICE);
-        gps = new Gps(this,user,locationManager);
-        gps.startGps();
-
-        //A while loop to give gps some time to get a location if needed
-        int i = 2;
-        while(i>0){
-            if(user.getLocation() == null) {
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (Exception e) {
-                }
-            }
-            i--;
-        }
-
         initializeGoogleMap();
     }
 
@@ -167,8 +142,9 @@ public class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        if(user.getLocation()!= null){
-            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(user.getLocation(),15)));
+        LatLng temp = Gps.getGps().getLocation(this.requireContext());
+        if (temp != null) {
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(temp, 15)));
         }
     }
 

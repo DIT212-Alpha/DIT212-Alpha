@@ -1,6 +1,7 @@
 package cse.dit012.lost;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,55 +32,30 @@ import cse.dit012.lost.android.ui.map.LostMapFragment;
 public class Gps {
 
     private LatLng location;
-    private User user;
+    //Communicates with the android system to manage location
     private LocationManager locationManager;
-    private LostMapFragment lostMapFragment;
-    private LocationListener locationListener;
+    //Singelton object
+    private static Gps gps = new Gps();
 
-    //Initialize in model by "LocationServices.getFusedLocationProviderClient(this) to access the phones gps
-    public Gps(LostMapFragment f, User u,LocationManager locationManager) {
-        user = u;
-        lostMapFragment = f;
-        this.locationManager = locationManager;
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                if(location != null) {
-                    updateLocation(location);
-                    updateUserLocation();
-                }
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        };
+    /**
+     * Postcondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
+     * Must check permission wherever method is called, as "@SuppressLint("MissingPermission")" skips permission check.
+     * @param context provided by a "Fragment" from the "requireContext()" method
+     *                needed by the LocationManager to communicate with android
+     * @return returns the latest location, might be null if no location yet have been found
+     */
+    @SuppressLint("MissingPermission")
+    public LatLng getLocation(Context context){
+        this.locationManager = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
+         Location temp = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+         if(temp != null){
+             location = new LatLng(temp.getLatitude(),temp.getLongitude());
+         }
+        return location;
     }
 
-    private void updateLocation(Location newLocation) {
-        location = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
-    }
-
-    private void updateUserLocation() {
-        user.setLocation(location);
-    }
-
-    public void startGps() {
-        if (ActivityCompat.checkSelfPermission(lostMapFragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(lostMapFragment.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-           lostMapFragment.requestGeolocationPermissions();
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-
+    //Static method that returns Singelton-object
+    public static Gps getGps(){
+        return gps;
     }
 }

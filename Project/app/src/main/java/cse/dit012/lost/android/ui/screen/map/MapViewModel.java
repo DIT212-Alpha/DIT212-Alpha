@@ -22,9 +22,6 @@ import cse.dit012.lost.User;
  */
 public class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = new BroadcastRepository();
-    private User user = new User("default");
-
-
     public MutableLiveData<String> courseCode = new MutableLiveData<>();
 
 
@@ -88,8 +85,5 @@ public class MapViewModel extends ViewModel {
         }
 
         return filteredBroadcasts;
-    }
-    public User getUser(){
-        return user;
     }
 }
