@@ -14,9 +14,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.BroadcastRepository;
+import cse.dit012.lost.Gps;
+import cse.dit012.lost.User;
 
+/**
+ * View model handling data to be displayed on the map screen.
+ */
 public class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = new BroadcastRepository();
+    private User user = new User("default");
 
 
     public MutableLiveData<String> courseCode = new MutableLiveData<>();
@@ -38,6 +44,12 @@ public class MapViewModel extends ViewModel {
     }
 
 
+
+
+    /**
+     * Retrieves an immutable live list of all currently active broadcasts.
+     * @return the list of broadcasts
+     */
 
     public LiveData<List<Broadcast>> getActiveBroadcasts() {
 
@@ -77,6 +89,7 @@ public class MapViewModel extends ViewModel {
 
         return filteredBroadcasts;
     }
-
-
+    public User getUser(){
+        return user;
+    }
 }

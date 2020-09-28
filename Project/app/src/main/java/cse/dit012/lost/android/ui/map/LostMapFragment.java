@@ -3,6 +3,8 @@ package cse.dit012.lost.android.ui.map;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,28 +21,43 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.concurrent.TimeUnit;
+
 import cse.dit012.lost.Broadcast;
+import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
-import cse.dit012.lost.android.ui.PermissionUtil;
+import cse.dit012.lost.User;
+import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
 
+/**
+ * Fragment controlling everything which is displayed on the map and the map itself.
+ */
 public class LostMapFragment extends Fragment {
 
-    private FragmentLostMapBinding lostMapBinding;
+    // View Binding for layout file
+    private FragmentLostMapBinding layoutBinding;
+    private User user;
+    private Gps gps;
 
 
     private MapInfoWindowFragment mapFragment;
     private GoogleMap googleMap;
 
+    // View model for map screen
     private MapViewModel model;
 
+    // Activity launcher used to ask for geolocation permission
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new RequestPermission(), this::onPermissionRequestResult);
 
@@ -49,15 +66,34 @@ public class LostMapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        lostMapBinding = FragmentLostMapBinding.inflate(inflater, container, false);
-        return lostMapBinding.getRoot();
+        // Setup view from layout file
+        layoutBinding = FragmentLostMapBinding.inflate(inflater, container, false);
+        return layoutBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // Retrieve view model for map
         model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
+        //Gets the user from the model
+        user = model.getUser();
+        //Create a location manager from this activity
+        LocationManager locationManager = (LocationManager) requireContext().getSystemService(getContext().LOCATION_SERVICE);
+        gps = new Gps(this,user,locationManager);
+        gps.startGps();
+
+        //A while loop to give gps some time to get a location if needed
+        int i = 2;
+        while(i>0){
+            if(user.getLocation() == null) {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (Exception e) {
+                }
+            }
+            i--;
+        }
 
         initializeGoogleMap();
     }
@@ -65,75 +101,87 @@ public class LostMapFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        lostMapBinding = null;
+        // Clean up layout binding when view is destroyed
+        layoutBinding = null;
     }
 
+    /**
+     * Gets Google map fragment from view and initializes it.
+     * When the map is ready, permission is requested and broadcasts are setup on map.
+     */
     private void initializeGoogleMap() {
         mapFragment = (MapInfoWindowFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(this::onGoogleMapReady);
+            // Initializes map and callback is run when map is ready
+            mapFragment.getMapAsync(googleMap -> {
+                this.googleMap = googleMap;
+
+                requestGeolocationPermissions();
+                setupBroadcastsOnMap();
+            });
         }
     }
 
-    private void onGoogleMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
-        requestGeolocationPermissions();
-
-        setupBroadcastsOnMap();
-    }
-
-    private void requestGeolocationPermissions() {
+    /**
+     * If the user has not given geolocation permission, ask for permission.
+     * If the user has already given permission, enable features requiring geolocation.
+     */
+    public void requestGeolocationPermissions() {
         if (!PermissionUtil.hasPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
             enableGeolocationDependentFeatures();
-            onLocationPermessionAndMapReady();
+            onLocationPermissionAndMapReady();
         }
     }
 
-    private void onPermissionRequestResult(boolean granted) {
+    /**
+     * When geolocation permission request comes back after asking for it, enable features requiring geolocation if granted.
+     * @param granted true if the permission was granted
+     */
+    public void onPermissionRequestResult(boolean granted) {
         if (granted) {
             enableGeolocationDependentFeatures();
-            onLocationPermessionAndMapReady();
+            onLocationPermissionAndMapReady();
         }
     }
 
+    /**
+     * Enables geolocation dependant features.
+     */
     @SuppressLint("MissingPermission")
-    private void enableGeolocationDependentFeatures() {
+    public void enableGeolocationDependentFeatures() {
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
-    private void onLocationPermessionAndMapReady(){
+    /**
+     * Called when *both* map is ready and geolocation permission was given.
+     */
+    public void onLocationPermissionAndMapReady() {
         gotoCurrentLocation();
     }
 
+    /**
+     * Moves map camera to current location of user.
+     */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener(getActivity(), task -> {
-                if (task.isSuccessful()) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(location.getLatitude(),
-                                        location.getLongitude()), 15));
-                    }
-
-                }
-            });
+        if(user.getLocation()!= null){
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(user.getLocation(),15)));
+        }
     }
 
-
+    /**
+     * Starts listening for broadcast updates and places broadcasts on map whenever they are changed.
+     */
     private void setupBroadcastsOnMap() {
-
-
-
+        // Listen for changes to active broadcasts
         model.getActiveBroadcasts().observe(getActivity(), broadcasts -> {
+            // Remove any previously placed markers
             googleMap.clear();
 
+            // For every broadcast, place a marker on the map
             for (Broadcast broadcast : broadcasts) {
                 if (broadcast.getCourse().getName().equals(model.getCurrentName().getValue())) {
                     LatLng pos = new LatLng(broadcast.getLatitude(), broadcast.getLongitude());
@@ -145,6 +193,7 @@ public class LostMapFragment extends Fragment {
             }
         });
 
+        // When marker is pressed, open information window for corresponding broadcast
         googleMap.setOnMarkerClickListener(marker -> {
             Broadcast broadcast = (Broadcast) marker.getTag();
 

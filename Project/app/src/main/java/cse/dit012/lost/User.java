@@ -2,25 +2,24 @@ package cse.dit012.lost;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     private String name;
     private List<BroadcastObject> broadcastObjects;
-    private Location location;
-    private Gps gps;
+    private LatLng location;
 
     public User(String name){
         this.name = name;
         broadcastObjects = new ArrayList<>();
-        gps = new Gps();
     }
 
     public User(String name,List<BroadcastObject> broadcastObjects){
         this.name = name;
         this.broadcastObjects = broadcastObjects;
-        gps = new Gps();
     }
 
     public String getName(){
@@ -39,14 +38,16 @@ public class User {
         broadcastObjects.remove(i);
     }
 
-    public Location getLocation(){
+    public BroadcastObject getObject(int i){
+        return broadcastObjects.get(i);
+    }
+
+    public void setLocation(LatLng location){
+        this.location = location;
+    }
+
+    public LatLng getLocation(){
         return location;
     }
-
-    public void updateLocation(){
-        gps.updateLocation();
-        location = gps.getLocation();
-    }
-
 
 }

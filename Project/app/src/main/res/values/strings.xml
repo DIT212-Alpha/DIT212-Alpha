@@ -29,4 +29,5 @@
         <item name="DIT327">DIT327</item>
     </string-array>
 
+    <string name="edit">Edit</string>
 </resources>
