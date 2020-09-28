@@ -101,6 +101,13 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     }
 
     @Override
+    public void updateCourseDescription(BroadcastId id, String course, String description){
+        DatabaseReference reference = db.getReference(BROADCASTS_KEY).child(id.toString());
+        reference.child(BROADCAST_COURSECODE_KEY).setValue(course);
+        reference.child(BROADCAST_DESCRIPTION_KEY).setValue(description);
+    }
+
+    @Override
     public LiveData<List<Broadcast>> getActiveBroadcasts() {
         // Query root node of broadcasts tree
         long oldestActiveTime = (System.currentTimeMillis() / 1000) - ACTIVE_TIME_MARGIN_SECONDS;

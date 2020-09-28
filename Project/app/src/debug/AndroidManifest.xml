@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".android.ui.screen.map.MapScreenActivity"
+            android:name=".android.ui.MainActivity"
             android:exported="true" />
     </application>
 

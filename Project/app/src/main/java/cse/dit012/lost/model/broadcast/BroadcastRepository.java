@@ -23,6 +23,8 @@ public interface BroadcastRepository {
 
     void store(Broadcast broadcast);
 
+    void updateCourseDescription(BroadcastId id, String course, String description);
+
     /**
      * Retrieves a live list of all currently active broadcasts.
      * @return the list of broadcasts

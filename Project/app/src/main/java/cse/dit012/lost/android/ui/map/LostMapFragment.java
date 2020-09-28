@@ -1,14 +1,10 @@
 package cse.dit012.lost.android.ui.map;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +21,19 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import androidx.lifecycle.ViewModelProvider;
+import java.util.concurrent.TimeUnit;
 import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
+import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
@@ -140,22 +146,9 @@ public class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        try {
-            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener(getActivity(), task -> {
-                if (task.isSuccessful()) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(location.getLatitude(),
-                                        location.getLongitude()), 15));
-                    }
-
-                }
-            });
-        } catch (Exception e) {
-            e.getMessage();
+        LatLng temp = Gps.getGps().getLocation(this.requireContext());
+        if (temp != null) {
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(temp, 15)));
         }
     }
 
@@ -170,11 +163,14 @@ public class LostMapFragment extends Fragment {
 
             // For every broadcast, place a marker on the map
             for (Broadcast broadcast : broadcasts) {
-                LatLng pos = new LatLng(broadcast.getCoordinates().getLatitude(), broadcast.getCoordinates().getLongitude());
-                Marker marker = googleMap.addMarker(new MarkerOptions()
-                                        .position(pos)
-                                        .title(broadcast.getCourse().toString()));
-                marker.setTag(broadcast);
+                if (broadcast.getCourse().toString().equals(model.getCurrentName().getValue())) {
+                    LatLng pos = new LatLng(broadcast.getCoordinates().getLatitude(),
+                            broadcast.getCoordinates().getLongitude());
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(pos)
+                            .title(broadcast.getCourse().toString()));
+                    marker.setTag(broadcast);
+                }
             }
         });
 
