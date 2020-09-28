@@ -14,14 +14,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import cse.dit012.lost.Broadcast;
-import cse.dit012.lost.BroadcastRepository;
-import cse.dit012.lost.Course;
+import java.util.Date;
+
 import cse.dit012.lost.R;
+import cse.dit012.lost.model.MapCoordinates;
+import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.broadcast.BroadcastId;
+import cse.dit012.lost.model.course.CourseCode;
 
 public class add_broadcast_fragment extends Fragment {
 
@@ -70,10 +72,10 @@ public class add_broadcast_fragment extends Fragment {
                     try {
                         //Todo
                         // Gps.getGps.getLocation();
-                        Course course = new Course(courseSpinner.getSelectedItem().toString());
+                        CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
 
                         //Broadcast broadcastToAdd = new Broadcast(course, descriptionEditText.getText().toString(), Gps.getGps.getLocation().getLatitude(), Gps.getGps.getLocation().getLongitude());
-                        Broadcast broadcastToAdd = new Broadcast(course, descriptionEditText.getText().toString(), 22, 44);
+                        Broadcast broadcastToAdd = new Broadcast(new BroadcastId("Test"), new Date(), new MapCoordinates(22, 44), course, descriptionEditText.getText().toString());
 
                         //Todo
                         // Add broadcast to DB

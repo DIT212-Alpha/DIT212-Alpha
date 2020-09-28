@@ -18,9 +18,7 @@ import android.widget.EditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import cse.dit012.lost.Broadcast;
-import cse.dit012.lost.R;
-import cse.dit012.lost.android.ui.screen.map.MapViewModel;
+import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 
 /**
@@ -45,7 +43,7 @@ public class BroadcastInfoWindowFragment extends Fragment {
     public static BroadcastInfoWindowFragment newInstance(Broadcast broadcast) {
         BroadcastInfoWindowFragment fragment = new BroadcastInfoWindowFragment();
         Bundle args = new Bundle();
-        args.putString(PARAM_COURSE, broadcast.getCourse().getName());
+        args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
         //args.putString(PARAM_ID, );
 

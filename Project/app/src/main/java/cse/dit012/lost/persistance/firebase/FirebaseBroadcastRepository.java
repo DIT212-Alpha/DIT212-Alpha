@@ -1,0 +1,184 @@
+package cse.dit012.lost.persistance.firebase;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
+
+import cse.dit012.lost.model.MapCoordinates;
+import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.broadcast.BroadcastId;
+import cse.dit012.lost.model.broadcast.BroadcastRepository;
+import cse.dit012.lost.model.course.CourseCode;
+import java9.util.concurrent.CompletableFuture;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+/**
+ * Firebase implementation of repository responsible for storing and retrieving information about broadcasts.
+ */
+public class FirebaseBroadcastRepository implements BroadcastRepository {
+    // Firebase database keys
+    private static final String BROADCASTS_KEY = "broadcasts";
+    private static final String BROADCAST_CREATEDAT_KEY = "createdAt";
+    private static final String BROADCAST_LASTACTIVE_KEY = "lastActive";
+    private static final String BROADCAST_LAT_KEY = "lat";
+    private static final String BROADCAST_LONG_KEY = "long";
+    private static final String BROADCAST_COURSECODE_KEY = "courseCode";
+    private static final String BROADCAST_DESCRIPTION_KEY = "description";
+
+    public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
+
+    // Firebase database instance
+    private final FirebaseDatabase db;
+
+    public FirebaseBroadcastRepository(FirebaseDatabase firebase) {
+        db = checkNotNull(firebase);
+    }
+
+    @Override
+    public BroadcastId nextIdentity() {
+        return new BroadcastId(UUID.randomUUID().toString().toLowerCase());
+    }
+
+    private DatabaseReference getBroadcastReference(BroadcastId id) {
+        return db.getReference(BROADCASTS_KEY).child(id.toString());
+    }
+
+    @Override
+    public CompletableFuture<Broadcast> getById(BroadcastId id) {
+        CompletableFuture<Broadcast> future = new CompletableFuture<>();
+
+        getBroadcastReference(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                future.complete(deserializeBroadcastFromDataSnapshot(snapshot));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+
+        return future;
+    }
+
+    @Override
+    public void store(Broadcast broadcast) {
+        getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
+                currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
+                currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
+                currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
+                currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+            }
+        });
+    }
+
+    @Override
+    public void updateCourseDescription(BroadcastId id, String course, String description){
+        DatabaseReference reference = db.getReference(BROADCASTS_KEY).child(id.toString());
+        reference.child(BROADCAST_COURSECODE_KEY).setValue(course);
+        reference.child(BROADCAST_DESCRIPTION_KEY).setValue(description);
+    }
+
+    @Override
+    public LiveData<List<Broadcast>> getActiveBroadcasts() {
+        // Query root node of broadcasts tree
+        long oldestActiveTime = (System.currentTimeMillis() / 1000) - ACTIVE_TIME_MARGIN_SECONDS;
+        Query query = db.getReference(BROADCASTS_KEY);
+                //.orderByChild(BROADCAST_LASTACTIVE_KEY)
+                //.startAt(oldestActiveTime); // Only retrieve active broadcasts
+        LiveData<DataSnapshot> queryLiveData = new FirebaseQueryLiveData(query);
+
+        // Transform broadcasts in database to broadcasts in model
+        // DataSnapshot of broadcasts root -> List<Broadcast>
+        LiveData<List<Broadcast>> recentBroadcasts = Transformations.map(queryLiveData, this::deserializeBroadcastsFromDataSnapshot);
+        return recentBroadcasts;
+        /*LiveData<Date> currentTime = new CurrentDateLiveData();
+
+        MediatorLiveData<List<Broadcast>> activeBroadcasts = new MediatorLiveData<>();
+        activeBroadcasts.addSource(recentBroadcasts, broadcasts -> {
+            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterBroadcasts(recentBroadcasts, currentTime));
+        });
+        activeBroadcasts.addSource(currentTime, broadcasts -> {
+            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterBroadcasts(recentBroadcasts, currentTime));
+        });
+        return Transformations.distinctUntilChanged(recentBroadcasts);*/
+    }
+
+    private static List<Broadcast> filterBroadcasts(LiveData<List<Broadcast>> broadcasts, LiveData<Date> currentTime) {
+        if (broadcasts.getValue() == null || currentTime.getValue() == null) {
+            return Collections.emptyList();
+        }
+
+        List<Broadcast> filteredBroadcasts = new ArrayList<>(broadcasts.getValue().size());
+        for (Broadcast broadcast : broadcasts.getValue()) {
+            long ageSinceLastActive = (currentTime.getValue().getTime() - broadcast.getLastActive().getTime()) / 1000;
+            if (ageSinceLastActive <= ACTIVE_TIME_MARGIN_SECONDS) {
+                filteredBroadcasts.add(broadcast);
+            }
+        }
+        return filteredBroadcasts;
+    }
+
+    /**
+     * Extracts information about a single broadcast in database into a {@link Broadcast} object.
+     * @param broadcastSnapshot the {@link DataSnapshot} representing a single broadcast
+     * @return the corresponding {@link Broadcast}
+     */
+    private Broadcast deserializeBroadcastFromDataSnapshot(DataSnapshot broadcastSnapshot) {
+        String id = broadcastSnapshot.getKey();
+        long lastActive = broadcastSnapshot.child(BROADCAST_LASTACTIVE_KEY).getValue(long.class);
+        double lat = broadcastSnapshot.child(BROADCAST_LAT_KEY).getValue(double.class);
+        double lon = broadcastSnapshot.child(BROADCAST_LONG_KEY).getValue(double.class);
+        String course = broadcastSnapshot.child(BROADCAST_COURSECODE_KEY).getValue(String.class);
+        String description = broadcastSnapshot.child(BROADCAST_DESCRIPTION_KEY).getValue(String.class);
+
+        return new Broadcast(
+            new BroadcastId(id),
+            new Date(lastActive * 1000),
+            new MapCoordinates(lat, lon),
+            new CourseCode(course),
+            description
+        );
+    }
+
+    /**
+     * Extracts information about a collection of broadcasts in database into a {@link List<Broadcast>} object.
+     * @param broadcastsSnapshot the {@link DataSnapshot} representing a collection of broadcasts
+     * @return the corresponding {@link List<Broadcast>}
+     */
+    private List<Broadcast> deserializeBroadcastsFromDataSnapshot(DataSnapshot broadcastsSnapshot) {
+        List<Broadcast> broadcasts = new ArrayList<>();
+        for (DataSnapshot broadcastSnapshot : broadcastsSnapshot.getChildren()) {
+            broadcasts.add(deserializeBroadcastFromDataSnapshot(broadcastSnapshot));
+        }
+        return broadcasts;
+    }
+}

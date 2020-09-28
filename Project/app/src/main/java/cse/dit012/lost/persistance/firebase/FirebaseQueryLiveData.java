@@ -1,4 +1,4 @@
-package cse.dit012.lost.firebase;
+package cse.dit012.lost.persistance.firebase;
 
 import android.util.Log;
 
@@ -14,7 +14,7 @@ import androidx.lifecycle.LiveData;
  *
  * Inspired by Firebase blog: https://firebase.googleblog.com/2017/12/using-android-architecture-components.html
  */
-public class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
+class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
     private static final String LOG_TAG = "FirebaseQueryLiveData";
 
     // The Firebase query

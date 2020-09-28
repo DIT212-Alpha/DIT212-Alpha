@@ -19,7 +19,7 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <activity
-            android:name=".android.ui.screen.map.MainActivity"
+            android:name=".android.ui.MainActivity"
             android:label="@string/title_activity_maps"
             android:noHistory="true">
             <intent-filter>

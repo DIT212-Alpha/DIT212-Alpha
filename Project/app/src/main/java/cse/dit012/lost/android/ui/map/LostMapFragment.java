@@ -29,13 +29,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.ViewModelProvider;
-
 import java.util.concurrent.TimeUnit;
-
-import cse.dit012.lost.Broadcast;
+import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
-import cse.dit012.lost.User;
+import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
@@ -47,10 +45,14 @@ public class LostMapFragment extends Fragment {
 
     // View Binding for layout file
     private FragmentLostMapBinding layoutBinding;
+
+    // Google map
     private MapInfoWindowFragment mapFragment;
     private GoogleMap googleMap;
+
     // View model for map screen
     private MapViewModel model;
+
     // Activity launcher used to ask for geolocation permission
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new RequestPermission(), this::onPermissionRequestResult);
@@ -68,8 +70,10 @@ public class LostMapFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         // Retrieve view model for map
         model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
+
         initializeGoogleMap();
     }
 
@@ -101,7 +105,7 @@ public class LostMapFragment extends Fragment {
      * If the user has not given geolocation permission, ask for permission.
      * If the user has already given permission, enable features requiring geolocation.
      */
-    public void requestGeolocationPermissions() {
+    private void requestGeolocationPermissions() {
         if (!PermissionUtil.hasPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
@@ -114,7 +118,7 @@ public class LostMapFragment extends Fragment {
      * When geolocation permission request comes back after asking for it, enable features requiring geolocation if granted.
      * @param granted true if the permission was granted
      */
-    public void onPermissionRequestResult(boolean granted) {
+    private void onPermissionRequestResult(boolean granted) {
         if (granted) {
             enableGeolocationDependentFeatures();
             onLocationPermissionAndMapReady();
@@ -125,7 +129,7 @@ public class LostMapFragment extends Fragment {
      * Enables geolocation dependant features.
      */
     @SuppressLint("MissingPermission")
-    public void enableGeolocationDependentFeatures() {
+    private void enableGeolocationDependentFeatures() {
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
@@ -133,7 +137,7 @@ public class LostMapFragment extends Fragment {
     /**
      * Called when *both* map is ready and geolocation permission was given.
      */
-    public void onLocationPermissionAndMapReady() {
+    private void onLocationPermissionAndMapReady() {
         gotoCurrentLocation();
     }
 
@@ -159,11 +163,12 @@ public class LostMapFragment extends Fragment {
 
             // For every broadcast, place a marker on the map
             for (Broadcast broadcast : broadcasts) {
-                if (broadcast.getCourse().getName().equals(model.getCurrentName().getValue())) {
-                    LatLng pos = new LatLng(broadcast.getLatitude(), broadcast.getLongitude());
+                if (broadcast.getCourse().toString().equals(model.getCurrentName().getValue())) {
+                    LatLng pos = new LatLng(broadcast.getCoordinates().getLatitude(),
+                            broadcast.getCoordinates().getLongitude());
                     Marker marker = googleMap.addMarker(new MarkerOptions()
                             .position(pos)
-                            .title(broadcast.getCourse().getName()));
+                            .title(broadcast.getCourse().toString()));
                     marker.setTag(broadcast);
                 }
             }
@@ -181,9 +186,4 @@ public class LostMapFragment extends Fragment {
             return true;
         });
     }
-
-
-
-
-
 }

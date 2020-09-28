@@ -1,42 +1,24 @@
 package cse.dit012.lost.android.ui.screen.map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Objects;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
-import cse.dit012.lost.Broadcast;
-import cse.dit012.lost.Course;
-import cse.dit012.lost.Database;
-import cse.dit012.lost.Gps;
+
 import cse.dit012.lost.R;
-import cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment;
 import cse.dit012.lost.databinding.FragmentMapScreenBinding;
 
 public class MapScreenFragment extends Fragment {
