@@ -40,6 +40,12 @@ public class BroadcastRepository {
         return Transformations.map(query, BroadcastRepository::deserializeBroadcastsFromDataSnapshot);
     }
 
+    public void updateCourseDescription(String course, String description, String id){
+        DatabaseReference reference = db.getReference(BROADCASTS_KEY).child(id);
+        reference.child(BROADCAST_COURSECODE_KEY).setValue(course);
+        reference.child(BROADCAST_DESCRIPTION_KEY).setValue(description);
+    }
+
     /**
      * Extracts information about a single broadcast in database into a {@link Broadcast} object.
      * @param broadcastSnapshot the {@link DataSnapshot} representing a single broadcast

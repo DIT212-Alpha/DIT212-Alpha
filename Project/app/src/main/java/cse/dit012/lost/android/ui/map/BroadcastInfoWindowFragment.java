@@ -16,8 +16,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import cse.dit012.lost.Broadcast;
 import cse.dit012.lost.R;
+import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 
 /**
@@ -26,21 +30,26 @@ import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 public class BroadcastInfoWindowFragment extends Fragment {
     private static final String PARAM_COURSE = "course";
     private static final String PARAM_DESCRIPTION = "description";
+    //private static final String PARAM_ID = "id";
+
+    private InfoWindowViewModel infoModel;
 
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
 
     /**
      * Creates a new broadcast info window fragment displaying the information of the given {@link Broadcast}.
+     *
      * @param broadcast the broadcast to be displayed
      * @return the created broadcast info window fragment
      */
     public static BroadcastInfoWindowFragment newInstance(Broadcast broadcast) {
         BroadcastInfoWindowFragment fragment = new BroadcastInfoWindowFragment();
-
         Bundle args = new Bundle();
         args.putString(PARAM_COURSE, broadcast.getCourse().getName());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
+        //args.putString(PARAM_ID, );
+
         fragment.setArguments(args);
 
         return fragment;
@@ -70,12 +79,17 @@ public class BroadcastInfoWindowFragment extends Fragment {
         layoutBinding.editCourseText.setText(course);
         layoutBinding.editDescriptionText.setText(description);
 
+        infoModel = new ViewModelProvider(getActivity()).get(InfoWindowViewModel.class);
+
         //EDIT button: Makes it possible for the user to Edit Course and Description
         layoutBinding.editInfoWindowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                layoutBinding.editCourseText.setText(layoutBinding.course.getText());
+                layoutBinding.editDescriptionText.setText(layoutBinding.description.getText());
                 layoutBinding.textViewInfoBox.setVisibility(View.GONE);
                 layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
+                //TODO restore saved data
             }
         });
 
@@ -84,8 +98,17 @@ public class BroadcastInfoWindowFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO should save the edit into current TextView
+                String courseEdited = layoutBinding.editCourseText.getText().toString().trim();
+                String descriptionEdited = layoutBinding.editDescriptionText.getText().toString().trim();
+                layoutBinding.course.setText(courseEdited);
+                layoutBinding.description.setText(descriptionEdited);
+
                 //TODO should save it in the database as well and change the variables there
-                //TODO should check if the course code is valid. e.g. ABC123
+
+                //infoModel.updateEditedInfoWindow(courseEdited, descriptionEdited, id);
+
+                layoutBinding.editViewInfoBox.setVisibility(View.GONE);
+                layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);
             }
         });
 
@@ -95,12 +118,9 @@ public class BroadcastInfoWindowFragment extends Fragment {
             public void onClick(View v) {
                 layoutBinding.editViewInfoBox.setVisibility(View.GONE);
                 layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);
+
             }
         });
 
     }
-
-
-
-
 }
