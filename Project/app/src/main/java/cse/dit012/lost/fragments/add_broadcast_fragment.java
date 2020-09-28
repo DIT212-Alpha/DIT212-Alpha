@@ -19,6 +19,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import cse.dit012.lost.Broadcast;
+import cse.dit012.lost.BroadcastRepository;
 import cse.dit012.lost.Course;
 import cse.dit012.lost.R;
 
@@ -79,6 +80,8 @@ public class add_broadcast_fragment extends Fragment {
 
                         //Todo
                         // Add broadcast to DB
+                        // BroadcastRepository.addBroadcast();
+                        // DatabaseReference dbRef = dbRef.getReference(BROADCAST_KEY)
 
                         Toast.makeText(getActivity(), courseSpinner.getSelectedItem().toString() + "\n"+descriptionEditText.getText().toString()+"\nAdded", Toast.LENGTH_LONG).show();
                     }catch (Exception e){
