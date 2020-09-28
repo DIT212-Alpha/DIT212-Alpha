@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="cse.dit012.lost.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mapScreenFragment"
+            app:destination="@id/mapScreenFragment"
+            app:popUpTo="@id/mapScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapScreenFragment"
+        android:name="cse.dit012.lost.android.ui.screen.map.MapScreenFragment"
+        android:label="fragment_map_screen"
+        tools:layout="@layout/fragment_map_screen" >
+        <action
+            android:id="@+id/action_mapScreenFragment_to_add_broadcast_fragment"
+            app:destination="@id/add_broadcast_fragment"
+            app:popUpTo="@id/add_broadcast_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_broadcast_fragment"
+        android:name="cse.dit012.lost.fragments.add_broadcast_fragment"
+        android:label="fragment_add_broadcast_fragment"
+        tools:layout="@layout/fragment_add_broadcast_fragment" >
+        <action
+            android:id="@+id/action_add_broadcast_fragment_to_mapScreenFragment"
+            app:destination="@id/mapScreenFragment"
+            app:popUpTo="@id/mapScreenFragment" />
+    </fragment>
+</navigation>
