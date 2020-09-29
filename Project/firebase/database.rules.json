@@ -7,13 +7,10 @@
       ".write": "true",
 
       "$broadcastId": {
-        ".validate": "newData.hasChildren(['createdAt', 'active', 'lastActive', 'lat', 'long', 'courseCode', 'description'])",
+        ".validate": "newData.hasChildren(['createdAt', 'lastActive', 'lat', 'long', 'courseCode', 'description'])",
 
         "createdAt": {
           ".validate": "newData.isNumber() && newData.val() <= now"
-        },
-        "active": {
-          ".validate": "newData.isBoolean()"
         },
         "lastActive": {
           ".validate": "newData.isNumber() && newData.val() <= now"

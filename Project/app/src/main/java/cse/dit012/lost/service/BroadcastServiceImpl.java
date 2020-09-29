@@ -1,7 +1,13 @@
 package cse.dit012.lost.service;
 
+import android.content.Context;
+import android.content.Intent;
+
+import androidx.core.content.ContextCompat;
+
 import java.util.Date;
 
+import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -19,11 +25,16 @@ class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
-    public Broadcast createBroadcast(MapCoordinates coordinates, CourseCode courseCode, String description) {
-        Broadcast broadcast = new Broadcast(broadcastRepository.nextIdentity(), new Date(), coordinates, courseCode, description);
-        broadcastRepository.store(broadcast);
+    public CompletableFuture<Broadcast> createBroadcast(MapCoordinates coordinates, CourseCode courseCode, String description) {
+        Broadcast broadcast = new Broadcast(broadcastRepository.nextIdentity(), new Date(), new Date(), coordinates, courseCode, description);
+        return broadcastRepository.store(broadcast);
+    }
 
-        return broadcast;
+    @Override
+    public void startActiveBroadcastService(Context context, BroadcastId id) {
+        Intent intent = new Intent(context, ActiveBroadcastService.class);
+        intent.putExtra(ActiveBroadcastService.PARAM_BROADCAST_ID, id.toString());
+        ContextCompat.startForegroundService(context, intent);
     }
 
     @Override

@@ -17,9 +17,20 @@ public class ActiveBroadcastServiceTestActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        Intent intent = new Intent(this, ActiveBroadcastService.class);
-        intent.putExtra(ActiveBroadcastService.PARAM_BROADCAST_ID, "testBroadcast");
-        ContextCompat.startForegroundService(this, intent);
+        {
+            Intent intent = new Intent(this, ActiveBroadcastService.class);
+            intent.putExtra(ActiveBroadcastService.PARAM_BROADCAST_ID, "testBroadcast");
+            ContextCompat.startForegroundService(this, intent);
+        }
+        {
+            Intent intent = new Intent(this, ActiveBroadcastService.class);
+            intent.putExtra(ActiveBroadcastService.PARAM_BROADCAST_ID, "broadcast6");
+            ContextCompat.startForegroundService(this, intent);
+        }
+        {
+            Intent intent = new Intent(this, ActiveBroadcastService.class);
+            intent.putExtra(ActiveBroadcastService.PARAM_BROADCAST_ID, "broadcast5");
+            ContextCompat.startForegroundService(this, intent);
+        }
     }
 }

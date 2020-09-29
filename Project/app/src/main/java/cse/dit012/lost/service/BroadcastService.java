@@ -1,5 +1,7 @@
 package cse.dit012.lost.service;
 
+import android.content.Context;
+
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -19,7 +21,9 @@ public interface BroadcastService {
      * @param description the description of the broadcast
      * @return the newly created broadcast
      */
-    Broadcast createBroadcast(MapCoordinates coordinates, CourseCode courseCode, String description);
+    CompletableFuture<Broadcast> createBroadcast(MapCoordinates coordinates, CourseCode courseCode, String description);
+
+    void startActiveBroadcastService(Context context, BroadcastId id);
 
     CompletableFuture<Broadcast> updateBroadcastLastActive(BroadcastId id);
 }

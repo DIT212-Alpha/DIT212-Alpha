@@ -19,7 +19,9 @@ public interface BroadcastRepository {
 
     BroadcastId nextIdentity();
 
-    CompletableFuture<Broadcast> getById(BroadcastId broadcast);
+    CompletableFuture<Broadcast> getById(BroadcastId id);
+
+    LiveData<Broadcast> observeById(BroadcastId id);
 
     CompletableFuture<Broadcast> store(Broadcast broadcast);
 
