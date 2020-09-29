@@ -13,7 +13,7 @@ import java9.util.concurrent.CompletableFuture;
  * Repository responsible for storing and retrieving information about broadcasts.
  */
 public interface BroadcastRepository {
-    static BroadcastRepository create() {
+    static BroadcastRepository get() {
         return new FirebaseBroadcastRepository(FirebaseDatabase.getInstance());
     }
 
@@ -21,7 +21,7 @@ public interface BroadcastRepository {
 
     CompletableFuture<Broadcast> getById(BroadcastId broadcast);
 
-    void store(Broadcast broadcast);
+    CompletableFuture<Broadcast> store(Broadcast broadcast);
 
     void updateCourseDescription(BroadcastId id, String course, String description);
 

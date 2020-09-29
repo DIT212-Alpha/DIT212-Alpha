@@ -8,8 +8,8 @@ import cse.dit012.lost.model.course.CourseCode;
 import java9.util.concurrent.CompletableFuture;
 
 public interface BroadcastService {
-    static BroadcastService create() {
-        return new BroadcastServiceImpl(BroadcastRepository.create());
+    static BroadcastService get() {
+        return new BroadcastServiceImpl(BroadcastRepository.get());
     }
 
     /**
@@ -21,5 +21,5 @@ public interface BroadcastService {
      */
     Broadcast createBroadcast(MapCoordinates coordinates, CourseCode courseCode, String description);
 
-    CompletableFuture<Void> updateBroadcastLastActive(BroadcastId id);
+    CompletableFuture<Broadcast> updateBroadcastLastActive(BroadcastId id);
 }

@@ -81,7 +81,8 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     }
 
     @Override
-    public void store(Broadcast broadcast) {
+    public CompletableFuture<Broadcast> store(Broadcast broadcast) {
+        CompletableFuture<Broadcast> future = new CompletableFuture<>();
         getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
@@ -96,8 +97,14 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
 
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (committed) {
+                    future.complete(deserializeBroadcastFromDataSnapshot(currentData));
+                } else {
+                    future.completeExceptionally(error.toException());
+                }
             }
         });
+        return future;
     }
 
     @Override
@@ -111,16 +118,15 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     public LiveData<List<Broadcast>> getActiveBroadcasts() {
         // Query root node of broadcasts tree
         long oldestActiveTime = (System.currentTimeMillis() / 1000) - ACTIVE_TIME_MARGIN_SECONDS;
-        Query query = db.getReference(BROADCASTS_KEY);
-                //.orderByChild(BROADCAST_LASTACTIVE_KEY)
-                //.startAt(oldestActiveTime); // Only retrieve active broadcasts
+        Query query = db.getReference(BROADCASTS_KEY)
+                .orderByChild(BROADCAST_LASTACTIVE_KEY)
+                .startAt(oldestActiveTime); // Only retrieve active broadcasts
         LiveData<DataSnapshot> queryLiveData = new FirebaseQueryLiveData(query);
 
         // Transform broadcasts in database to broadcasts in model
         // DataSnapshot of broadcasts root -> List<Broadcast>
         LiveData<List<Broadcast>> recentBroadcasts = Transformations.map(queryLiveData, this::deserializeBroadcastsFromDataSnapshot);
-        return recentBroadcasts;
-        /*LiveData<Date> currentTime = new CurrentDateLiveData();
+        LiveData<Date> currentTime = new CurrentDateLiveData();
 
         MediatorLiveData<List<Broadcast>> activeBroadcasts = new MediatorLiveData<>();
         activeBroadcasts.addSource(recentBroadcasts, broadcasts -> {
@@ -129,7 +135,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
         activeBroadcasts.addSource(currentTime, broadcasts -> {
             activeBroadcasts.setValue(FirebaseBroadcastRepository.filterBroadcasts(recentBroadcasts, currentTime));
         });
-        return Transformations.distinctUntilChanged(recentBroadcasts);*/
+        return Transformations.distinctUntilChanged(activeBroadcasts);
     }
 
     private static List<Broadcast> filterBroadcasts(LiveData<List<Broadcast>> broadcasts, LiveData<Date> currentTime) {

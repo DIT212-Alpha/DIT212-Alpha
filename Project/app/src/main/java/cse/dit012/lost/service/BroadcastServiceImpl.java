@@ -27,10 +27,10 @@ class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
-    public CompletableFuture<Void> updateBroadcastLastActive(BroadcastId id) {
-        return broadcastRepository.getById(id).thenAccept(broadcast -> {
+    public CompletableFuture<Broadcast> updateBroadcastLastActive(BroadcastId id) {
+        return broadcastRepository.getById(id).thenCompose(broadcast -> {
             broadcast.updateLastActive();
-            broadcastRepository.store(broadcast);
+            return broadcastRepository.store(broadcast);
         });
     }
 }

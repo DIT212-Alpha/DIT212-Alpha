@@ -15,7 +15,7 @@ import cse.dit012.lost.model.broadcast.BroadcastRepository;
  * View model handling data to be displayed on the map screen.
  */
 public class MapViewModel extends ViewModel {
-    private final BroadcastRepository broadcastRepository = BroadcastRepository.create();
+    private final BroadcastRepository broadcastRepository = BroadcastRepository.get();
     public MutableLiveData<String> courseCode = new MutableLiveData<>();
 
     public MutableLiveData<String> getCurrentName() {
