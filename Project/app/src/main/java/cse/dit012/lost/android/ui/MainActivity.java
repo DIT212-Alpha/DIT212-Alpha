@@ -1,4 +1,4 @@
-package cse.dit012.lost.android.ui.screen.map;
+package cse.dit012.lost.android.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
@@ -7,6 +7,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import cse.dit012.lost.R;
+import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.ActivityMainBinding;
 
 import android.content.Intent;

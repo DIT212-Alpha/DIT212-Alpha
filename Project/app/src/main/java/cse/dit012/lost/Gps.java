@@ -1,80 +1,61 @@
 package cse.dit012.lost;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
-import android.util.Log;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.util.concurrent.Executor;
+import cse.dit012.lost.android.PermissionUtil;
+import cse.dit012.lost.android.ui.map.LostMapFragment;
 
 public class Gps {
-    FusedLocationProviderClient fusedLocationProviderClient;
-    private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
-    private boolean locationPermissionGranted;
-    private Location location;
 
-    public Location getLocation(){
+    private LatLng location;
+    //Communicates with the android system to manage location
+    private LocationManager locationManager;
+    //Singelton object
+    private static Gps gps = new Gps();
+
+    /**
+     * Postcondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
+     * Must check permission wherever method is called, as "@SuppressLint("MissingPermission")" skips permission check.
+     * @param context provided by a "Fragment" from the "requireContext()" method
+     *                needed by the LocationManager to communicate with android
+     * @return returns the latest location, might be null if no location yet have been found
+     */
+    @SuppressLint("MissingPermission")
+    public LatLng getLocation(Context context){
+        this.locationManager = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
+         Location temp = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+         if(temp != null){
+             location = new LatLng(temp.getLatitude(),temp.getLongitude());
+         }
         return location;
     }
 
-
-    public void updateLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            if (locationPermissionGranted) {
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener((Executor) this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            location = task.getResult();
-                            if (location != null) {
-                                LatLng current = new LatLng(location.getLatitude(),location.getLongitude());
-                            }
-                        } else {
-                            Log.d("Name", "Current location is null. ");
-                            Log.e("Name", "Exception: %s", task.getException());
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage(), e);
-        }
+    //Static method that returns Singelton-object
+    public static Gps getGps(){
+        return gps;
     }
-
-    public double retrieveLatitude(){
-        return (location.getLatitude());
-
-    }
-
-    public double retrieveLongitude(){
-        return (location.getLongitude());
-    }
-    /*
-
-    private void getPermession(){
-
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION )
-                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-        }
-
-    }
-    */
-
 }
