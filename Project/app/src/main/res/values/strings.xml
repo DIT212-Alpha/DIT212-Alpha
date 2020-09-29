@@ -19,6 +19,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login">Log in</string>
     <string name="button_Fragment">ButtonFragment</string>
+    <string name="signup_to_start_your_new_journey">SignUp to start your new Journey</string>
+    <string name="Welcome">Welcome,</string>
+    <string name="full_name">Full Name</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="phone_no">Phone No</string>
+    <string name="password">Password</string>
+    <string name="already_have_an_account_login">Already have an account? LogIn</string>
+    <string name="go">GO</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="already_nhave_an_naccount">Already \nhave an \nAccount?</string>
+    <string name="new_user_register_now">New user? Register Now</string>
+    <string name="use_other_methods">Use other Methods</string>
+    <string name="todo">TODO</string>
+    <string name="loginFragment">Login</string>
+    <string name="here_s_nyour_first_nstep_with_nus">Here’s\nyour first\nstep with \nus!</string>
+    <string name="userNameRegister">UserName</string>
+    <string name="surname">Surname</string>
+    <string name="register">Register</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string-array name="StringCourses">
         <item name="DIT012">DIT012</item>
