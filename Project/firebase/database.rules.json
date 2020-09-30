@@ -4,19 +4,16 @@
     ".validate": "newData.hasChildren(['broadcasts'])",
 
     "broadcasts": {
-      ".write": "!data.exists()",
+      ".write": "true",
 
       "$broadcastId": {
-        ".validate": "newData.hasChildren(['createdAt', 'active', 'lastActive', 'lat', 'long', 'courseCode', 'description'])",
+        ".validate": "newData.hasChildren(['createdAt', 'lastActive', 'lat', 'long', 'courseCode', 'description'])",
 
         "createdAt": {
-          ".validate": "newData.val() === now"
-        },
-        "active": {
-          ".validate": "newData.isBoolean()"
+          ".validate": "newData.isNumber() && newData.val() <= now"
         },
         "lastActive": {
-          ".validate": "newData.val() === now"
+          ".validate": "newData.isNumber() && newData.val() <= now"
         },
         "lat": {
           ".validate": "newData.isNumber()"

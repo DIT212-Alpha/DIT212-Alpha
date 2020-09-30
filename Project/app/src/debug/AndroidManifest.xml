@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".android.ui.MainActivity"
+            android:name=".android.ui.ActiveBroadcastServiceTestActivity"
             android:exported="true" />
     </application>
 
