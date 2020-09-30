@@ -14,7 +14,6 @@ import cse.dit012.lost.model.course.Course;
 public class User {
     private String name;
     private List<BroadcastObject> broadcastObjects;
-    private LatLng location;
 
     public User(String name){
         this.name = name;
@@ -34,24 +33,18 @@ public class User {
         name = newName;
     }
 
-    public void addCourse(Course course){
+    public void addBroadcastObject(BroadcastObject course){
         broadcastObjects.add(course);
     }
 
-    public void deleteCourse(int i){
+    public void deleteBroadcastObject(int i){
         broadcastObjects.remove(i);
     }
 
     public BroadcastObject getObject(int i){
-        return broadcastObjects.get(i);
+        if(broadcastObjects.size()-1 >= i){
+            return broadcastObjects.get(i);
+        }
+        return null;
     }
-
-    public void setLocation(LatLng location){
-        this.location = location;
-    }
-
-    public LatLng getLocation(){
-        return location;
-    }
-
 }
