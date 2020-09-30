@@ -89,7 +89,6 @@ FragmentRegisterBinding fragmentRegisterBinding;
 
                 if (validate(email,password)){
 
-
                     registerAuthentication.createUserWithEmailAndPassword(email,password).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -109,8 +108,6 @@ FragmentRegisterBinding fragmentRegisterBinding;
                                 navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
 
                             }
-
-
 
                         }
                     });
