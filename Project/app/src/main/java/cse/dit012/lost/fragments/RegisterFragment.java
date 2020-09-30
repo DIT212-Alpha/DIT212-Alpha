@@ -26,7 +26,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cse.dit012.lost.R;
-import cse.dit012.lost.User;
+
+import cse.dit012.lost.model.user.User;
 
 
 public class RegisterFragment extends Fragment {
@@ -125,7 +126,7 @@ private FirebaseAuth registerAuthentication;
 
     //Check password with minimum requirement here(it should be minimum 6 characters)
     public static boolean isPasswordValid(String password){
-        return password.length() >= 6;
+        return password.length() >= 7;
     }
 
   
