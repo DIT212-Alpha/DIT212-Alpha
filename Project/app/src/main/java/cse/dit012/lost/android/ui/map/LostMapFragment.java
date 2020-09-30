@@ -2,9 +2,6 @@ package cse.dit012.lost.android.ui.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +9,11 @@ import android.view.ViewGroup;
 
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
 
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -29,11 +23,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.ViewModelProvider;
-import java.util.concurrent.TimeUnit;
+
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
-import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
@@ -157,20 +150,18 @@ public class LostMapFragment extends Fragment {
      */
     private void setupBroadcastsOnMap() {
         // Listen for changes to active broadcasts
-        model.getActiveBroadcasts().observe(getActivity(), broadcasts -> {
+        model.getActiveBroadcastsFilteredByCourse().observe(getActivity(), broadcasts -> {
             // Remove any previously placed markers
             googleMap.clear();
 
             // For every broadcast, place a marker on the map
             for (Broadcast broadcast : broadcasts) {
-                if (broadcast.getCourse().toString().equals(model.getCurrentName().getValue())) {
-                    LatLng pos = new LatLng(broadcast.getCoordinates().getLatitude(),
-                            broadcast.getCoordinates().getLongitude());
-                    Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(pos)
-                            .title(broadcast.getCourse().toString()));
-                    marker.setTag(broadcast);
-                }
+                LatLng pos = new LatLng(broadcast.getCoordinates().getLatitude(),
+                        broadcast.getCoordinates().getLongitude());
+                Marker marker = googleMap.addMarker(new MarkerOptions()
+                        .position(pos)
+                        .title(broadcast.getCourse().toString()));
+                marker.setTag(broadcast);
             }
         });
 
