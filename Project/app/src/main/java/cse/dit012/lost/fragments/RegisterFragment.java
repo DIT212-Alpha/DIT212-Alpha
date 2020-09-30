@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +16,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.core.utilities.Utilities;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import cse.dit012.lost.R;
 
+import cse.dit012.lost.databinding.FragmentRegisterBinding;
 import cse.dit012.lost.model.user.User;
 
 
@@ -40,17 +50,20 @@ EditText userPassword;
 Button registerButton;
 
 ProgressBar progressBar;
+NavController navController;
 
 User user;
 
 private FirebaseAuth registerAuthentication;
+FragmentRegisterBinding fragmentRegisterBinding;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater,container,false);
+        return fragmentRegisterBinding.getRoot();
 
 
     }
@@ -61,28 +74,44 @@ private FirebaseAuth registerAuthentication;
         progressBar =  view.findViewById(R.id.progressBar);
         registerAuthentication = FirebaseAuth.getInstance();
 
-        userName = view.findViewById(R.id.registerTextUserName);
-        surName = view.findViewById(R.id.registerTextSurName);
-        userEmail = view.findViewById(R.id.registerTextEmail);
-        userPassword = view.findViewById(R.id.registerTextPassword);
-        registerButton = view.findViewById(R.id.cirRegisterButton);
+        userName = fragmentRegisterBinding.registerTextUserName ;
+        surName = fragmentRegisterBinding.registerTextSurName;
+        userEmail = fragmentRegisterBinding.registerTextEmail;
+        userPassword = fragmentRegisterBinding.registerTextPassword;
+        registerButton = fragmentRegisterBinding.cirRegisterButton ;
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = userEmail.getText().toString();
                 String password = userPassword.getText().toString();
+                navController = Navigation.findNavController(view);
 
                 if (validate(email,password)){
 
-                    registerAuthentication.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                    registerAuthentication.createUserWithEmailAndPassword(email,password).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if (task.isSuccessful()){
-                                Toast.makeText(getContext(),"Registration Sucsessful!", Toast.LENGTH_LONG).show();
-                                progressBar.setVisibility(View.GONE);
+                            if (!task.isSuccessful()){
+
+                                try {
+                                    Toast.makeText(getContext(),"Registration unSucsessful!", Toast.LENGTH_LONG).show();
+                                    throw task.getException();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }else {
+                                Toast.makeText(getContext(),"Registration Sucsessful! Welcome" , Toast.LENGTH_LONG).show();
+                                navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
+
                             }
+
+
+
                         }
                     });
                 }
