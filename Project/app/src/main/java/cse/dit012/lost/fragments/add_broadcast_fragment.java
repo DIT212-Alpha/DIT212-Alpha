@@ -1,11 +1,13 @@
 package cse.dit012.lost.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,16 @@ import android.widget.Toast;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import java.util.Date;
+import com.google.android.gms.maps.model.LatLng;
 
+import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.MapCoordinates;
-import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.service.BroadcastService;
 
 public class add_broadcast_fragment extends Fragment {
+    private static final String TAG = "AddBroadcastFragment";
 
     private Button addButton, cancelButton;
     private Spinner courseSpinner;
@@ -68,31 +71,31 @@ public class add_broadcast_fragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!courseSpinner.getSelectedItem().toString().isEmpty() && !descriptionEditText.getText().toString().isEmpty()){
-                    try {
-                        //Todo
-                        // Gps.getGps.getLocation();
-                        CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
+                if(!courseSpinner.getSelectedItem().toString().isEmpty() && !descriptionEditText.getText().toString().isEmpty()) {
+                    Context context = requireContext();
+                    LatLng loc = Gps.getGps().getLocation(context);
+                    CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
 
-                        //Broadcast broadcastToAdd = new Broadcast(course, descriptionEditText.getText().toString(), Gps.getGps.getLocation().getLatitude(), Gps.getGps.getLocation().getLongitude());
-                        Broadcast broadcastToAdd = new Broadcast(new BroadcastId("Test"), new Date(), new MapCoordinates(22, 44), course, descriptionEditText.getText().toString());
+                    BroadcastService.get().createBroadcast(
+                        new MapCoordinates(loc.latitude, loc.longitude),
+                        course,
+                        descriptionEditText.getText().toString()
+                    ).whenComplete((broadcast, throwable) -> {
+                        if (broadcast != null) {
+                            BroadcastService.get().startActiveBroadcastService(context, broadcast.getId());
+                            Toast.makeText(getActivity(), course + "\n" + descriptionEditText.getText().toString() + "\nadded", Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.e(TAG, "Failed to create broadcast", throwable);
+                            Toast.makeText(getActivity(), "Failed to create broadcast :(", Toast.LENGTH_LONG).show();
+                        }
+                    }).exceptionally(throwable -> {
+                        Log.e(TAG, "Failed to start active broadcast service", throwable);
+                        return null;
+                    });
 
-                        //Todo
-                        // Add broadcast to DB
-                        // BroadcastRepository.addBroadcast();
-                        // DatabaseReference dbRef = dbRef.getReference(BROADCAST_KEY)
-
-                        Toast.makeText(getActivity(), courseSpinner.getSelectedItem().toString() + "\n"+descriptionEditText.getText().toString()+"\nAdded", Toast.LENGTH_LONG).show();
-
-                        //When the broadcast is added the user is taken back to the map view
-                        navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                }
-                else
-                {
+                    //When the broadcast is added the user is taken back to the map view
+                    navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
+                } else {
                     Toast.makeText(getActivity(), "select a course and set a description", Toast.LENGTH_LONG).show();
                 }
             }
