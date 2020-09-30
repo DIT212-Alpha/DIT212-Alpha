@@ -13,12 +13,15 @@ class CurrentDateLiveData extends LiveData<Date> {
         @Override
         public void run() {
             setValue(new Date(System.currentTimeMillis()));
-            handler.postDelayed(this, 1_000);
+            handler.postDelayed(this, updateFrequencyMs);
         }
     };
 
-    public CurrentDateLiveData() {
+    private final long updateFrequencyMs;
+
+    public CurrentDateLiveData(long updateFrequencyMs) {
         super(new Date(System.currentTimeMillis()));
+        this.updateFrequencyMs = updateFrequencyMs;
     }
 
     @Override
