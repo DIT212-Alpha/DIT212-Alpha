@@ -51,16 +51,16 @@ public final class Broadcast {
         return course;
     }
 
-    public void updateCourse(CourseCode courseCode) {
-        course = checkNotNull(courseCode);
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void updateDescription(String description) {
         this.description = checkNotNull(description);
+    }
+
+    public void updateCourse(CourseCode course) {
+        this.course = checkNotNull(course);
     }
 
     @Override

@@ -26,4 +26,6 @@ public interface BroadcastService {
     void startActiveBroadcastService(Context context, BroadcastId id);
 
     CompletableFuture<Broadcast> updateBroadcastLastActive(BroadcastId id);
+
+    CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description);
 }
