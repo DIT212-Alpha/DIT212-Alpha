@@ -51,10 +51,6 @@ public final class Broadcast {
         return course;
     }
 
-    public void updateCourse(CourseCode courseCode) {
-        course = checkNotNull(courseCode);
-    }
-
     public String getDescription() {
         return description;
     }
