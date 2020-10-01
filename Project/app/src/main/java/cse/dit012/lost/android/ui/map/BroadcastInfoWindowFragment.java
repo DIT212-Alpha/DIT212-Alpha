@@ -20,6 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
+import cse.dit012.lost.model.broadcast.BroadcastId;
+import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.service.BroadcastService;
 
 /**
  * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
@@ -27,10 +30,9 @@ import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 public class BroadcastInfoWindowFragment extends Fragment {
     private static final String PARAM_COURSE = "course";
     private static final String PARAM_DESCRIPTION = "description";
-    //private static final String PARAM_ID = "id";
+    private static final String PARAM_ID = "id";
 
-    private InfoWindowViewModel infoModel;
-
+    private BroadcastService broadcastService = BroadcastService.create();
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
 
@@ -45,7 +47,7 @@ public class BroadcastInfoWindowFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
-        //args.putString(PARAM_ID, );
+        args.putString(PARAM_ID, broadcast.getId().toString());
 
         fragment.setArguments(args);
 
@@ -71,12 +73,11 @@ public class BroadcastInfoWindowFragment extends Fragment {
         // Update text fields to display info about broadcast given in parameters
         String course = getArguments().getString(PARAM_COURSE);
         String description = getArguments().getString(PARAM_DESCRIPTION);
+        String id = getArguments().getString(PARAM_ID);
         layoutBinding.course.setText(course);
         layoutBinding.description.setText(description);
         layoutBinding.editCourseText.setText(course);
         layoutBinding.editDescriptionText.setText(description);
-
-        infoModel = new ViewModelProvider(getActivity()).get(InfoWindowViewModel.class);
 
         //EDIT button: Makes it possible for the user to Edit Course and Description
         layoutBinding.editInfoWindowButton.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +103,7 @@ public class BroadcastInfoWindowFragment extends Fragment {
 
                 //TODO should save it in the database as well and change the variables there
 
-                //infoModel.updateEditedInfoWindow(courseEdited, descriptionEdited, id);
+                broadcastService.updateBroadcastEdit(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
 
                 layoutBinding.editViewInfoBox.setVisibility(View.GONE);
                 layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);

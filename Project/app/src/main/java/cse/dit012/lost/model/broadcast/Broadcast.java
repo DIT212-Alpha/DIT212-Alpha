@@ -14,7 +14,7 @@ public final class Broadcast {
     private final BroadcastId id;
     private Date lastActive;
     private final MapCoordinates coordinates;
-    private final CourseCode course;
+    private CourseCode course;
     private String description;
 
     public Broadcast(BroadcastId id, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
@@ -51,6 +51,10 @@ public final class Broadcast {
 
     public void updateDescription(String description) {
         this.description = checkNotNull(description);
+    }
+
+    public void updateCourse(CourseCode course) {
+        this.course = checkNotNull(course);
     }
 
     @Override

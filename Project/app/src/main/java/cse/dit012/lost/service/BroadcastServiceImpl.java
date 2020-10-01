@@ -33,4 +33,13 @@ class BroadcastServiceImpl implements BroadcastService {
             broadcastRepository.store(broadcast);
         });
     }
+
+    @Override
+    public CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description) {
+        return broadcastRepository.getById(id).thenAccept(broadcast -> {
+            broadcast.updateCourse(course);
+            broadcast.updateDescription(description);
+            broadcastRepository.store(broadcast);
+        });
+    }
 }

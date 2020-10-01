@@ -22,4 +22,6 @@ public interface BroadcastService {
     Broadcast createBroadcast(MapCoordinates coordinates, CourseCode courseCode, String description);
 
     CompletableFuture<Void> updateBroadcastLastActive(BroadcastId id);
+
+    CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description);
 }
