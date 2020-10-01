@@ -8,7 +8,7 @@ import java.util.Objects;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class Broadcast {
     private final BroadcastId id;

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="cse.dit012.lost.fragments.LoginFragment"
+        android:name="cse.dit012.lost.android.ui.screen.welcome.LoginScreenFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/add_broadcast_fragment"
-        android:name="cse.dit012.lost.fragments.add_broadcast_fragment"
+        android:name="cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment"
         android:label="fragment_add_broadcast_fragment"
         tools:layout="@layout/fragment_add_broadcast_fragment" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="cse.dit012.lost.fragments.RegisterFragment"
+        android:name="cse.dit012.lost.android.ui.screen.welcome.RegistrationScreenFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action

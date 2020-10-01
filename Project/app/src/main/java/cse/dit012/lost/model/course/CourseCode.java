@@ -2,8 +2,6 @@ package cse.dit012.lost.model.course;
 
 import java.util.Objects;
 
-import cse.dit012.lost.model.broadcast.Broadcast;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 

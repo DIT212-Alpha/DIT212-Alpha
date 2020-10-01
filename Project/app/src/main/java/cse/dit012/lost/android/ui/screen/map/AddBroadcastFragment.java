@@ -1,12 +1,7 @@
-package cse.dit012.lost.fragments;
+package cse.dit012.lost.android.ui.screen.map;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,25 +11,28 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import cse.dit012.lost.Gps;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
+import cse.dit012.lost.service.Gps;
 
-public class add_broadcast_fragment extends Fragment {
+public class AddBroadcastFragment extends Fragment {
     private static final String TAG = "AddBroadcastFragment";
 
     private Button addButton, cancelButton;
     private Spinner courseSpinner;
     private EditText descriptionEditText;
 
-    public add_broadcast_fragment() {
+    public AddBroadcastFragment() {
         // Required empty public constructor
     }
 

@@ -1,15 +1,9 @@
 package cse.dit012.lost.model.user;
 
-import android.location.Location;
-
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import cse.dit012.lost.Gps;
 import cse.dit012.lost.model.BroadcastObject;
-import cse.dit012.lost.model.course.Course;
 
 public class User {
     private String name;
