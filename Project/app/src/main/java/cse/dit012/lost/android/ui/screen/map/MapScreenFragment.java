@@ -2,13 +2,14 @@ package cse.dit012.lost.android.ui.screen.map;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,12 +80,19 @@ public class MapScreenFragment extends Fragment {
         textView.setHint(R.string.enter_course_to_filter);
 
 
-        mapScreenBinding.autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
-            TextView v = mapScreenBinding.autoCompleteTextView;
-            String coursName = v.getText().toString();
+        mapScreenBinding.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-            model.setCourseCode(coursName);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                model.setCourseCode(s.toString());
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
 
     }
