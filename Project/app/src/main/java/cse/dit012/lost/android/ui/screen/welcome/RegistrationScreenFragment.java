@@ -1,13 +1,7 @@
-package cse.dit012.lost.fragments;
+package cse.dit012.lost.android.ui.screen.welcome;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,31 +10,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.core.utilities.Utilities;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import cse.dit012.lost.R;
-
 import cse.dit012.lost.databinding.FragmentRegisterBinding;
 import cse.dit012.lost.model.user.User;
 
 
-public class RegisterFragment extends Fragment {
+public class RegistrationScreenFragment extends Fragment {
 
 EditText userName;
 EditText surName;

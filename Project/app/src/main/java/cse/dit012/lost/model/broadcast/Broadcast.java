@@ -7,8 +7,9 @@ import java.util.Objects;
 
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.User;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class Broadcast {
     private final BroadcastId id;
@@ -17,14 +18,16 @@ public final class Broadcast {
     private final MapCoordinates coordinates;
     private CourseCode course;
     private String description;
+    private User user;
 
-    public Broadcast(BroadcastId id, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
+    public Broadcast(User user, BroadcastId id, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
         this.id = checkNotNull(id);
         this.createdAt = checkNotNull(createdAt);
         this.lastActive = checkNotNull(lastActive);
         this.coordinates = coordinates;
         this.course = checkNotNull(course);
         this.description = checkNotNull(description);
+        this.user = user;
     }
 
     public BroadcastId getId() {
@@ -51,16 +54,19 @@ public final class Broadcast {
         return course;
     }
 
-    public void updateCourse(CourseCode courseCode) {
-        course = checkNotNull(courseCode);
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void updateDescription(String description) {
         this.description = checkNotNull(description);
+    }
+    public String getOwner(){
+        return user.getName();
+    }
+
+    public void updateCourse(CourseCode course) {
+        this.course = checkNotNull(course);
     }
 
     @Override

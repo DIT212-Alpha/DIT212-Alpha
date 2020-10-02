@@ -7,7 +7,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".fragments.LoginFragment">
+    tools:context=".android.ui.screen.welcome.LoginScreenFragment">
 
 
     <Button

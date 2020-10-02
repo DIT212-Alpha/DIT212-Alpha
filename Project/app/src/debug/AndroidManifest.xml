@@ -3,9 +3,6 @@
     package="cse.dit012.lost">
 
     <application>
-        <activity
-            android:name=".android.ui.ActiveBroadcastServiceTestActivity"
-            android:exported="true" />
     </application>
 
 </manifest>
