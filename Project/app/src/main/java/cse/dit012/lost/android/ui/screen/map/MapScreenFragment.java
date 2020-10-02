@@ -22,6 +22,11 @@ import androidx.navigation.Navigation;
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentMapScreenBinding;
 
+/**
+ * This class shows the map and contains the autocomplete text box for course filtration, and the button broadcast to add broadcast
+ * Author: Bashar Oumari, Benjamin Sannholm
+ */
+
 public class MapScreenFragment extends Fragment {
 
     //private ActivityMapScreenBinding mapScreenBinding;

@@ -16,6 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * View model handling data to be displayed on the map screen.
+ * AUTHOR: Benjamin Sannholm, Bashar Oumari
  */
 public class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = BroadcastRepository.get();

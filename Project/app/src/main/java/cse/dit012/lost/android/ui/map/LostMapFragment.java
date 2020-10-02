@@ -31,6 +31,7 @@ import cse.dit012.lost.service.Gps;
 
 /**
  * Fragment controlling everything which is displayed on the map and the map itself.
+ * Author: Benjamin Sannholm, Bashar Oumari, Mathias Drage
  */
 public class LostMapFragment extends Fragment {
 

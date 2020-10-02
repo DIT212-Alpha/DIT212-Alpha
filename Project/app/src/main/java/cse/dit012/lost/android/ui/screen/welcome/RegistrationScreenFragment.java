@@ -42,7 +42,10 @@ Button registerButton;
 ProgressBar progressBar;
 NavController navController;
 
-User user;
+    /**
+     * Fragment for register an account, used for registering with mail and password
+     * this class will be refactored and some functionality will be added
+     */
 
 private FirebaseAuth registerAuthentication;
 FragmentRegisterBinding fragmentRegisterBinding;

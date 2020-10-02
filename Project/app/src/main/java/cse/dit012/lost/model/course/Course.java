@@ -2,6 +2,7 @@ package cse.dit012.lost.model.course;
 
 import cse.dit012.lost.model.BroadcastObject;
 
+
 public class Course implements BroadcastObject {
     private String name;
 

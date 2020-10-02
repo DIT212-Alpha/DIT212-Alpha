@@ -5,6 +5,11 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * This class represent a unique broadcast id
+ * AUTHOR: Benjamin Sannholm
+ */
+
 public final class BroadcastId {
     private final String id;
 

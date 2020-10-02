@@ -11,6 +11,7 @@ import java9.util.concurrent.CompletableFuture;
 
 /**
  * Repository responsible for storing and retrieving information about broadcasts.
+ * AUTHOR: Benjamin Sannholm
  */
 public interface BroadcastRepository {
     static BroadcastRepository get() {

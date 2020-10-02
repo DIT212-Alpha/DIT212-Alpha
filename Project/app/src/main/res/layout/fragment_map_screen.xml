@@ -57,3 +57,6 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--Fragment for showing the map
+        AUTHOR: Benjamin Sannholm -->

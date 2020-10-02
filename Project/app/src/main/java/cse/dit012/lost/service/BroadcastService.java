@@ -10,6 +10,11 @@ import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.User;
 import java9.util.concurrent.CompletableFuture;
 
+/**
+ * This interface is service responsible for preforming tasks related to broadcasts
+ * AUTHOR: Benjamin Sannholm, Sophia Pham
+ */
+
 public interface BroadcastService {
     static BroadcastService get() {
         return new BroadcastServiceImpl(BroadcastRepository.get());

@@ -29,6 +29,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 // TODO: Move all strings to strings.xml
 
+/**
+ * This class takes a broadcast and tells the database periodically that the current broadcast is still there.
+ * AUTHOR: Benjamin Sannholm
+ */
+
 public class ActiveBroadcastService extends LifecycleService {
     private static final String TAG = "ActiveBroadcastService";
 

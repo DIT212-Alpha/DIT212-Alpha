@@ -8,11 +8,14 @@ import androidx.lifecycle.ViewModelProvider;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.ActivityMainBinding;
 
+/**
+ * MainActivity is used for launching the app
+ * Author: Bashar Oumari
+ */
+
 public class MainActivity extends FragmentActivity  {
 
     private ActivityMainBinding mapScreenBinding;
-    private MapViewModel model;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +23,6 @@ public class MainActivity extends FragmentActivity  {
         mapScreenBinding =  ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mapScreenBinding.getRoot());
 
-        model = new ViewModelProvider(this).get(MapViewModel.class);
 
     }
 
