@@ -5,6 +5,10 @@ import java.util.List;
 
 import cse.dit012.lost.model.BroadcastObject;
 
+/**
+ * Author: Mathias, Responsibility: Holding and managing User information,
+ * Used by : Broadcast
+ */
 public class User {
     private String name;
     private List<BroadcastObject> broadcastObjects;
