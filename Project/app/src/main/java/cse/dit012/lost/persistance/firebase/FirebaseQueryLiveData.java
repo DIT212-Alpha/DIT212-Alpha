@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData;
  * LiveData object encapsulating a query to the Firebase realtime database.
  *
  * Inspired by Firebase blog: https://firebase.googleblog.com/2017/12/using-android-architecture-components.html
+ * AUTHOR: Benjamin Sannholm, Bashar Oumari
  */
 class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
     private static final String LOG_TAG = "FirebaseQueryLiveData";

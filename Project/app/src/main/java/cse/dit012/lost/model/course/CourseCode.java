@@ -7,6 +7,11 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * This class represents course code
+ * AUTHOR: Benjamin Sannholm
+ */
+
 public final class CourseCode {
     private final String courseCode;
 

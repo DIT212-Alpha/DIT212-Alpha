@@ -33,6 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Firebase implementation of repository responsible for storing and retrieving information about broadcasts.
+ * AUTHOR: Benjamin Sannholm, Bashar Oumari
  */
 public class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys

@@ -51,8 +51,13 @@ import androidx.navigation.ui.NavigationUI;
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentLoginBinding;
 
+/**
+ * loginFragment is used to check users if they have a google account to login with
+ * just for now, this class contains a check for google for now but this will be refactored after.
+ */
 
 public class LoginFragment extends Fragment  {
+
 
     Button loginButton;
     TextView textViewNewUser;
@@ -144,7 +149,7 @@ public class LoginFragment extends Fragment  {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                // if Google sign in was successful, then authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {

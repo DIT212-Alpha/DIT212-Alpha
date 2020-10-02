@@ -17,11 +17,13 @@ import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
 
+/**
+ * MainActivity is used for launching the app
+ * Author: Bashar Oumari
+ */
 public class MainActivity extends FragmentActivity  {
 
     private ActivityMainBinding mapScreenBinding;
-    private MapViewModel model;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,6 @@ public class MainActivity extends FragmentActivity  {
         mapScreenBinding =  ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mapScreenBinding.getRoot());
 
-        model = new ViewModelProvider(this).get(MapViewModel.class);
 
     }
 

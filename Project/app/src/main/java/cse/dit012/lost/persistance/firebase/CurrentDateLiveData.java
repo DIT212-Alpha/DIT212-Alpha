@@ -6,6 +6,11 @@ import androidx.lifecycle.LiveData;
 
 import java.util.Date;
 
+/**
+ * This class represent an observable object that gives the current time
+ * AUTHOR: Benjamin Sannholm
+ */
+
 class CurrentDateLiveData extends LiveData<Date> {
     private final Handler handler = new Handler();
 

@@ -1,0 +1,2 @@
+nav_graph is used for navigation with fragments
+AUTHOR: Bashar Oumari

@@ -11,6 +11,11 @@ import cse.dit012.lost.Gps;
 import cse.dit012.lost.model.BroadcastObject;
 import cse.dit012.lost.model.course.Course;
 
+/**
+ * This class represnt a user
+ * AUTHOR: MAthias Drage
+ */
+
 public class User {
     private String name;
     private List<BroadcastObject> broadcastObjects;
