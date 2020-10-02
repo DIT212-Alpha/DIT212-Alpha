@@ -13,6 +13,7 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.User;
 import java9.util.concurrent.CompletableFuture;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -25,8 +26,8 @@ class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
-    public CompletableFuture<Broadcast> createBroadcast(MapCoordinates coordinates, CourseCode courseCode, String description) {
-        Broadcast broadcast = new Broadcast(broadcastRepository.nextIdentity(), new Date(), new Date(), coordinates, courseCode, description);
+    public CompletableFuture<Broadcast> createBroadcast(User user, MapCoordinates coordinates, CourseCode courseCode, String description) {
+        Broadcast broadcast = new Broadcast(user,broadcastRepository.nextIdentity(), new Date(), new Date(), coordinates, courseCode, description);
         return broadcastRepository.store(broadcast);
     }
 

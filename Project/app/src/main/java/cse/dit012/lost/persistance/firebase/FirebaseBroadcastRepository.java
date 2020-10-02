@@ -26,6 +26,7 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.User;
 import java9.util.concurrent.CompletableFuture;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -36,6 +37,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys
+    private static final String BROADCAST_PUBLISHER_KEY = "publisher";
     private static final String BROADCASTS_KEY = "broadcasts";
     private static final String BROADCAST_CREATEDAT_KEY = "createdAt";
     private static final String BROADCAST_LASTACTIVE_KEY = "lastActive";
@@ -179,6 +181,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
         checkArgument(broadcastSnapshot.exists(), "Broadcast with id " + broadcastSnapshot.getKey() + " does not exist");
 
         String id = broadcastSnapshot.getKey();
+        String owner = broadcastSnapshot.child(BROADCAST_PUBLISHER_KEY).getValue(String.class);
         long createdAt = broadcastSnapshot.child(BROADCAST_CREATEDAT_KEY).getValue(long.class);
         long lastActive = broadcastSnapshot.child(BROADCAST_LASTACTIVE_KEY).getValue(long.class);
         double lat = broadcastSnapshot.child(BROADCAST_LAT_KEY).getValue(double.class);
@@ -187,6 +190,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
         String description = broadcastSnapshot.child(BROADCAST_DESCRIPTION_KEY).getValue(String.class);
 
         return new Broadcast(
+                new User("Anonymous"),
                 new BroadcastId(id),
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),

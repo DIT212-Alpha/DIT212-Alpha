@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.Gps;
 
@@ -73,8 +74,7 @@ public class AddBroadcastFragment extends Fragment {
                     Context context = requireContext();
                     LatLng loc = Gps.getGps().getLocation(context);
                     CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
-
-                    BroadcastService.get().createBroadcast(
+                    BroadcastService.get().createBroadcast(new User("default"),
                         new MapCoordinates(loc.latitude, loc.longitude),
                         course,
                         descriptionEditText.getText().toString()

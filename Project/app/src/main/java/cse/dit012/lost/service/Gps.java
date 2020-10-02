@@ -7,6 +7,10 @@ import android.location.LocationManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Author: Mathias, Responsibility: Provide the gps location of the android device,
+ * Used by AddBroadcastFragment and LostMapFragment
+ */
 public class Gps {
 
     private LatLng location;
@@ -17,7 +21,7 @@ public class Gps {
 
     /**
      * Postcondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
-     * Must check permission wherever method is called, as "@SuppressLint("MissingPermission")" skips permission check.
+     * Must check permission wherever the method is called, as "@SuppressLint("MissingPermission")" skips permission check.
      * @param context provided by a "Fragment" from the "requireContext()" method
      *                needed by the LocationManager to communicate with android
      * @return returns the latest location, might be null if no location yet have been found
@@ -31,8 +35,7 @@ public class Gps {
          }
         return location;
     }
-
-    //Static method that returns Singelton-object
+    //Returns the singelton object
     public static Gps getGps(){
         return gps;
     }
