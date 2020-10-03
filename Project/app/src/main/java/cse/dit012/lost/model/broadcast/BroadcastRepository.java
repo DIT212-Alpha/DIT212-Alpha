@@ -11,9 +11,10 @@ import java9.util.concurrent.CompletableFuture;
 
 /**
  * Repository responsible for storing and retrieving information about broadcasts.
- * AUTHOR: Benjamin Sannholm
+ * Author: Benjamin Sannholm
  */
 public interface BroadcastRepository {
+    // TODO: Move somewhere else to not have model depend on implementation and Firebase
     static BroadcastRepository get() {
         return new FirebaseBroadcastRepository(FirebaseDatabase.getInstance());
     }
@@ -26,10 +27,9 @@ public interface BroadcastRepository {
 
     CompletableFuture<Broadcast> store(Broadcast broadcast);
 
-    void updateCourseDescription(BroadcastId id, String course, String description);
-
     /**
      * Retrieves a live list of all currently active broadcasts.
+     *
      * @return the list of broadcasts
      */
     LiveData<List<Broadcast>> getActiveBroadcasts();

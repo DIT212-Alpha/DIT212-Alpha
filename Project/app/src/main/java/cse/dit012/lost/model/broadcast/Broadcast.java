@@ -11,23 +11,27 @@ import cse.dit012.lost.model.user.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Represents a single broadcast owned by a user and placed at a location on the map.
+ * Author: Mathias Drage, Benjamin Sannholm, Sophia Pham
+ */
 public final class Broadcast {
     private final BroadcastId id;
     private final Date createdAt;
     private Date lastActive;
     private final MapCoordinates coordinates;
+    private final User owner;
     private CourseCode course;
     private String description;
-    private User user;
 
-    public Broadcast(User user, BroadcastId id, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
+    public Broadcast(BroadcastId id, Date createdAt, Date lastActive, MapCoordinates coordinates, User owner, CourseCode course, String description) {
         this.id = checkNotNull(id);
         this.createdAt = checkNotNull(createdAt);
         this.lastActive = checkNotNull(lastActive);
         this.coordinates = coordinates;
+        this.owner = checkNotNull(owner);
         this.course = checkNotNull(course);
         this.description = checkNotNull(description);
-        this.user = user;
     }
 
     public BroadcastId getId() {
@@ -50,6 +54,10 @@ public final class Broadcast {
         return coordinates;
     }
 
+    public String getOwner() {
+        return owner.getName();
+    }
+
     public CourseCode getCourse() {
         return course;
     }
@@ -60,9 +68,6 @@ public final class Broadcast {
 
     public void updateDescription(String description) {
         this.description = checkNotNull(description);
-    }
-    public String getOwner(){
-        return user.getName();
     }
 
     public void updateCourse(CourseCode course) {
@@ -89,6 +94,7 @@ public final class Broadcast {
                 .add("createdAt", getCreatedAt())
                 .add("lastActive", getLastActive())
                 .add("coordinates", getCoordinates())
+                .add("owner", getOwner())
                 .add("course", getCourse())
                 .add("description", getDescription())
                 .toString();
