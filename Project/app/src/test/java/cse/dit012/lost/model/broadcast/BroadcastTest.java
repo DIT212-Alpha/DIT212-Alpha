@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.User;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +20,8 @@ public class BroadcastTest {
     MapCoordinates coordinates= new MapCoordinates(2,2);
     String description = "test";
     CourseCode code = new CourseCode("dit111");
-    Broadcast test = new Broadcast(bId,date,activeDate,coordinates,code,description);
+    User user = new User("A name");
+    Broadcast test = new Broadcast(bId,date,activeDate,coordinates,user,code,description);
     @Test
     public void getId() {
         assertEquals(test.getId(),id);
