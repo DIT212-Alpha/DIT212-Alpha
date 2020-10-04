@@ -86,14 +86,13 @@ public class BroadcastInfoWindowFragment extends Fragment {
         layoutBinding.saveInfoWindowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO should save the edit into current TextView
+                //Saves the edit into current TextView
                 String courseEdited = layoutBinding.editCourseText.getText().toString().trim();
                 String descriptionEdited = layoutBinding.editDescriptionText.getText().toString().trim();
                 layoutBinding.course.setText(courseEdited);
                 layoutBinding.description.setText(descriptionEdited);
 
-                //TODO should save it in the database as well and change the variables there
-
+                //Saves it in the database
                 broadcastService.updateBroadcastEdit(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
 
                 layoutBinding.editViewInfoBox.setVisibility(View.GONE);
