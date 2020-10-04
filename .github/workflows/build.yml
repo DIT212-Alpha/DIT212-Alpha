@@ -5,6 +5,10 @@ name: Java CI with Gradle
 
 on: [push, pull_request]
 
+defaults:
+  run:
+    working-directory: Project
+
 jobs:
   build:
 
