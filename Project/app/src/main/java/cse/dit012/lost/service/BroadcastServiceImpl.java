@@ -20,8 +20,8 @@ final class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
-    public CompletableFuture<Broadcast> createBroadcast(MapCoordinates coordinates, User user, CourseCode courseCode, String description) {
-        Broadcast broadcast = new Broadcast(broadcastRepository.nextIdentity(), new Date(), new Date(), coordinates, user, courseCode, description);
+    public CompletableFuture<Broadcast> createBroadcast(MapCoordinates coordinates, String ownerUID, CourseCode courseCode, String description) {
+        Broadcast broadcast = new Broadcast(broadcastRepository.nextIdentity(), new Date(), new Date(), coordinates, ownerUID, courseCode, description);
         return broadcastRepository.store(broadcast);
     }
 

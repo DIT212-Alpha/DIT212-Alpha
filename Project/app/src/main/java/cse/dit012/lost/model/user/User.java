@@ -1,11 +1,6 @@
 package cse.dit012.lost.model.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cse.dit012.lost.model.BroadcastObject;
 import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.model.broadcast.BroadcastId;
 
 /**
  * Holds and manages user information.
@@ -17,9 +12,9 @@ public final class User {
     private String name;
     private String surname;
 
-    public User(String name,String surname) {
+    public User(String id,String name) {
         this.name = name;
-        this.surname = surname;
+        this.id = id;
     }
 
     public User(String id,String name, String surname) {

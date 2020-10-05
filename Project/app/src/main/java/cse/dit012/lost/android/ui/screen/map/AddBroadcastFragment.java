@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -34,6 +35,7 @@ import cse.dit012.lost.service.Gps;
  */
 public final class AddBroadcastFragment extends Fragment {
     private static final String TAG = "AddBroadcastFragment";
+    private MapViewModel model;
 
     private Button addButton, cancelButton;
     private Spinner courseSpinner;
@@ -51,6 +53,7 @@ public final class AddBroadcastFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Allows for navigation to another fragments
         final NavController navController = Navigation.findNavController(view);
+        model = new ViewModelProvider(requireActivity()).get(MapViewModel.class);
 
         //Cancels this fragment
         cancelButton = view.findViewById(R.id.cancelBtn);
@@ -79,7 +82,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         new MapCoordinates(loc.latitude, loc.longitude),
-                        new User("default","default"),
+                        model.getUser().getId(),
                         course,
                         descriptionEditText.getText().toString()
                 ).whenComplete((broadcast, throwable) -> {

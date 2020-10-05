@@ -107,6 +107,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                currentData.child(BROADCAST_PUBLISHER_KEY).setValue(broadcast.getOwnerUID());
                 currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
                 currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
                 currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
@@ -178,7 +179,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
         checkArgument(broadcastSnapshot.exists(), "Broadcast with id " + broadcastSnapshot.getKey() + " does not exist");
 
         String id = broadcastSnapshot.getKey();
-        String owner = broadcastSnapshot.child(BROADCAST_PUBLISHER_KEY).getValue(String.class);
+        String publisherUID = broadcastSnapshot.child(BROADCAST_PUBLISHER_KEY).getValue(String.class);
         long createdAt = broadcastSnapshot.child(BROADCAST_CREATEDAT_KEY).getValue(long.class);
         long lastActive = broadcastSnapshot.child(BROADCAST_LASTACTIVE_KEY).getValue(long.class);
         double lat = broadcastSnapshot.child(BROADCAST_LAT_KEY).getValue(double.class);
@@ -191,7 +192,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),
                 new MapCoordinates(lat, lon),
-                new User("Anon","Anonymous"),
+                publisherUID,
                 new CourseCode(course),
                 description
         );
