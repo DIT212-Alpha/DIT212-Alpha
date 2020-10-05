@@ -191,7 +191,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),
                 new MapCoordinates(lat, lon),
-                new User("Anonymous"),
+                new User("Anon","Anonymous"),
                 new CourseCode(course),
                 description
         );

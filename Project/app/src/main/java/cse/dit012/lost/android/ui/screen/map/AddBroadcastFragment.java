@@ -78,7 +78,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         new MapCoordinates(loc.latitude, loc.longitude),
-                        new User("default"),
+                        new User("default","default"),
                         course,
                         descriptionEditText.getText().toString()
                 ).whenComplete((broadcast, throwable) -> {

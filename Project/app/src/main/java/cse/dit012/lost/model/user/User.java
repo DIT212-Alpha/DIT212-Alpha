@@ -5,6 +5,7 @@ import java.util.List;
 
 import cse.dit012.lost.model.BroadcastObject;
 import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.broadcast.BroadcastId;
 
 /**
  * Holds and manages user information.
@@ -12,41 +13,37 @@ import cse.dit012.lost.model.broadcast.Broadcast;
  * Used by: {@link Broadcast}
  */
 public final class User {
-    // TODO: Needs unique identifier
-
+    private String id;
     private String name;
-    private List<BroadcastObject> broadcastObjects;
+    private String surname;
 
-    public User(String name) {
+    public User(String name,String surname) {
         this.name = name;
-        broadcastObjects = new ArrayList<>();
+        this.surname = surname;
     }
 
-    public User(String name, List<BroadcastObject> broadcastObjects) {
+    public User(String id,String name, String surname) {
         this.name = name;
-        this.broadcastObjects = broadcastObjects;
+        this.surname = surname;
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
     public void changeName(String newName) {
         name = newName;
     }
 
-    public void addBroadcastObject(BroadcastObject course) {
-        broadcastObjects.add(course);
+    public void changeSurname(String newName){surname = newName;}
+
+    public String getId(){
+        return id;
     }
 
-    public void deleteBroadcastObject(int i) {
-        broadcastObjects.remove(i);
-    }
-
-    public BroadcastObject getObject(int i) {
-        if (broadcastObjects.size() - 1 >= i) {
-            return broadcastObjects.get(i);
-        }
-        return null;
-    }
 }
