@@ -98,4 +98,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test:rules:1.3.0'
 
+    debugImplementation 'androidx.test:core:1.3.0' // AndroidX Test Core
+    debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
+
 }
