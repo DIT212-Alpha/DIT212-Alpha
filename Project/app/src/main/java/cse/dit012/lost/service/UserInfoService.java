@@ -9,7 +9,7 @@ public class UserInfoService {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private String getName(){
-        String name = user.getDisplayName();
+        String name = user.getEmail();
         return name;
     }
     private String getSurname(){
