@@ -3,25 +3,20 @@ package cse.dit012.lost.android.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 
-import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.ActivityMainBinding;
 
-public class MainActivity extends FragmentActivity  {
-
+/**
+ * MainActivity is used for launching the app.
+ * Author: Bashar Oumari
+ */
+public final class MainActivity extends FragmentActivity {
     private ActivityMainBinding mapScreenBinding;
-    private MapViewModel model;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mapScreenBinding =  ActivityMainBinding.inflate(getLayoutInflater());
+        mapScreenBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mapScreenBinding.getRoot());
-
-        model = new ViewModelProvider(this).get(MapViewModel.class);
-
     }
-
 }

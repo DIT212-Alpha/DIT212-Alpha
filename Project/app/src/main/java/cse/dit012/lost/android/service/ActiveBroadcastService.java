@@ -29,7 +29,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 // TODO: Move all strings to strings.xml
 
-public class ActiveBroadcastService extends LifecycleService {
+/**
+ * This class takes a broadcast and tells the database periodically that the current broadcast is still there.
+ * Author: Benjamin Sannholm
+ */
+public final class ActiveBroadcastService extends LifecycleService {
     private static final String TAG = "ActiveBroadcastService";
 
     public static final String PARAM_BROADCAST_ID = "broadcast_id";
@@ -41,7 +45,7 @@ public class ActiveBroadcastService extends LifecycleService {
 
     private static final long KEEP_ALIVE_PERIOD_MS = 1000 * 20; // 20 seconds between keep alive checks
 
-    public static class NotificationActionsReceiver extends BroadcastReceiver {
+    public final static class NotificationActionsReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Stopping broadcast service");
@@ -90,10 +94,10 @@ public class ActiveBroadcastService extends LifecycleService {
                 .setColorized(true)
                 .setColor(ContextCompat.getColor(context, R.color.notification_active_broadcast_background))
                 .setStyle(
-                    new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(0)
-                        .setShowCancelButton(true)
-                        .setCancelButtonIntent(stopBroadcastIntent)
+                        new androidx.media.app.NotificationCompat.MediaStyle()
+                                .setShowActionsInCompactView(0)
+                                .setShowCancelButton(true)
+                                .setCancelButtonIntent(stopBroadcastIntent)
                 )
                 // Behavior
                 .setContentIntent(openAppIntent)

@@ -7,33 +7,46 @@ import android.location.LocationManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Gps {
+import cse.dit012.lost.android.ui.map.LostMapFragment;
+import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 
+/**
+ * Provides the GPS location of the Android device.
+ * Author: Mathias Drage
+ * Used by: {@link AddBroadcastFragment} and {@link LostMapFragment}
+ */
+public final class Gps {
     private LatLng location;
-    //Communicates with the android system to manage location
+    // Communicates with the android system to manage location
     private LocationManager locationManager;
-    //Singelton object
+    // Singleton object
     private static Gps gps = new Gps();
 
+    private Gps() {
+    }
+
     /**
-     * Postcondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
-     * Must check permission wherever method is called, as "@SuppressLint("MissingPermission")" skips permission check.
+     * Precondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
+     * Must check permission wherever the method is called, as "@SuppressLint("MissingPermission")" skips permission check.
+     *
      * @param context provided by a "Fragment" from the "requireContext()" method
      *                needed by the LocationManager to communicate with android
      * @return returns the latest location, might be null if no location yet have been found
      */
     @SuppressLint("MissingPermission")
-    public LatLng getLocation(Context context){
+    public LatLng getLocation(Context context) {
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-         Location temp = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-         if(temp != null){
-             location = new LatLng(temp.getLatitude(),temp.getLongitude());
-         }
+        Location temp = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (temp != null) {
+            location = new LatLng(temp.getLatitude(), temp.getLongitude());
+        }
         return location;
     }
 
-    //Static method that returns Singelton-object
-    public static Gps getGps(){
+    /**
+     * Returns the singleton object
+     */
+    public static Gps getGps() {
         return gps;
     }
 }

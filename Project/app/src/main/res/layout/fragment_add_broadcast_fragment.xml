@@ -53,3 +53,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"/>
 </RelativeLayout>
+
+    <!--Fragment to add broadcast when user click broadcast
+        AUTHOR: Pontus Nellgård-->

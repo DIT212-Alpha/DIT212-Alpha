@@ -26,16 +26,19 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.User;
 import java9.util.concurrent.CompletableFuture;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Firebase implementation of repository responsible for storing and retrieving information about broadcasts.
+ * Firebase backed implementation of repository responsible for storing and retrieving information about broadcasts.
+ * Author: Benjamin Sannholm, Bashar Oumari
  */
-public class FirebaseBroadcastRepository implements BroadcastRepository {
+public final class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys
+    private static final String BROADCAST_PUBLISHER_KEY = "publisher";
     private static final String BROADCASTS_KEY = "broadcasts";
     private static final String BROADCAST_CREATEDAT_KEY = "createdAt";
     private static final String BROADCAST_LASTACTIVE_KEY = "lastActive";
@@ -44,6 +47,8 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     private static final String BROADCAST_COURSECODE_KEY = "courseCode";
     private static final String BROADCAST_DESCRIPTION_KEY = "description";
 
+    // How long ago a broadcast had to be last active to be considered alive, in seconds
+    // TODO: Move into Broadcast maybe
     public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
 
     // Firebase database instance
@@ -124,13 +129,6 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     }
 
     @Override
-    public void updateCourseDescription(BroadcastId id, String course, String description){
-        DatabaseReference reference = db.getReference(BROADCASTS_KEY).child(id.toString());
-        reference.child(BROADCAST_COURSECODE_KEY).setValue(course);
-        reference.child(BROADCAST_DESCRIPTION_KEY).setValue(description);
-    }
-
-    @Override
     public LiveData<List<Broadcast>> getActiveBroadcasts() {
         // Query root node of broadcasts tree
         long oldestActiveTime = (System.currentTimeMillis() / 1000) - ACTIVE_TIME_MARGIN_SECONDS;
@@ -147,15 +145,15 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
 
         MediatorLiveData<List<Broadcast>> activeBroadcasts = new MediatorLiveData<>();
         activeBroadcasts.addSource(recentBroadcasts, broadcasts -> {
-            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterBroadcasts(recentBroadcasts, currentTime));
+            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterActiveBroadcasts(recentBroadcasts, currentTime));
         });
         activeBroadcasts.addSource(currentTime, broadcasts -> {
-            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterBroadcasts(recentBroadcasts, currentTime));
+            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterActiveBroadcasts(recentBroadcasts, currentTime));
         });
         return activeBroadcasts;
     }
 
-    private static List<Broadcast> filterBroadcasts(LiveData<List<Broadcast>> broadcasts, LiveData<Date> currentTime) {
+    private static List<Broadcast> filterActiveBroadcasts(LiveData<List<Broadcast>> broadcasts, LiveData<Date> currentTime) {
         if (broadcasts.getValue() == null || currentTime.getValue() == null) {
             return Collections.emptyList();
         }
@@ -172,6 +170,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
 
     /**
      * Extracts information about a single broadcast in database into a {@link Broadcast} object.
+     *
      * @param broadcastSnapshot the {@link DataSnapshot} representing a single broadcast
      * @return the corresponding {@link Broadcast}
      */
@@ -179,6 +178,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
         checkArgument(broadcastSnapshot.exists(), "Broadcast with id " + broadcastSnapshot.getKey() + " does not exist");
 
         String id = broadcastSnapshot.getKey();
+        String owner = broadcastSnapshot.child(BROADCAST_PUBLISHER_KEY).getValue(String.class);
         long createdAt = broadcastSnapshot.child(BROADCAST_CREATEDAT_KEY).getValue(long.class);
         long lastActive = broadcastSnapshot.child(BROADCAST_LASTACTIVE_KEY).getValue(long.class);
         double lat = broadcastSnapshot.child(BROADCAST_LAT_KEY).getValue(double.class);
@@ -191,6 +191,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),
                 new MapCoordinates(lat, lon),
+                new User("Anonymous"),
                 new CourseCode(course),
                 description
         );
@@ -198,6 +199,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
 
     /**
      * Extracts information about a collection of broadcasts in database into a {@link List<Broadcast>} object.
+     *
      * @param broadcastsSnapshot the {@link DataSnapshot} representing a collection of broadcasts
      * @return the corresponding {@link List<Broadcast>}
      */

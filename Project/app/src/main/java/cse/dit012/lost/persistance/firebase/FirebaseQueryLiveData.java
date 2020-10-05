@@ -11,10 +11,11 @@ import com.google.firebase.database.ValueEventListener;
 
 /**
  * LiveData object encapsulating a query to the Firebase realtime database.
- *
  * Inspired by Firebase blog: https://firebase.googleblog.com/2017/12/using-android-architecture-components.html
+ *
+ * Author: Benjamin Sannholm, Bashar Oumari
  */
-class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
+final class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
     private static final String LOG_TAG = "FirebaseQueryLiveData";
 
     // The Firebase query
@@ -36,6 +37,7 @@ class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
 
     /**
      * Constructs a live data object with the given Firebase {@link Query}.
+     *
      * @param query the query
      */
     public FirebaseQueryLiveData(Query query) {

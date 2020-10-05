@@ -17,9 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
@@ -27,86 +24,69 @@ import java.util.regex.Pattern;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentRegisterBinding;
-import cse.dit012.lost.model.user.User;
 
+/**
+ * User interface for register an account, used for registering with mail and password
+ * this class will be refactored and some functionality will be added
+ * Author: Bashar Oumari
+ */
+public final class RegistrationScreenFragment extends Fragment {
+    EditText userName;
+    EditText surName;
+    EditText userEmail;
+    EditText userPassword;
 
-public class RegistrationScreenFragment extends Fragment {
+    Button registerButton;
 
-EditText userName;
-EditText surName;
-EditText userEmail;
-EditText userPassword;
+    ProgressBar progressBar;
+    NavController navController;
 
-Button registerButton;
-
-ProgressBar progressBar;
-NavController navController;
-
-User user;
-
-private FirebaseAuth registerAuthentication;
-FragmentRegisterBinding fragmentRegisterBinding;
-
+    private FirebaseAuth registerAuthentication;
+    FragmentRegisterBinding fragmentRegisterBinding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater,container,false);
+        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater, container, false);
         return fragmentRegisterBinding.getRoot();
-
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar =  view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.progressBar);
         registerAuthentication = FirebaseAuth.getInstance();
 
-        userName = fragmentRegisterBinding.registerTextUserName ;
+        userName = fragmentRegisterBinding.registerTextUserName;
         surName = fragmentRegisterBinding.registerTextSurName;
         userEmail = fragmentRegisterBinding.registerTextEmail;
         userPassword = fragmentRegisterBinding.registerTextPassword;
-        registerButton = fragmentRegisterBinding.cirRegisterButton ;
+        registerButton = fragmentRegisterBinding.cirRegisterButton;
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = userEmail.getText().toString();
-                String password = userPassword.getText().toString();
-                navController = Navigation.findNavController(view);
+        registerButton.setOnClickListener(view1 -> {
+            String email = userEmail.getText().toString();
+            String password = userPassword.getText().toString();
+            navController = Navigation.findNavController(view1);
 
-                if (validate(email,password)){
+            if (validate(email, password)) {
 
-                    registerAuthentication.createUserWithEmailAndPassword(email,password).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if (!task.isSuccessful()){
-
-                                try {
-                                    Toast.makeText(getContext(),"Registration unSucsessful!", Toast.LENGTH_LONG).show();
-                                    throw task.getException();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }else {
-                                Toast.makeText(getContext(),"Registration Sucsessful! Welcome" , Toast.LENGTH_LONG).show();
-                                navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
-
-                            }
-
+                registerAuthentication.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        try {
+                            Toast.makeText(getContext(), "Registration unSucsessful!", Toast.LENGTH_LONG).show();
+                            throw task.getException();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    });
-                }
-
+                    } else {
+                        Toast.makeText(getContext(), "Registration Sucsessful! Welcome", Toast.LENGTH_LONG).show();
+                        navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
+                    }
+                });
             }
+
         });
-
-
     }
 
     private boolean validate(String email, String password) {
@@ -134,16 +114,14 @@ FragmentRegisterBinding fragmentRegisterBinding;
         return true;
     }
 
-    public static boolean isEmailValid(String email){
+    public static boolean isEmailValid(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
     //Check password with minimum requirement here(it should be minimum 6 characters)
-    public static boolean isPasswordValid(String password){
+    public static boolean isPasswordValid(String password) {
         return password.length() >= 7;
     }
-
-  
 }

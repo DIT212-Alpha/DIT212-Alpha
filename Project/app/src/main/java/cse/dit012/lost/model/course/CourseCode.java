@@ -5,6 +5,10 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Represents a unique course code.
+ * Author: Benjamin Sannholm
+ */
 public final class CourseCode {
     private final String courseCode;
 

@@ -31,9 +31,9 @@ import cse.dit012.lost.service.Gps;
 
 /**
  * Fragment controlling everything which is displayed on the map and the map itself.
+ * Author: Benjamin Sannholm, Bashar Oumari, Mathias Drage
  */
-public class LostMapFragment extends Fragment {
-
+public final class LostMapFragment extends Fragment {
     // View Binding for layout file
     private FragmentLostMapBinding layoutBinding;
 
@@ -107,6 +107,7 @@ public class LostMapFragment extends Fragment {
 
     /**
      * When geolocation permission request comes back after asking for it, enable features requiring geolocation if granted.
+     *
      * @param granted true if the permission was granted
      */
     private void onPermissionRequestResult(boolean granted) {
@@ -137,9 +138,9 @@ public class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        LatLng temp = Gps.getGps().getLocation(this.requireContext());
-        if (temp != null) {
-            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(temp, 15)));
+        LatLng location = Gps.getGps().getLocation(requireContext());
+        if (location != null) {
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(location, 15)));
         }
     }
 

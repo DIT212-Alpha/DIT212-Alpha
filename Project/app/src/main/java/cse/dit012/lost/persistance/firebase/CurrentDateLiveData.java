@@ -6,7 +6,11 @@ import androidx.lifecycle.LiveData;
 
 import java.util.Date;
 
-class CurrentDateLiveData extends LiveData<Date> {
+/**
+ * An observable object that gives the current time at a set interval.
+ * Author: Benjamin Sannholm
+ */
+final class CurrentDateLiveData extends LiveData<Date> {
     private final Handler handler = new Handler();
 
     private final Runnable updateTask = new Runnable() {
@@ -26,7 +30,7 @@ class CurrentDateLiveData extends LiveData<Date> {
 
     @Override
     protected void onActive() {
-        handler.postDelayed(updateTask,0);
+        handler.post(updateTask);
     }
 
     @Override

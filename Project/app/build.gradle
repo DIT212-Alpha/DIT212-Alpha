@@ -6,7 +6,6 @@ android {
     compileSdkVersion 29
     buildToolsVersion "30.0.2"
 
-
     defaultConfig {
         applicationId "cse.dit012.lost"
         minSdkVersion 23
@@ -66,13 +65,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
-
-    //Firebase authentication
-
+    // Firebase authentication
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
-    
-
 
     // Google Play Services
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
@@ -86,8 +81,22 @@ dependencies {
     // Map with custom info windows
     implementation 'com.appolica:interactive-info-window:v1.0.6'
 
-    // Testing
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    // Testing ------------------------------------------------------------
+    // Unit tests -----------------------
+
+    testImplementation 'junit:junit:4.12' // JUnit
+
+    // Instrumented tests ---------------
+
+    // AndroidX Test
+    androidTestImplementation 'androidx.test:core:1.3.0' // AndroidX Test Core
+    androidTestImplementation 'androidx.test:runner:1.3.0' // AndroidJUnitRunner
+    androidTestImplementation 'androidx.test:rules:1.3.0' // JUnit Rules
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2' // JUnit Assertions
+
+    // UI tests (Espresso)
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+
 }
