@@ -27,6 +27,7 @@ import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.Gps;
+import cse.dit012.lost.service.UserInfoService;
 
 /**
  * View and controller for creating a broadcast.
@@ -53,7 +54,6 @@ public final class AddBroadcastFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Allows for navigation to another fragments
         final NavController navController = Navigation.findNavController(view);
-        model = new ViewModelProvider(requireActivity()).get(MapViewModel.class);
 
         //Cancels this fragment
         cancelButton = view.findViewById(R.id.cancelBtn);
@@ -79,10 +79,12 @@ public final class AddBroadcastFragment extends Fragment {
                 LatLng loc = Gps.getGps().getLocation(context);
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
+                //Gets user id from the logged in device
+                String ownerUID = UserInfoService.getUserInfoService().getID();
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
+                        ownerUID,
                         new MapCoordinates(loc.latitude, loc.longitude),
-                        model.getUser().getId(),
                         course,
                         descriptionEditText.getText().toString()
                 ).whenComplete((broadcast, throwable) -> {

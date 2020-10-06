@@ -40,7 +40,6 @@ public final class MapScreenFragment extends Fragment {
     public void onViewCreated(@NonNull View vieww, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(vieww, savedInstanceState);
 
-        model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
 
         autoCompleteTextForCourses();
 

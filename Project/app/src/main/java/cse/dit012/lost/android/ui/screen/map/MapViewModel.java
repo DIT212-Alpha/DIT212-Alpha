@@ -23,13 +23,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = BroadcastRepository.get();
     private final MutableLiveData<String> courseCode = new MutableLiveData<>("");
-    private UserInfoService userService = new UserInfoService();
-    private User user = userService.createUser();
-
     public void setCourseCode(String course) {
         courseCode.setValue(checkNotNull(course));
     }
-
+    User user = new User("1","2");
     /**
      * Retrieves an immutable live list of all currently active broadcasts.
      *

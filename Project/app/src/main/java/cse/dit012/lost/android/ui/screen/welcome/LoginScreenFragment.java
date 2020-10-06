@@ -3,6 +3,7 @@ package cse.dit012.lost.android.ui.screen.welcome;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +28,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentLoginBinding;
+import cse.dit012.lost.service.UserInfoService;
 
 /**
  * User interface for checking users if they have a Google account to login with
@@ -84,6 +88,12 @@ public final class LoginScreenFragment extends Fragment {
         textViewNewUser = view.findViewById(R.id.clickable_text_new_user);
 
         loginButton = view.findViewById(R.id.cirLoginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signInEmail();
+            }
+        });
         textViewNewUser.setOnClickListener(view1 -> navController.navigate(R.id.action_loginFragment_to_registerFragment));
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
@@ -110,6 +120,32 @@ public final class LoginScreenFragment extends Fragment {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         request.launch(signInIntent);
     }
+
+    private void signInEmail() {
+        mAuth.signInWithEmailAndPassword("gusdragema@student.gu.se", "1234567")
+                .addOnCompleteListener(task -> {
+                    task.getResult();
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String userId = user.getUid();
+                        String userName = user.getEmail();
+                        if (userId != null && userName != null) {
+                            UserInfoService.getUserInfoService().createUser(user.getUid(), user.getEmail());
+                            navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
+                        }
+                        else{
+                            Toast.makeText(getContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    else {
+                            Toast.makeText(getContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+    }
+
+
 
     private void permession(ActivityResult activityResult) {
         if (activityResult.getResultCode() == Activity.RESULT_OK) {

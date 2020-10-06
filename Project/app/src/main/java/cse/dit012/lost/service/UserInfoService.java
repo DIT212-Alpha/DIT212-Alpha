@@ -6,21 +6,23 @@ import com.google.firebase.auth.FirebaseUser;
 import cse.dit012.lost.model.user.User;
 
 public class UserInfoService {
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private static UserInfoService userInfo= new UserInfoService();
+    private User user;
 
-    private String getName(){
-        String name = user.getEmail();
+
+    public String getName(){
+        String name = user.getName();
         return name;
     }
-    private String getSurname(){
-        //TODO??
-        return null;
-    }
-    private String getID(){
-        String id = user.getUid();
+
+    public String getID(){
+        String id = user.getId();
         return id;
     }
-    public User createUser(){
-        return new User(getID(),getName());
+    public void createUser(String id,String name){
+        user = new User(id,name);
+    }
+    public static UserInfoService getUserInfoService(){
+        return userInfo;
     }
 }

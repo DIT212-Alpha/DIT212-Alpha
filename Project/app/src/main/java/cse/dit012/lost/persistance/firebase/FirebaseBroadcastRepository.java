@@ -38,7 +38,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys
-    private static final String BROADCAST_PUBLISHER_KEY = "publisher";
     private static final String BROADCASTS_KEY = "broadcasts";
     private static final String BROADCAST_CREATEDAT_KEY = "createdAt";
     private static final String BROADCAST_LASTACTIVE_KEY = "lastActive";
@@ -46,6 +45,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     private static final String BROADCAST_LONG_KEY = "long";
     private static final String BROADCAST_COURSECODE_KEY = "courseCode";
     private static final String BROADCAST_DESCRIPTION_KEY = "description";
+    private static final String BROADCAST_CWNER_KEY = "ownerUID";
 
     // How long ago a broadcast had to be last active to be considered alive, in seconds
     // TODO: Move into Broadcast maybe
@@ -107,13 +107,13 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                currentData.child(BROADCAST_PUBLISHER_KEY).setValue(broadcast.getOwnerUID());
                 currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
                 currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
                 currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
                 currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
                 currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
                 currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
+                currentData.child(BROADCAST_CWNER_KEY).setValue(broadcast.getOwnerUID());
                 return Transaction.success(currentData);
             }
 
@@ -179,7 +179,6 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
         checkArgument(broadcastSnapshot.exists(), "Broadcast with id " + broadcastSnapshot.getKey() + " does not exist");
 
         String id = broadcastSnapshot.getKey();
-        String publisherUID = broadcastSnapshot.child(BROADCAST_PUBLISHER_KEY).getValue(String.class);
         long createdAt = broadcastSnapshot.child(BROADCAST_CREATEDAT_KEY).getValue(long.class);
         long lastActive = broadcastSnapshot.child(BROADCAST_LASTACTIVE_KEY).getValue(long.class);
         double lat = broadcastSnapshot.child(BROADCAST_LAT_KEY).getValue(double.class);
@@ -192,7 +191,6 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),
                 new MapCoordinates(lat, lon),
-                publisherUID,
                 new CourseCode(course),
                 description
         );
