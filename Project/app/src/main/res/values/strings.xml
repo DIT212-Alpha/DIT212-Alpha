@@ -7,6 +7,9 @@
     <string name="broadcast">Broadcast</string>
     <string name="enter_course_to_filter">Enter Course To Filter</string>
     <string name="prompt_email">Email</string>
+    <string name="select_date">Select date</string>
+    <string name="select_time_start">Select starting time</string>
+    <string name="select_time_end">Select ending time</string>
     <!-- Strings related to login -->
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
