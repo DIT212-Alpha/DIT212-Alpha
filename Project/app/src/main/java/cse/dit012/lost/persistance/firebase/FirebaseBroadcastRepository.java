@@ -185,8 +185,10 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
         double lon = broadcastSnapshot.child(BROADCAST_LONG_KEY).getValue(double.class);
         String course = broadcastSnapshot.child(BROADCAST_COURSECODE_KEY).getValue(String.class);
         String description = broadcastSnapshot.child(BROADCAST_DESCRIPTION_KEY).getValue(String.class);
+        String ownerUID = broadcastSnapshot.child(BROADCAST_CWNER_KEY).getValue(String.class);
 
         return new Broadcast(
+                ownerUID,
                 new BroadcastId(id),
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),

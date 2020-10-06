@@ -14,6 +14,7 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
+import cse.dit012.lost.service.UserInfoService;
 
 /**
  * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
@@ -23,6 +24,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
     private static final String PARAM_COURSE = "course";
     private static final String PARAM_DESCRIPTION = "description";
     private static final String PARAM_ID = "id";
+    private static final String OWNER_ID = "ownerId";
 
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
@@ -39,6 +41,8 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
         args.putString(PARAM_ID, broadcast.getId().toString());
+        args.putString(OWNER_ID, broadcast.getOwnerUID());
+
 
         fragment.setArguments(args);
         return fragment;
@@ -63,20 +67,25 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         String course = getArguments().getString(PARAM_COURSE);
         String description = getArguments().getString(PARAM_DESCRIPTION);
         String id = getArguments().getString(PARAM_ID);
+        String ownerId = getArguments().getString(OWNER_ID);
         layoutBinding.course.setText(course);
         layoutBinding.description.setText(description);
         layoutBinding.editCourseText.setText(course);
         layoutBinding.editDescriptionText.setText(description);
 
-        //EDIT button: Makes it possible for the user to Edit Course and Description
-        layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
-            layoutBinding.editCourseText.setText(layoutBinding.course.getText());
-            layoutBinding.editDescriptionText.setText(layoutBinding.description.getText());
-            layoutBinding.textViewInfoBox.setVisibility(View.GONE);
-            layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
-            //TODO restore saved data
-        });
-
+        if(UserInfoService.getUserInfoService().getID().equals(ownerId)) {
+            //EDIT button: Makes it possible for the user to Edit Course and Description
+            layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
+                layoutBinding.editCourseText.setText(layoutBinding.course.getText());
+                layoutBinding.editDescriptionText.setText(layoutBinding.description.getText());
+                layoutBinding.textViewInfoBox.setVisibility(View.GONE);
+                layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
+                //TODO restore saved data
+            });
+        }
+        else{
+            layoutBinding.editInfoWindowButton.setVisibility(View.INVISIBLE);
+        }
         //SAVE button: Saves the edit
         layoutBinding.saveInfoWindowButton.setOnClickListener(v -> {
             //TODO should save the edit into current TextView

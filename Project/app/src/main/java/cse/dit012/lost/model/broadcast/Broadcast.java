@@ -24,15 +24,6 @@ public final class Broadcast {
     private CourseCode course;
     private String description;
 
-    public Broadcast(BroadcastId id, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
-        this.id = checkNotNull(id);
-        this.createdAt = checkNotNull(createdAt);
-        this.lastActive = checkNotNull(lastActive);
-        this.coordinates = coordinates;
-        this.course = checkNotNull(course);
-        this.description = checkNotNull(description);
-        ownerUID = null;
-    }
     public Broadcast(String ownerUID,BroadcastId id, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
         this.id = checkNotNull(id);
         this.createdAt = checkNotNull(createdAt);
@@ -63,10 +54,6 @@ public final class Broadcast {
     public MapCoordinates getCoordinates() {
         return coordinates;
     }
-
-    /*public String getOwnerUID() {
-        return ownerUID;
-    }*/
 
     public CourseCode getCourse() {
         return course;
@@ -104,7 +91,7 @@ public final class Broadcast {
                 .add("createdAt", getCreatedAt())
                 .add("lastActive", getLastActive())
                 .add("coordinates", getCoordinates())
-                //.add("owner", getOwnerUID())
+                .add("owner", getOwnerUID())
                 .add("course", getCourse())
                 .add("description", getDescription())
                 .toString();

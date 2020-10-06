@@ -7,20 +7,15 @@ import cse.dit012.lost.model.user.User;
 
 public class UserInfoService {
     private static UserInfoService userInfo= new UserInfoService();
-    private User user;
-
 
     public String getName(){
-        String name = user.getName();
+        String name = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         return name;
     }
 
     public String getID(){
-        String id = user.getId();
+        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         return id;
-    }
-    public void createUser(String id,String name){
-        user = new User(id,name);
     }
     public static UserInfoService getUserInfoService(){
         return userInfo;

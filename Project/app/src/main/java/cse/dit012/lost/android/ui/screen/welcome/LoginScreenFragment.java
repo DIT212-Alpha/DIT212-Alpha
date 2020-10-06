@@ -127,17 +127,7 @@ public final class LoginScreenFragment extends Fragment {
                     task.getResult();
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        String userId = user.getUid();
-                        String userName = user.getEmail();
-                        if (userId != null && userName != null) {
-                            UserInfoService.getUserInfoService().createUser(user.getUid(), user.getEmail());
-                            navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
-                        }
-                        else{
-                            Toast.makeText(getContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
-                        }
-
+                        navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
                     }
                     else {
                             Toast.makeText(getContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
