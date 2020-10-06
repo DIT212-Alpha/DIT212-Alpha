@@ -28,6 +28,7 @@ import java.util.Calendar;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.service.ActiveBroadcastService;
+import cse.dit012.lost.databinding.FragmentRegisterBinding;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.User;
@@ -47,11 +48,20 @@ public final class AddBroadcastFragment extends Fragment {
     private Spinner courseSpinner;
     private EditText descriptionEditText/*, selectDateEditText, selectStartTimeEditText,selectEndTimeEditText*/;
 
+    //This is new for testing using container
+    FragmentRegisterBinding fragmentRegisterBinding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //This is new for testing using container
+        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater, container, false);
+        return fragmentRegisterBinding.getRoot();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_broadcast_fragment, container, false);
+
+        //This was before
+       // return inflater.inflate(R.layout.fragment_add_broadcast_fragment, container, false);
     }
 
     @Override
