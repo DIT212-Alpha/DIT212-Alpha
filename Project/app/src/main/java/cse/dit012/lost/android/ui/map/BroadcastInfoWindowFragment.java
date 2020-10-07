@@ -20,9 +20,9 @@ import cse.dit012.lost.service.BroadcastService;
  * Author: Sophia Pham
  */
 public final class BroadcastInfoWindowFragment extends Fragment {
-    private static final String PARAM_COURSE = "course";
-    private static final String PARAM_DESCRIPTION = "description";
-    private static final String PARAM_ID = "id";
+    static final String PARAM_COURSE = "course";
+    static final String PARAM_DESCRIPTION = "description";
+    static final String PARAM_ID = "id";
 
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;

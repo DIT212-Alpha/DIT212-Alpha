@@ -36,6 +36,7 @@ public class LoginTest {
     public void typeUsername(){
         onView(withId(R.id.editTextEmail)).perform(typeText("Mathias"));
     }
+
     @Test
     public void typePassword(){
         onView(withId(R.id.editTextPassword)).perform((typeText("hejhejhej")));
