@@ -24,7 +24,7 @@ public class BroadcastTest {
     Broadcast test = new Broadcast(bId,date,activeDate,coordinates,user,code,description);
     @Test
     public void getId() {
-        assertEquals(test.getId(),id);
+        assertEquals(test.getId(),bId);
     }
 
     @Test

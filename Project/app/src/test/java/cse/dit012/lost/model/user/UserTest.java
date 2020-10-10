@@ -28,10 +28,9 @@ public class UserTest {
 
     @Test
     public void changeName() {
-        String newName = "12345";
         String name = "123";
         String surname = "abcd";
-        String newSurname = "abcdef";
+        String newName = "12345";
         User user = new User(name,surname);
         user.changeName(newName);
         assertEquals(newName,user.getName());
@@ -39,12 +38,11 @@ public class UserTest {
 
     @Test
     public void changeSurname() {
-        String newName = "12345";
         String name = "123";
         String surname = "abcd";
         String newSurname = "abcdef";
         User user = new User(name,surname);
-        user.changeSurname(newName);
+        user.changeSurname(newSurname);
         assertEquals(newSurname,user.getSurname());
     }
 
