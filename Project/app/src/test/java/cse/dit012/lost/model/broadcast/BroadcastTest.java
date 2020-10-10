@@ -14,17 +14,13 @@ import static org.junit.Assert.*;
 
 public class BroadcastTest {
     String id = "1";
-    User user = new User("Bob");
+    User user = new User("Bob", "Bobsson");
     BroadcastId bId = new BroadcastId(id);
     Date date = new Date();
     Date activeDate = new Date(1,1,1);
     MapCoordinates coordinates= new MapCoordinates(2,2);
     String description = "test";
     CourseCode code = new CourseCode("dit111");
-<<<<<<< HEAD
-    User user = new User("default","default");
-=======
->>>>>>> 15f3c8b15667af48eea1e742972a5eed468e3446
     Broadcast test = new Broadcast(bId,date,activeDate,coordinates,user,code,description);
     @Test
     public void getId() {
