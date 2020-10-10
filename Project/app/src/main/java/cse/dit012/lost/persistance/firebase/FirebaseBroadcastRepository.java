@@ -47,10 +47,6 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     private static final String BROADCAST_COURSECODE_KEY = "courseCode";
     private static final String BROADCAST_DESCRIPTION_KEY = "description";
 
-    // How long ago a broadcast had to be last active to be considered alive, in seconds
-    // TODO: Move into Broadcast maybe
-    public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
-
     // Firebase database instance
     private final FirebaseDatabase db;
 
@@ -58,13 +54,41 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
         db = checkNotNull(firebase);
     }
 
+    private DatabaseReference getBroadcastReference(BroadcastId id) {
+        return db.getReference(BROADCASTS_KEY).child(id.toString());
+    }
+
     @Override
     public BroadcastId nextIdentity() {
         return new BroadcastId(UUID.randomUUID().toString().toLowerCase());
     }
 
-    private DatabaseReference getBroadcastReference(BroadcastId id) {
-        return db.getReference(BROADCASTS_KEY).child(id.toString());
+    @Override
+    public CompletableFuture<Broadcast> store(Broadcast broadcast) {
+        CompletableFuture<Broadcast> future = new CompletableFuture<>();
+        getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
+                currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
+                currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
+                currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
+                currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
+                currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (committed) {
+                    future.complete(deserializeBroadcastFromDataSnapshot(currentData));
+                } else {
+                    future.completeExceptionally(error.toException());
+                }
+            }
+        });
+        return future;
     }
 
     @Override
@@ -101,37 +125,9 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     }
 
     @Override
-    public CompletableFuture<Broadcast> store(Broadcast broadcast) {
-        CompletableFuture<Broadcast> future = new CompletableFuture<>();
-        getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
-                currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
-                currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
-                currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
-                currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
-                currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
-                return Transaction.success(currentData);
-            }
-
-            @Override
-            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                if (committed) {
-                    future.complete(deserializeBroadcastFromDataSnapshot(currentData));
-                } else {
-                    future.completeExceptionally(error.toException());
-                }
-            }
-        });
-        return future;
-    }
-
-    @Override
-    public LiveData<List<Broadcast>> getActiveBroadcasts() {
+    public LiveData<List<Broadcast>> observeActiveBroadcasts() {
         // Query root node of broadcasts tree
-        long oldestActiveTime = (System.currentTimeMillis() / 1000) - ACTIVE_TIME_MARGIN_SECONDS;
+        long oldestActiveTime = (System.currentTimeMillis() / 1000) - Broadcast.ACTIVE_TIME_MARGIN_SECONDS;
         Query query = db.getReference(BROADCASTS_KEY)
                 .orderByChild(BROADCAST_LASTACTIVE_KEY)
                 .startAt(oldestActiveTime); // Only retrieve active broadcasts
@@ -145,10 +141,10 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
 
         MediatorLiveData<List<Broadcast>> activeBroadcasts = new MediatorLiveData<>();
         activeBroadcasts.addSource(recentBroadcasts, broadcasts -> {
-            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterActiveBroadcasts(recentBroadcasts, currentTime));
+            activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts, currentTime));
         });
         activeBroadcasts.addSource(currentTime, broadcasts -> {
-            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterActiveBroadcasts(recentBroadcasts, currentTime));
+            activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts, currentTime));
         });
         return activeBroadcasts;
     }
@@ -160,8 +156,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
 
         List<Broadcast> filteredBroadcasts = new ArrayList<>(broadcasts.getValue().size());
         for (Broadcast broadcast : broadcasts.getValue()) {
-            long ageSinceLastActive = (currentTime.getValue().getTime() - broadcast.getLastActive().getTime()) / 1000;
-            if (ageSinceLastActive <= ACTIVE_TIME_MARGIN_SECONDS) {
+            if (broadcast.isActive(currentTime.getValue())) {
                 filteredBroadcasts.add(broadcast);
             }
         }
