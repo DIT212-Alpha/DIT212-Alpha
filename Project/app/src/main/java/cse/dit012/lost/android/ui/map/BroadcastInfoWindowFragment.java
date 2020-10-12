@@ -25,10 +25,10 @@ import cse.dit012.lost.service.UserInfoService;
  * Author: Sophia Pham
  */
 public final class BroadcastInfoWindowFragment extends Fragment {
-    private static final String PARAM_COURSE = "course";
-    private static final String PARAM_DESCRIPTION = "description";
-    private static final String PARAM_ID = "id";
-    private static final String OWNER_ID = "ownerId";
+    static final String PARAM_COURSE = "course";
+    static final String PARAM_DESCRIPTION = "description";
+    static final String PARAM_ID = "id";
+    static final String OWNER_ID = "ownerId";
 
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
@@ -99,19 +99,21 @@ public final class BroadcastInfoWindowFragment extends Fragment {
             layoutBinding.cancelInfoWindowButton.setVisibility(View.INVISIBLE);
         }
         //SAVE button: Saves the edit
-        layoutBinding.saveInfoWindowButton.setOnClickListener(v -> {
-            //TODO should save the edit into current TextView
-            String courseEdited = layoutBinding.editCourseText.getText().toString().trim();
-            String descriptionEdited = layoutBinding.editDescriptionText.getText().toString().trim();
-            layoutBinding.course.setText(courseEdited);
-            layoutBinding.description.setText(descriptionEdited);
+        layoutBinding.saveInfoWindowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Saves the edit into current TextView
+                String courseEdited = layoutBinding.editCourseText.getText().toString().trim();
+                String descriptionEdited = layoutBinding.editDescriptionText.getText().toString().trim();
+                layoutBinding.course.setText(courseEdited);
+                layoutBinding.description.setText(descriptionEdited);
 
-            //TODO should save it in the database as well and change the variables there
-
+                //Saves it in the database
             BroadcastService.get().updateBroadcastEdit(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
 
-            layoutBinding.editViewInfoBox.setVisibility(View.GONE);
-            layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);
+                layoutBinding.editViewInfoBox.setVisibility(View.GONE);
+                layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);
+            }
         });
 
         //CANCEL button: Cancels the edit
