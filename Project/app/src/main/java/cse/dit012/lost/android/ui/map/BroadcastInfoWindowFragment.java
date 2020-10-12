@@ -1,5 +1,6 @@
 package cse.dit012.lost.android.ui.map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Date;
+
+import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -82,9 +86,17 @@ public final class BroadcastInfoWindowFragment extends Fragment {
                 layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
                 //TODO restore saved data
             });
+            layoutBinding.delete.setOnClickListener(v -> {
+                Intent intent = new Intent(this.requireContext(),ActiveBroadcastService.class);
+                getActivity().stopService(intent);
+                BroadcastService.get().updateBroadcastSetInactive(new BroadcastId(id));
+
+
+            });
         }
         else{
             layoutBinding.editInfoWindowButton.setVisibility(View.INVISIBLE);
+            layoutBinding.cancelInfoWindowButton.setVisibility(View.INVISIBLE);
         }
         //SAVE button: Saves the edit
         layoutBinding.saveInfoWindowButton.setOnClickListener(v -> {

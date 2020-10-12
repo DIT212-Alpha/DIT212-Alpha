@@ -54,6 +54,8 @@ public final class Broadcast {
         this.lastActive = new Date(System.currentTimeMillis());
     }
 
+    public void setToInactive(){this.lastActive = new Date(System.currentTimeMillis()-70000);}
+
     public MapCoordinates getCoordinates() {
         return coordinates;
     }

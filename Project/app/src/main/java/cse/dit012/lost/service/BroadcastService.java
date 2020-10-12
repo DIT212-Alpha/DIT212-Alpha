@@ -39,5 +39,7 @@ public interface BroadcastService {
      */
     CompletableFuture<Broadcast> updateBroadcastLastActive(BroadcastId id);
 
+    CompletableFuture<Broadcast> updateBroadcastSetInactive(BroadcastId id);
+
     CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description);
 }

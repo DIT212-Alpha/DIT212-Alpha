@@ -34,6 +34,14 @@ final class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
+    public CompletableFuture<Broadcast> updateBroadcastSetInactive(BroadcastId id) {
+        return broadcastRepository.getById(id).thenCompose(broadcast -> {
+            broadcast.setToInactive();
+            return broadcastRepository.store(broadcast);
+        });
+    }
+
+    @Override
     public CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description) {
         return broadcastRepository.getById(id).thenAccept(broadcast -> {
             broadcast.updateCourse(course);
