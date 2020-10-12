@@ -25,10 +25,10 @@ import cse.dit012.lost.service.UserInfoService;
  * Author: Sophia Pham
  */
 public final class BroadcastInfoWindowFragment extends Fragment {
-    private static final String PARAM_COURSE = "course";
-    private static final String PARAM_DESCRIPTION = "description";
-    private static final String PARAM_ID = "id";
-    private static final String OWNER_ID = "ownerId";
+    static final String PARAM_COURSE = "course";
+    static final String PARAM_DESCRIPTION = "description";
+    static final String PARAM_ID = "id";
+    static final String OWNER_ID = "ownerId";
 
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
