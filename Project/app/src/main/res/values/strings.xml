@@ -51,4 +51,5 @@
     <string name="edit">Edit</string>
 
     <string name="service_active_broadcast_description">Service used to keep the user\'s active broadcast alive</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

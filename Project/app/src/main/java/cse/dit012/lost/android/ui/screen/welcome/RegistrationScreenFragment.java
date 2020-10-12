@@ -58,7 +58,6 @@ FragmentRegisterBinding fragmentRegisterBinding;
         fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater,container,false);
         return fragmentRegisterBinding.getRoot();
 
-
     }
 
     @Override
@@ -76,6 +75,7 @@ FragmentRegisterBinding fragmentRegisterBinding;
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 String email = userEmail.getText().toString();
                 String password = userPassword.getText().toString();
                 navController = Navigation.findNavController(view);
@@ -87,9 +87,9 @@ FragmentRegisterBinding fragmentRegisterBinding;
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (!task.isSuccessful()){
-
                                 try {
                                     Toast.makeText(getContext(),"Registration unSucsessful!", Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     throw task.getException();
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -99,7 +99,7 @@ FragmentRegisterBinding fragmentRegisterBinding;
                             }else {
                                 Toast.makeText(getContext(),"Registration Sucsessful! Welcome" , Toast.LENGTH_LONG).show();
                                 navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
-
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
 
                         }
@@ -113,14 +113,15 @@ FragmentRegisterBinding fragmentRegisterBinding;
     }
 
     private boolean validate(String email, String password) {
-        progressBar.setVisibility(View.VISIBLE);
         // Reset errors.
         userName.setError(null);
         userPassword.setError(null);
 
         if (TextUtils.isEmpty(email)) {
             userEmail.setError("Email is required");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
+
         } else if (!isEmailValid(email)) {
             userEmail.setError("Enter a valid email");
             return false;
@@ -128,23 +129,27 @@ FragmentRegisterBinding fragmentRegisterBinding;
 
         if (TextUtils.isEmpty(password)) {
             userPassword.setError("Password is required");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
         } else if (!isPasswordValid(password)) {
             userPassword.setError("Password must contain at least 6 characters");
             return false;
         }
 
+
         return true;
     }
 
-    public static boolean isEmailValid(String email){
+    public boolean isEmailValid(String email){
+        progressBar.setVisibility(View.INVISIBLE);
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
     //Check password with minimum requirement here(it should be minimum 6 characters)
-    public static boolean isPasswordValid(String password){
+    public boolean isPasswordValid(String password){
+        progressBar.setVisibility(View.INVISIBLE);
         return password.length() >= 7;
     }
 

@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentMapScreenBinding;
+import cse.dit012.lost.service.MailAndPasswordLoginService;
 
 /**
  * This class shows the map and contains the autocomplete text box for course filtration, and the button broadcast to add broadcast
@@ -38,7 +39,10 @@ public class MapScreenFragment extends Fragment {
     ArrayAdapter<String> adapter;
     Navigation navigation;
     Button broadCastBtn;
-    FragmentManager fragmentManager;
+    Button signOutButton;
+    MailAndPasswordLoginService mailAndPasswordLoginService = new MailAndPasswordLoginService();
+
+
 
 
     @Nullable
@@ -63,8 +67,15 @@ public class MapScreenFragment extends Fragment {
          * Initialize the navigation controller and change the fragment on click
          */
         final NavController navController = Navigation.findNavController(vieww);
-        broadCastBtn = vieww.findViewById(R.id.broadcast_btn);
+        broadCastBtn = mapScreenBinding.broadcastBtn;
+        signOutButton = mapScreenBinding.signOutBtn;
+
         broadCastBtn.setOnClickListener(view -> navController.navigate(R.id.action_mapScreenFragment_to_add_broadcast_fragment));
+
+        signOutButton.setOnClickListener(view -> {
+            mailAndPasswordLoginService.signOutUser();
+            navController.navigate(R.id.action_mapScreenFragment_to_loginFragment);
+        });
 
     }
 
