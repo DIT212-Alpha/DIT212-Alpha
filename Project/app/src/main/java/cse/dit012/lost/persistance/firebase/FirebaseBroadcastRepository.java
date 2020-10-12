@@ -38,7 +38,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys
-    private static final String BROADCAST_PUBLISHER_KEY = "publisher";
     private static final String BROADCASTS_KEY = "broadcasts";
     private static final String BROADCAST_CREATEDAT_KEY = "createdAt";
     private static final String BROADCAST_LASTACTIVE_KEY = "lastActive";
@@ -46,6 +45,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     private static final String BROADCAST_LONG_KEY = "long";
     private static final String BROADCAST_COURSECODE_KEY = "courseCode";
     private static final String BROADCAST_DESCRIPTION_KEY = "description";
+    private static final String BROADCAST_CWNER_KEY = "ownerUID";
 
     // Firebase database instance
     private final FirebaseDatabase db;
@@ -76,6 +76,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
                 currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
                 currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
                 currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
+                currentData.child(BROADCAST_CWNER_KEY).setValue(broadcast.getOwnerUID());
                 return Transaction.success(currentData);
             }
 
@@ -173,20 +174,20 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
         checkArgument(broadcastSnapshot.exists(), "Broadcast with id " + broadcastSnapshot.getKey() + " does not exist");
 
         String id = broadcastSnapshot.getKey();
-        String owner = broadcastSnapshot.child(BROADCAST_PUBLISHER_KEY).getValue(String.class);
         long createdAt = broadcastSnapshot.child(BROADCAST_CREATEDAT_KEY).getValue(long.class);
         long lastActive = broadcastSnapshot.child(BROADCAST_LASTACTIVE_KEY).getValue(long.class);
         double lat = broadcastSnapshot.child(BROADCAST_LAT_KEY).getValue(double.class);
         double lon = broadcastSnapshot.child(BROADCAST_LONG_KEY).getValue(double.class);
         String course = broadcastSnapshot.child(BROADCAST_COURSECODE_KEY).getValue(String.class);
         String description = broadcastSnapshot.child(BROADCAST_DESCRIPTION_KEY).getValue(String.class);
+        String ownerUID = broadcastSnapshot.child(BROADCAST_CWNER_KEY).getValue(String.class);
 
         return new Broadcast(
+                ownerUID,
                 new BroadcastId(id),
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),
                 new MapCoordinates(lat, lon),
-                new User("Anon","Anonymous"),
                 new CourseCode(course),
                 description
         );

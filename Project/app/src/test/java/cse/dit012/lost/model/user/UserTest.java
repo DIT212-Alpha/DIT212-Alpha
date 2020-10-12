@@ -2,11 +2,6 @@ package cse.dit012.lost.model.user;
 
 import org.junit.Test;
 
-import cse.dit012.lost.model.BroadcastObject;
-import cse.dit012.lost.model.BroadcastObjectFactory;
-import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.model.course.Course;
-
 import static org.junit.Assert.*;
 
 public class UserTest {

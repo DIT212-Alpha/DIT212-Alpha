@@ -1,5 +1,6 @@
 package cse.dit012.lost.android.ui.map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,20 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Date;
+
+import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
+import cse.dit012.lost.service.UserInfoService;
 
 /**
  * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
  * Author: Sophia Pham
  */
 public final class BroadcastInfoWindowFragment extends Fragment {
-    static final String PARAM_COURSE = "course";
-    static final String PARAM_DESCRIPTION = "description";
-    static final String PARAM_ID = "id";
+    private static final String PARAM_COURSE = "course";
+    private static final String PARAM_DESCRIPTION = "description";
+    private static final String PARAM_ID = "id";
+    private static final String OWNER_ID = "ownerId";
 
     // View Binding for layout file
     private FragmentBroadcastInfoWindowBinding layoutBinding;
@@ -39,9 +45,10 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
         args.putString(PARAM_ID, broadcast.getId().toString());
+        args.putString(OWNER_ID, broadcast.getOwnerUID());
+
 
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -51,7 +58,6 @@ public final class BroadcastInfoWindowFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Setup view from layout file
         layoutBinding = FragmentBroadcastInfoWindowBinding.inflate(inflater, container, false);
-
         return layoutBinding.getRoot();
     }
 
@@ -65,20 +71,33 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         String course = getArguments().getString(PARAM_COURSE);
         String description = getArguments().getString(PARAM_DESCRIPTION);
         String id = getArguments().getString(PARAM_ID);
+        String ownerId = getArguments().getString(OWNER_ID);
         layoutBinding.course.setText(course);
         layoutBinding.description.setText(description);
         layoutBinding.editCourseText.setText(course);
         layoutBinding.editDescriptionText.setText(description);
 
-        //EDIT button: Makes it possible for the user to Edit Course and Description
-        layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
-            layoutBinding.editCourseText.setText(layoutBinding.course.getText());
-            layoutBinding.editDescriptionText.setText(layoutBinding.description.getText());
-            layoutBinding.textViewInfoBox.setVisibility(View.GONE);
-            layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
-            //TODO restore saved data
-        });
+        if(UserInfoService.getUserInfoService().getID().equals(ownerId)) {
+            //EDIT button: Makes it possible for the user to Edit Course and Description
+            layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
+                layoutBinding.editCourseText.setText(layoutBinding.course.getText());
+                layoutBinding.editDescriptionText.setText(layoutBinding.description.getText());
+                layoutBinding.textViewInfoBox.setVisibility(View.GONE);
+                layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
+                //TODO restore saved data
+            });
+            layoutBinding.delete.setOnClickListener(v -> {
+                Intent intent = new Intent(this.requireContext(),ActiveBroadcastService.class);
+                getActivity().stopService(intent);
+                BroadcastService.get().updateBroadcastSetInactive(new BroadcastId(id));
 
+
+            });
+        }
+        else{
+            layoutBinding.editInfoWindowButton.setVisibility(View.INVISIBLE);
+            layoutBinding.cancelInfoWindowButton.setVisibility(View.INVISIBLE);
+        }
         //SAVE button: Saves the edit
         layoutBinding.saveInfoWindowButton.setOnClickListener(new View.OnClickListener() {
             @Override

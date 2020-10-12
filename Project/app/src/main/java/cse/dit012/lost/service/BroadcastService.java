@@ -29,7 +29,7 @@ public interface BroadcastService {
      * @param description the description of the broadcast
      * @return the newly created broadcast
      */
-    CompletableFuture<Broadcast> createBroadcast(MapCoordinates coordinates, User user, CourseCode courseCode, String description);
+    CompletableFuture<Broadcast> createBroadcast(String userUID,MapCoordinates coordinates, CourseCode courseCode, String description);
 
     /**
      * Updates the time a broadcast was last active.
@@ -38,6 +38,8 @@ public interface BroadcastService {
      * @return the {@link Broadcast} after it has been updated.
      */
     CompletableFuture<Broadcast> updateBroadcastLastActive(BroadcastId id);
+
+    CompletableFuture<Broadcast> updateBroadcastSetInactive(BroadcastId id);
 
     CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description);
 }
