@@ -16,6 +16,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Author: Mathias Drage, Benjamin Sannholm, Sophia Pham
  */
 public final class Broadcast {
+    // How long ago a broadcast had to be last active to be considered alive, in seconds
+    public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
+
     private final BroadcastId id;
     private final Date createdAt;
     private Date lastActive;
@@ -69,6 +72,11 @@ public final class Broadcast {
 
     public void updateCourse(CourseCode course) {
         this.course = checkNotNull(course);
+    }
+
+    public boolean isActive(Date currentTime) {
+        long ageSinceLastActive = (currentTime.getTime() - getLastActive().getTime()) / 1000;
+        return ageSinceLastActive <= ACTIVE_TIME_MARGIN_SECONDS;
     }
 
     @Override

@@ -59,4 +59,6 @@
 
     <string name="notification_active_broadcast_title">You\'re broadcasting!</string>
     <string name="notification_active_broadcast_stop">Stop broadcast</string>
+
+    <string name="sign_out">Sign Out</string>
 </resources>

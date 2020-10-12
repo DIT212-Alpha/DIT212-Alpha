@@ -14,7 +14,11 @@ import java9.util.concurrent.CompletableFuture;
  */
 public interface BroadcastService {
     static BroadcastService get() {
-        return new BroadcastServiceImpl(BroadcastRepository.get());
+        return fromRepository(BroadcastRepository.get());
+    }
+
+    static BroadcastService fromRepository(BroadcastRepository repository) {
+        return new BroadcastServiceImpl(repository);
     }
 
     /**
