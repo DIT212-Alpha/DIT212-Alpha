@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentMapScreenBinding;
+import cse.dit012.lost.service.MailAndPasswordLoginService;
 
 /**
  * This class shows the map and contains the autocomplete text box for course filtration,
@@ -28,6 +29,9 @@ public final class MapScreenFragment extends Fragment {
     private FragmentMapScreenBinding mapScreenBinding;
 
     private MapViewModel model;
+
+    private final MailAndPasswordLoginService mailAndPasswordLoginService = new MailAndPasswordLoginService();
+
 
     @Nullable
     @Override
@@ -44,9 +48,18 @@ public final class MapScreenFragment extends Fragment {
 
         autoCompleteTextForCourses();
 
-        // Initialize the navigation controller and change the fragment on click
+        /**
+         * Initialize the navigation controller and change the fragment on click
+         */
         final NavController navController = Navigation.findNavController(vieww);
+
         mapScreenBinding.broadcastBtn.setOnClickListener(view -> navController.navigate(R.id.action_mapScreenFragment_to_add_broadcast_fragment));
+
+        mapScreenBinding.signOutBtn.setOnClickListener(view -> {
+            mailAndPasswordLoginService.signOutUser();
+            navController.navigate(R.id.action_mapScreenFragment_to_loginFragment);
+        });
+
     }
 
     /**

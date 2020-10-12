@@ -49,8 +49,20 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="signOutBtn" parent="viewParent">
+        <item name="android:background">@drawable/button_background_grey</item>
+        <item name="android:textColor">@color/whiteTextColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="registerButton" parent="viewParent">
         <item name="android:background">@drawable/button_background_white</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="broadCastButton" parent="viewParent">
+        <item name="android:background">@drawable/button_background_red</item>
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
