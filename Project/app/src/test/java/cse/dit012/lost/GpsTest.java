@@ -10,8 +10,6 @@ public class GpsTest {
 
     @Test
     public void getGps() {
-        Gps gps1 = Gps.getGps();
-        Gps gps2 = Gps.getGps();
-        assertEquals(gps1,gps2);
+        assertNotNull(Gps.getGps());
     }
 }

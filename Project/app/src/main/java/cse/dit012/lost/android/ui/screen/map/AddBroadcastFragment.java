@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 import com.google.android.gms.maps.model.LatLng;
 
 import cse.dit012.lost.R;
+import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.User;
@@ -78,18 +79,19 @@ public final class AddBroadcastFragment extends Fragment {
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         new MapCoordinates(loc.latitude, loc.longitude),
-                        new User("default"),
+                        new User("default","default"),
                         course,
                         descriptionEditText.getText().toString()
                 ).whenComplete((broadcast, throwable) -> {
                     if (broadcast != null) {
-                        BroadcastService.get().startActiveBroadcastService(context, broadcast.getId());
-                        Toast.makeText(getActivity(), course + "\n" + descriptionEditText.getText().toString() + "\nadded", Toast.LENGTH_LONG).show();
+                        ActiveBroadcastService.startActiveBroadcastService(context, broadcast.getId());
                     } else {
                         Log.e(TAG, "Failed to create broadcast", throwable);
-                        Toast.makeText(getActivity(), "Failed to create broadcast :(", Toast.LENGTH_LONG).show();
+                        // TODO: Notify user (Toast errors in async callback. Since context is not available?)
+                        //Toast.makeText(context, "Failed to create broadcast :(", Toast.LENGTH_LONG).show();
                     }
                 }).exceptionally(throwable -> {
+                    // TODO: Notify user
                     Log.e(TAG, "Failed to start active broadcast service", throwable);
                     return null;
                 });

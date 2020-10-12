@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 public class BroadcastTest {
     String id = "1";
-    User user = new User("Bob");
+    User user = new User("Bob", "Bobsson");
     BroadcastId bId = new BroadcastId(id);
     Date date = new Date();
     Date activeDate = new Date(1,1,1);

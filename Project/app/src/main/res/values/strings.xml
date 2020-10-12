@@ -50,5 +50,13 @@
 
     <string name="edit">Edit</string>
 
+    <string name="loading_with_ellipsis">Loading...</string>
+
     <string name="service_active_broadcast_description">Service used to keep the user\'s active broadcast alive</string>
+
+    <string name="notification_channel_active_broadcast_name">Active Broadcast</string>
+    <string name="notification_channel_active_broadcast_description">Notifications regarding your active broadcast</string>
+
+    <string name="notification_active_broadcast_title">You\'re broadcasting!</string>
+    <string name="notification_active_broadcast_stop">Stop broadcast</string>
 </resources>

@@ -35,7 +35,7 @@ public final class MapViewModel extends ViewModel {
     public LiveData<List<Broadcast>> getActiveBroadcastsFilteredByCourse() {
         MediatorLiveData<List<Broadcast>> mediatorLiveDataMerger = new MediatorLiveData<>();
 
-        LiveData<List<Broadcast>> activeBroadcasts = broadcastRepository.getActiveBroadcasts();
+        LiveData<List<Broadcast>> activeBroadcasts = broadcastRepository.observeActiveBroadcasts();
 
         mediatorLiveDataMerger.addSource(activeBroadcasts, broadcasts -> {
             mediatorLiveDataMerger.setValue(filterBroadcastsOnCourse(activeBroadcasts, courseCode));
