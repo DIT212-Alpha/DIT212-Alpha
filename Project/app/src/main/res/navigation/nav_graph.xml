@@ -26,6 +26,9 @@
             android:id="@+id/action_mapScreenFragment_to_add_broadcast_fragment"
             app:destination="@id/add_broadcast_fragment"
             app:popUpTo="@id/add_broadcast_fragment" />
+        <action
+            android:id="@+id/action_mapScreenFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/add_broadcast_fragment"

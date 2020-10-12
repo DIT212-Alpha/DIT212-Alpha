@@ -17,27 +17,42 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0" >
+
+
+    </androidx.fragment.app.FragmentContainerView>
 
     <Button
         android:id="@+id/broadcast_btn"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/broadCastButton"
         android:layout_width="114dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:background="#D50E52"
+        android:layout_marginBottom="25dp"
         android:padding="8dp"
         android:text="@string/broadcast"
-        android:textColor="#ffffff"
+        android:textColor="#FAF7F7"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
+        android:id="@+id/sign_out_btn"
+        style="@style/signOutBtn"
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="26dp"
+        android:text="@string/sign_out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 
 
     <AutoCompleteTextView
