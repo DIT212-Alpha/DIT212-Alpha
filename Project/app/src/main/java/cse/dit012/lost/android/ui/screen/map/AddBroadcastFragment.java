@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -26,6 +27,7 @@ import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.Gps;
+import cse.dit012.lost.service.UserInfoService;
 
 /**
  * View and controller for creating a broadcast.
@@ -34,6 +36,7 @@ import cse.dit012.lost.service.Gps;
  */
 public final class AddBroadcastFragment extends Fragment {
     private static final String TAG = "AddBroadcastFragment";
+    private MapViewModel model;
 
     private Button addButton, cancelButton;
     private Spinner courseSpinner;
@@ -76,10 +79,12 @@ public final class AddBroadcastFragment extends Fragment {
                 LatLng loc = Gps.getGps().getLocation(context);
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
+                //Gets user id from the logged in device
+                String ownerUID = UserInfoService.getUserInfoService().getID();
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
+                        ownerUID,
                         new MapCoordinates(loc.latitude, loc.longitude),
-                        new User("default","default"),
                         course,
                         descriptionEditText.getText().toString()
                 ).whenComplete((broadcast, throwable) -> {
