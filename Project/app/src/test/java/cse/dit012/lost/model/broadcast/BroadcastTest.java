@@ -2,26 +2,25 @@ package cse.dit012.lost.model.broadcast;
 
 import org.junit.Test;
 
-import java.sql.Time;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class BroadcastTest {
     String id = "1";
-    User user = new User("Bob", "Bobsson");
+    String userId = "mrbob";
     BroadcastId bId = new BroadcastId(id);
     Date date = new Date();
-    Date activeDate = new Date(1,1,1);
-    MapCoordinates coordinates= new MapCoordinates(2,2);
+    Date activeDate = new Date(1, 1, 1);
+    MapCoordinates coordinates = new MapCoordinates(2, 2);
     String description = "test";
     CourseCode code = new CourseCode("dit111");
-    Broadcast test = new Broadcast(bId,date,activeDate,coordinates,user,code,description);
+    Broadcast test = new Broadcast(bId, userId, date, activeDate, coordinates, code, description);
+
     @Test
     public void getId() {
         assertEquals(test.getId(), bId);
@@ -29,48 +28,48 @@ public class BroadcastTest {
 
     @Test
     public void getCreatedAt() {
-        assertEquals(test.getCreatedAt(),date);
+        assertEquals(test.getCreatedAt(), date);
     }
 
     @Test
     public void getLastActive() {
-        assertEquals(test.getLastActive(),activeDate);
+        assertEquals(test.getLastActive(), activeDate);
     }
 
     @Test
     public void updateLastActive() {
         test.updateLastActive();
-        assertNotEquals(test.getLastActive(),activeDate);
+        assertNotEquals(test.getLastActive(), activeDate);
 
     }
 
     @Test
     public void getCoordinates() {
-        assertEquals(coordinates,test.getCoordinates());
+        assertEquals(coordinates, test.getCoordinates());
     }
 
     @Test
     public void getCourse() {
-        assertEquals(test.getCourse(),code);
+        assertEquals(test.getCourse(), code);
     }
 
     @Test
     public void updateCourse() {
         CourseCode newCode = new CourseCode("tda222");
         test.updateCourse(newCode);
-        assertEquals(newCode,test.getCourse());
+        assertEquals(newCode, test.getCourse());
     }
 
     @Test
     public void getDescription() {
-        assertEquals(description,test.getDescription());
+        assertEquals(description, test.getDescription());
     }
 
     @Test
-    public void updateDescription(){
+    public void updateDescription() {
         String newDescription = "test2";
         test.updateDescription(newDescription);
-        assertEquals(newDescription,test.getDescription());
+        assertEquals(newDescription, test.getDescription());
     }
 
 

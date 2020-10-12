@@ -2,7 +2,7 @@ package cse.dit012.lost.model.user;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class UserTest {
 
@@ -10,15 +10,16 @@ public class UserTest {
     public void getName() {
         String name = "1234";
         String surname = "abcd";
-        User user = new User(name,surname);
-        assertEquals(name,user.getName());
+        User user = new User("userid", name, surname);
+        assertEquals(name, user.getName());
     }
+
     @Test
     public void getSurname() {
         String name = "1234";
         String surname = "abcd";
-        User user = new User(name,surname);
-        assertEquals(surname,user.getSurname());
+        User user = new User("userid", name, surname);
+        assertEquals("", surname, user.getSurname());
     }
 
     @Test
@@ -26,9 +27,9 @@ public class UserTest {
         String name = "123";
         String surname = "abcd";
         String newName = "12345";
-        User user = new User(name,surname);
+        User user = new User("userid", name, surname);
         user.changeName(newName);
-        assertEquals(newName,user.getName());
+        assertEquals(newName, user.getName());
     }
 
     @Test
@@ -36,9 +37,9 @@ public class UserTest {
         String name = "123";
         String surname = "abcd";
         String newSurname = "abcdef";
-        User user = new User(name,surname);
+        User user = new User("userid", name, surname);
         user.changeSurname(newSurname);
-        assertEquals(newSurname,user.getSurname());
+        assertEquals(newSurname, user.getSurname());
     }
 
 }

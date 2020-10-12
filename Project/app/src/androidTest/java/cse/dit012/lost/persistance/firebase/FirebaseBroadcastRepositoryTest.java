@@ -1,11 +1,8 @@
 package cse.dit012.lost.persistance.firebase;
 
-import android.os.Looper;
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.test.annotation.UiThreadTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,7 +22,6 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.service.BroadcastService;
 import java9.util.concurrent.CompletableFuture;
 
@@ -49,11 +45,10 @@ public class FirebaseBroadcastRepositoryTest {
     }
 
     private Broadcast storeNewTestBroadcast() throws TimeoutException, ExecutionException, InterruptedException {
-        User user = new User("Bob", "Bobsson");
         MapCoordinates coordinates = new MapCoordinates(2, 2);
         String description = "test";
         CourseCode code = new CourseCode("dit111");
-        return broadcastService.createBroadcast(coordinates, user, code, description).get(5, TimeUnit.SECONDS);
+        return broadcastService.createBroadcast("mrbob", coordinates, code, description).get(5, TimeUnit.SECONDS);
     }
 
     @Test
@@ -73,10 +68,10 @@ public class FirebaseBroadcastRepositoryTest {
         Broadcast returnedBroadcast = repository.getById(broadcast.getId()).get(5, TimeUnit.SECONDS);
 
         assertEquals(returnedBroadcast.getId(), broadcast.getId());
+        assertEquals(returnedBroadcast.getOwnerUID(), broadcast.getOwnerUID());
         assertEquals(returnedBroadcast.getLastActive(), broadcast.getLastActive());
         assertEquals(returnedBroadcast.getCreatedAt(), broadcast.getCreatedAt());
         assertEquals(returnedBroadcast.getCoordinates(), broadcast.getCoordinates());
-        assertEquals(returnedBroadcast.getOwner(), broadcast.getOwner());
         assertEquals(returnedBroadcast.getCourse(), broadcast.getCourse());
         assertEquals(returnedBroadcast.getDescription(), broadcast.getDescription());
     }
@@ -103,23 +98,23 @@ public class FirebaseBroadcastRepositoryTest {
         Broadcast returnedBroadcast = future.get(5, TimeUnit.SECONDS);
 
         assertEquals(returnedBroadcast.getId(), broadcast.getId());
+        assertEquals(returnedBroadcast.getOwnerUID(), broadcast.getOwnerUID());
         assertEquals(returnedBroadcast.getLastActive(), broadcast.getLastActive());
         assertEquals(returnedBroadcast.getCreatedAt(), broadcast.getCreatedAt());
         assertEquals(returnedBroadcast.getCoordinates(), broadcast.getCoordinates());
-        assertEquals(returnedBroadcast.getOwner(), broadcast.getOwner());
         assertEquals(returnedBroadcast.getCourse(), broadcast.getCourse());
         assertEquals(returnedBroadcast.getDescription(), broadcast.getDescription());
     }
 
     @Test
     public void observeActiveBroadcasts_withNewlyCreatedAndOldBroadcast_observerIsCalledOnceWithRecentAndWithoutOldBroadcast() throws InterruptedException, ExecutionException, TimeoutException {
-        User user = new User("Bob", "Bobsson");
+        String ownerId = "mrbob";
         MapCoordinates coordinates = new MapCoordinates(2, 2);
         String description = "test";
         CourseCode code = new CourseCode("dit111");
 
-        Broadcast oldBroadcast = repository.store(new Broadcast(repository.nextIdentity(), new Date(0), new Date(0), coordinates, user, code, description)).get(5, TimeUnit.SECONDS);
-        Broadcast recentBroadcast = repository.store(new Broadcast(repository.nextIdentity(), new Date(), new Date(), coordinates, user, code, description)).get(5, TimeUnit.SECONDS);
+        Broadcast oldBroadcast = repository.store(new Broadcast(repository.nextIdentity(), ownerId, new Date(0), new Date(0), coordinates, code, description)).get(5, TimeUnit.SECONDS);
+        Broadcast recentBroadcast = repository.store(new Broadcast(repository.nextIdentity(), ownerId, new Date(), new Date(), coordinates, code, description)).get(5, TimeUnit.SECONDS);
 
         CompletableFuture<List<Broadcast>> future = new CompletableFuture<>();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {

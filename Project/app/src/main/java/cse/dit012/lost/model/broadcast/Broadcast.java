@@ -20,19 +20,19 @@ public final class Broadcast {
     public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
 
     private final BroadcastId id;
+    private final String ownerUID;
     private final Date createdAt;
     private Date lastActive;
     private final MapCoordinates coordinates;
-    private String ownerUID;
     private CourseCode course;
     private String description;
 
-    public Broadcast(String ownerUID,BroadcastId id, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
+    public Broadcast(BroadcastId id, String ownerUID, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
         this.id = checkNotNull(id);
+        this.ownerUID = checkNotNull(ownerUID);
         this.createdAt = checkNotNull(createdAt);
         this.lastActive = checkNotNull(lastActive);
         this.coordinates = coordinates;
-        this.ownerUID = checkNotNull(ownerUID);
         this.course = checkNotNull(course);
         this.description = checkNotNull(description);
     }
