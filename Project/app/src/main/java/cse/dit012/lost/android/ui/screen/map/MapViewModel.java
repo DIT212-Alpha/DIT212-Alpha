@@ -16,11 +16,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * View model handling data to be displayed on the map screen.
- * AUTHOR: Benjamin Sannholm, Bashar Oumari
+ * Author: Benjamin Sannholm, Bashar Oumari
  */
-public class MapViewModel extends ViewModel {
+public final class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = BroadcastRepository.get();
-    public MutableLiveData<String> courseCode = new MutableLiveData<>("");
+
+    private final MutableLiveData<String> courseCode = new MutableLiveData<>("");
 
     public void setCourseCode(String course) {
         courseCode.setValue(checkNotNull(course));
@@ -28,12 +29,13 @@ public class MapViewModel extends ViewModel {
 
     /**
      * Retrieves an immutable live list of all currently active broadcasts.
+     *
      * @return the list of broadcasts
      */
     public LiveData<List<Broadcast>> getActiveBroadcastsFilteredByCourse() {
         MediatorLiveData<List<Broadcast>> mediatorLiveDataMerger = new MediatorLiveData<>();
 
-        LiveData<List<Broadcast>> activeBroadcasts = broadcastRepository.getActiveBroadcasts();
+        LiveData<List<Broadcast>> activeBroadcasts = broadcastRepository.observeActiveBroadcasts();
 
         mediatorLiveDataMerger.addSource(activeBroadcasts, broadcasts -> {
             mediatorLiveDataMerger.setValue(filterBroadcastsOnCourse(activeBroadcasts, courseCode));
@@ -45,7 +47,7 @@ public class MapViewModel extends ViewModel {
         return mediatorLiveDataMerger;
     }
 
-    private List<Broadcast> filterBroadcastsOnCourse(LiveData<List<Broadcast>> broadcasts, LiveData<String> courseCode) {
+    private static List<Broadcast> filterBroadcastsOnCourse(LiveData<List<Broadcast>> broadcasts, LiveData<String> courseCode) {
         if (broadcasts.getValue() == null || courseCode.getValue() == null) {
             return Collections.emptyList();
         }

@@ -25,23 +25,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookActivity;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.internal.FacebookDialogFragment;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -59,13 +47,11 @@ import cse.dit012.lost.service.GoogleLoginService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
 
 /**
- * loginFragment is used to check users if they have a google account to login with
+ * User interface for checking users if they have a Google account to login with
  * just for now, this class contains a check for google for now but this will be refactored after.
+ * Author: Bashar Oumari
  */
-
-public class LoginScreenFragment extends Fragment {
-
-
+public final class LoginScreenFragment extends Fragment {
     Button loginButton;
 
     TextView textViewNewUser;
@@ -90,8 +76,7 @@ public class LoginScreenFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentLoginBinding = FragmentLoginBinding.inflate(inflater, container, false);
-
-        return  fragmentLoginBinding.getRoot();
+        return fragmentLoginBinding.getRoot();
     }
 
 
@@ -144,6 +129,4 @@ public class LoginScreenFragment extends Fragment {
 
 
     }
-
-
 }

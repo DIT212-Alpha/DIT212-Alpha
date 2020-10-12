@@ -27,50 +27,45 @@ import java.util.regex.Pattern;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentRegisterBinding;
-import cse.dit012.lost.model.user.User;
 
+/**
+ * User interface for register an account, used for registering with mail and password
+ * this class will be refactored and some functionality will be added
+ * Author: Bashar Oumari
+ */
+public final class RegistrationScreenFragment extends Fragment {
+    EditText userName;
+    EditText surName;
+    EditText userEmail;
+    EditText userPassword;
 
-public class RegistrationScreenFragment extends Fragment {
+    Button registerButton;
 
-EditText userName;
-EditText surName;
-EditText userEmail;
-EditText userPassword;
+    ProgressBar progressBar;
+    NavController navController;
 
-Button registerButton;
-
-ProgressBar progressBar;
-NavController navController;
-
-    /**
-     * Fragment for register an account, used for registering with mail and password
-     * this class will be refactored and some functionality will be added
-     */
-
-private FirebaseAuth registerAuthentication;
-FragmentRegisterBinding fragmentRegisterBinding;
-
+    private FirebaseAuth registerAuthentication;
+    FragmentRegisterBinding fragmentRegisterBinding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater,container,false);
+        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater, container, false);
         return fragmentRegisterBinding.getRoot();
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar =  view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.progressBar);
         registerAuthentication = FirebaseAuth.getInstance();
 
-        userName = fragmentRegisterBinding.registerTextUserName ;
+        userName = fragmentRegisterBinding.registerTextUserName;
         surName = fragmentRegisterBinding.registerTextSurName;
         userEmail = fragmentRegisterBinding.registerTextEmail;
         userPassword = fragmentRegisterBinding.registerTextPassword;
-        registerButton = fragmentRegisterBinding.cirRegisterButton ;
+        registerButton = fragmentRegisterBinding.cirRegisterButton;
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,15 +75,15 @@ FragmentRegisterBinding fragmentRegisterBinding;
                 String password = userPassword.getText().toString();
                 navController = Navigation.findNavController(view);
 
-                if (validate(email,password)){
+                if (validate(email, password)) {
 
-                    registerAuthentication.createUserWithEmailAndPassword(email,password).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                    registerAuthentication.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if (!task.isSuccessful()){
+                            if (!task.isSuccessful()) {
                                 try {
-                                    Toast.makeText(getContext(),"Registration unSucsessful!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Registration unSucsessful!", Toast.LENGTH_LONG).show();
                                     progressBar.setVisibility(View.INVISIBLE);
                                     throw task.getException();
                                 } catch (Exception e) {
@@ -96,8 +91,8 @@ FragmentRegisterBinding fragmentRegisterBinding;
                                 }
 
 
-                            }else {
-                                Toast.makeText(getContext(),"Registration Sucsessful! Welcome" , Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getContext(), "Registration Sucsessful! Welcome", Toast.LENGTH_LONG).show();
                                 navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
@@ -105,11 +100,8 @@ FragmentRegisterBinding fragmentRegisterBinding;
                         }
                     });
                 }
-
             }
         });
-
-
     }
 
     private boolean validate(String email, String password) {
@@ -121,7 +113,6 @@ FragmentRegisterBinding fragmentRegisterBinding;
             userEmail.setError("Email is required");
             progressBar.setVisibility(View.INVISIBLE);
             return false;
-
         } else if (!isEmailValid(email)) {
             userEmail.setError("Enter a valid email");
             return false;
@@ -136,11 +127,10 @@ FragmentRegisterBinding fragmentRegisterBinding;
             return false;
         }
 
-
         return true;
     }
 
-    public boolean isEmailValid(String email){
+    public boolean isEmailValid(String email) {
         progressBar.setVisibility(View.INVISIBLE);
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         Matcher matcher = pattern.matcher(email);
@@ -148,10 +138,8 @@ FragmentRegisterBinding fragmentRegisterBinding;
     }
 
     //Check password with minimum requirement here(it should be minimum 6 characters)
-    public boolean isPasswordValid(String password){
+    public boolean isPasswordValid(String password) {
         progressBar.setVisibility(View.INVISIBLE);
         return password.length() >= 7;
     }
-
-  
 }

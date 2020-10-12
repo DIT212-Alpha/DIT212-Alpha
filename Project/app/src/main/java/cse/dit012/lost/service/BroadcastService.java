@@ -1,7 +1,5 @@
 package cse.dit012.lost.service;
 
-import android.content.Context;
-
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -11,26 +9,34 @@ import cse.dit012.lost.model.user.User;
 import java9.util.concurrent.CompletableFuture;
 
 /**
- * This interface is service responsible for preforming tasks related to broadcasts
- * AUTHOR: Benjamin Sannholm, Sophia Pham
+ * Service responsible for preforming tasks related to broadcasts.
+ * Author: Benjamin Sannholm, Sophia Pham
  */
-
 public interface BroadcastService {
     static BroadcastService get() {
-        return new BroadcastServiceImpl(BroadcastRepository.get());
+        return fromRepository(BroadcastRepository.get());
+    }
+
+    static BroadcastService fromRepository(BroadcastRepository repository) {
+        return new BroadcastServiceImpl(repository);
     }
 
     /**
      * Creates a new broadcast placed at the given coordinates for a specific course and with a given description.
+     *
      * @param coordinates coordinates of broadcast
-     * @param courseCode the course code of the course the broadcast is for
+     * @param courseCode  the course code of the course the broadcast is for
      * @param description the description of the broadcast
      * @return the newly created broadcast
      */
-    CompletableFuture<Broadcast> createBroadcast(User user, MapCoordinates coordinates, CourseCode courseCode, String description);
+    CompletableFuture<Broadcast> createBroadcast(MapCoordinates coordinates, User user, CourseCode courseCode, String description);
 
-    void startActiveBroadcastService(Context context, BroadcastId id);
-
+    /**
+     * Updates the time a broadcast was last active.
+     *
+     * @param id the {@link BroadcastId} of the broadcast to update
+     * @return the {@link Broadcast} after it has been updated.
+     */
     CompletableFuture<Broadcast> updateBroadcastLastActive(BroadcastId id);
 
     CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description);
