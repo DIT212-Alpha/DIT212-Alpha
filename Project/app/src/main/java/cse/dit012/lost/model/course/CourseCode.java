@@ -6,10 +6,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * This class represents course code
- * AUTHOR: Benjamin Sannholm
+ * Represents a unique course code.
+ * Author: Benjamin Sannholm
  */
-
 public final class CourseCode {
     private final String courseCode;
 

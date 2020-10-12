@@ -33,10 +33,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Firebase implementation of repository responsible for storing and retrieving information about broadcasts.
- * AUTHOR: Benjamin Sannholm, Bashar Oumari
+ * Firebase backed implementation of repository responsible for storing and retrieving information about broadcasts.
+ * Author: Benjamin Sannholm, Bashar Oumari
  */
-public class FirebaseBroadcastRepository implements BroadcastRepository {
+public final class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys
     private static final String BROADCAST_PUBLISHER_KEY = "publisher";
     private static final String BROADCASTS_KEY = "broadcasts";
@@ -47,8 +47,6 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     private static final String BROADCAST_COURSECODE_KEY = "courseCode";
     private static final String BROADCAST_DESCRIPTION_KEY = "description";
 
-    public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
-
     // Firebase database instance
     private final FirebaseDatabase db;
 
@@ -56,13 +54,41 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
         db = checkNotNull(firebase);
     }
 
+    private DatabaseReference getBroadcastReference(BroadcastId id) {
+        return db.getReference(BROADCASTS_KEY).child(id.toString());
+    }
+
     @Override
     public BroadcastId nextIdentity() {
         return new BroadcastId(UUID.randomUUID().toString().toLowerCase());
     }
 
-    private DatabaseReference getBroadcastReference(BroadcastId id) {
-        return db.getReference(BROADCASTS_KEY).child(id.toString());
+    @Override
+    public CompletableFuture<Broadcast> store(Broadcast broadcast) {
+        CompletableFuture<Broadcast> future = new CompletableFuture<>();
+        getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
+                currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
+                currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
+                currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
+                currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
+                currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (committed) {
+                    future.complete(deserializeBroadcastFromDataSnapshot(currentData));
+                } else {
+                    future.completeExceptionally(error.toException());
+                }
+            }
+        });
+        return future;
     }
 
     @Override
@@ -99,44 +125,9 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
     }
 
     @Override
-    public CompletableFuture<Broadcast> store(Broadcast broadcast) {
-        CompletableFuture<Broadcast> future = new CompletableFuture<>();
-        getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
-                currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
-                currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
-                currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
-                currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
-                currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
-                return Transaction.success(currentData);
-            }
-
-            @Override
-            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                if (committed) {
-                    future.complete(deserializeBroadcastFromDataSnapshot(currentData));
-                } else {
-                    future.completeExceptionally(error.toException());
-                }
-            }
-        });
-        return future;
-    }
-
-    @Override
-    public void updateCourseDescription(BroadcastId id, String course, String description){
-        DatabaseReference reference = db.getReference(BROADCASTS_KEY).child(id.toString());
-        reference.child(BROADCAST_COURSECODE_KEY).setValue(course);
-        reference.child(BROADCAST_DESCRIPTION_KEY).setValue(description);
-    }
-
-    @Override
-    public LiveData<List<Broadcast>> getActiveBroadcasts() {
+    public LiveData<List<Broadcast>> observeActiveBroadcasts() {
         // Query root node of broadcasts tree
-        long oldestActiveTime = (System.currentTimeMillis() / 1000) - ACTIVE_TIME_MARGIN_SECONDS;
+        long oldestActiveTime = (System.currentTimeMillis() / 1000) - Broadcast.ACTIVE_TIME_MARGIN_SECONDS;
         Query query = db.getReference(BROADCASTS_KEY)
                 .orderByChild(BROADCAST_LASTACTIVE_KEY)
                 .startAt(oldestActiveTime); // Only retrieve active broadcasts
@@ -150,23 +141,22 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
 
         MediatorLiveData<List<Broadcast>> activeBroadcasts = new MediatorLiveData<>();
         activeBroadcasts.addSource(recentBroadcasts, broadcasts -> {
-            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterBroadcasts(recentBroadcasts, currentTime));
+            activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts, currentTime));
         });
         activeBroadcasts.addSource(currentTime, broadcasts -> {
-            activeBroadcasts.setValue(FirebaseBroadcastRepository.filterBroadcasts(recentBroadcasts, currentTime));
+            activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts, currentTime));
         });
         return activeBroadcasts;
     }
 
-    private static List<Broadcast> filterBroadcasts(LiveData<List<Broadcast>> broadcasts, LiveData<Date> currentTime) {
+    private static List<Broadcast> filterActiveBroadcasts(LiveData<List<Broadcast>> broadcasts, LiveData<Date> currentTime) {
         if (broadcasts.getValue() == null || currentTime.getValue() == null) {
             return Collections.emptyList();
         }
 
         List<Broadcast> filteredBroadcasts = new ArrayList<>(broadcasts.getValue().size());
         for (Broadcast broadcast : broadcasts.getValue()) {
-            long ageSinceLastActive = (currentTime.getValue().getTime() - broadcast.getLastActive().getTime()) / 1000;
-            if (ageSinceLastActive <= ACTIVE_TIME_MARGIN_SECONDS) {
+            if (broadcast.isActive(currentTime.getValue())) {
                 filteredBroadcasts.add(broadcast);
             }
         }
@@ -175,6 +165,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
 
     /**
      * Extracts information about a single broadcast in database into a {@link Broadcast} object.
+     *
      * @param broadcastSnapshot the {@link DataSnapshot} representing a single broadcast
      * @return the corresponding {@link Broadcast}
      */
@@ -191,11 +182,11 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
         String description = broadcastSnapshot.child(BROADCAST_DESCRIPTION_KEY).getValue(String.class);
 
         return new Broadcast(
-                new User("Anonymous"),
                 new BroadcastId(id),
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),
                 new MapCoordinates(lat, lon),
+                new User("Anon","Anonymous"),
                 new CourseCode(course),
                 description
         );
@@ -203,6 +194,7 @@ public class FirebaseBroadcastRepository implements BroadcastRepository {
 
     /**
      * Extracts information about a collection of broadcasts in database into a {@link List<Broadcast>} object.
+     *
      * @param broadcastsSnapshot the {@link DataSnapshot} representing a collection of broadcasts
      * @return the corresponding {@link List<Broadcast>}
      */

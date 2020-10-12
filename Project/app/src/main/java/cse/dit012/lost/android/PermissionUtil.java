@@ -5,8 +5,10 @@ import android.content.pm.PackageManager;
 
 import androidx.core.content.ContextCompat;
 
-
-
+/**
+ * Utilities for dealing with Android permissions.
+ * Author: Benjamin Sannholm
+ */
 public final class PermissionUtil {
     private PermissionUtil() {
     }

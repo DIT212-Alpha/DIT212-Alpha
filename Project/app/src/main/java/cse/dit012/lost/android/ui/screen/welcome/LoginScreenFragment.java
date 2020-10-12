@@ -41,11 +41,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -59,11 +60,13 @@ import cse.dit012.lost.service.GoogleLoginService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
 
 /**
- * loginFragment is used to check users if they have a google account to login with
+ * User interface for checking users if they have a Google account to login with
  * just for now, this class contains a check for google for now but this will be refactored after.
+ * Author: Bashar Oumari
  */
 
 public class LoginScreenFragment extends Fragment {
+
 
 
     Button loginButton;
@@ -83,6 +86,7 @@ public class LoginScreenFragment extends Fragment {
 
 
     private final ActivityResultLauncher<Intent> request =
+
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {googleLoginService.permession(result); } );
 
 
@@ -93,6 +97,7 @@ public class LoginScreenFragment extends Fragment {
 
         return  fragmentLoginBinding.getRoot();
     }
+
 
 
     @Override
@@ -117,6 +122,7 @@ public class LoginScreenFragment extends Fragment {
 
         loginButton = view.findViewById(R.id.cirLoginButton);
         textViewNewUser.setOnClickListener(view1 -> navController.navigate(R.id.action_loginFragment_to_registerFragment));
+
         editTextEmail = fragmentLoginBinding.editTextEmail;
         editTextPassword =fragmentLoginBinding.editTextPassword;
 
@@ -144,6 +150,4 @@ public class LoginScreenFragment extends Fragment {
 
 
     }
-
-
 }

@@ -17,9 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
@@ -27,35 +24,31 @@ import java.util.regex.Pattern;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentRegisterBinding;
-import cse.dit012.lost.model.user.User;
 
+/**
+ * User interface for register an account, used for registering with mail and password
+ * this class will be refactored and some functionality will be added
+ * Author: Bashar Oumari
+ */
+public final class RegistrationScreenFragment extends Fragment {
+    EditText userName;
+    EditText surName;
+    EditText userEmail;
+    EditText userPassword;
 
-public class RegistrationScreenFragment extends Fragment {
+    Button registerButton;
 
-EditText userName;
-EditText surName;
-EditText userEmail;
-EditText userPassword;
+    ProgressBar progressBar;
+    NavController navController;
 
-Button registerButton;
-
-ProgressBar progressBar;
-NavController navController;
-
-    /**
-     * Fragment for register an account, used for registering with mail and password
-     * this class will be refactored and some functionality will be added
-     */
-
-private FirebaseAuth registerAuthentication;
-FragmentRegisterBinding fragmentRegisterBinding;
-
+    private FirebaseAuth registerAuthentication;
+    FragmentRegisterBinding fragmentRegisterBinding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater,container,false);
+        fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater, container, false);
         return fragmentRegisterBinding.getRoot();
 
     }
@@ -63,13 +56,14 @@ FragmentRegisterBinding fragmentRegisterBinding;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar =  view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.progressBar);
         registerAuthentication = FirebaseAuth.getInstance();
 
-        userName = fragmentRegisterBinding.registerTextUserName ;
+        userName = fragmentRegisterBinding.registerTextUserName;
         surName = fragmentRegisterBinding.registerTextSurName;
         userEmail = fragmentRegisterBinding.registerTextEmail;
         userPassword = fragmentRegisterBinding.registerTextPassword;
+
         registerButton = fragmentRegisterBinding.cirRegisterButton ;
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -102,15 +96,7 @@ FragmentRegisterBinding fragmentRegisterBinding;
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
 
-                        }
-                    });
-                }
 
-            }
-        });
-
-
-    }
 
     private boolean validate(String email, String password) {
         // Reset errors.
@@ -140,18 +126,20 @@ FragmentRegisterBinding fragmentRegisterBinding;
         return true;
     }
 
+
     public boolean isEmailValid(String email){
         progressBar.setVisibility(View.INVISIBLE);
+
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
     //Check password with minimum requirement here(it should be minimum 6 characters)
+
     public boolean isPasswordValid(String password){
         progressBar.setVisibility(View.INVISIBLE);
+
         return password.length() >= 7;
     }
-
-  
 }

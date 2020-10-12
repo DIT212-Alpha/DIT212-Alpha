@@ -4,45 +4,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cse.dit012.lost.model.BroadcastObject;
+import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.broadcast.BroadcastId;
 
 /**
- * Author: Mathias, Responsibility: Holding and managing User information,
- * Used by : Broadcast
+ * Holds and manages user information.
+ * Author: Mathias Drage
+ * Used by: {@link Broadcast}
  */
-public class User {
+public final class User {
+    private String id;
     private String name;
-    private List<BroadcastObject> broadcastObjects;
+    private String surname;
 
-    public User(String name){
+    public User(String name,String surname) {
         this.name = name;
-        broadcastObjects = new ArrayList<>();
+        this.surname = surname;
     }
 
-    public User(String name,List<BroadcastObject> broadcastObjects){
+    public User(String id,String name, String surname) {
         this.name = name;
-        this.broadcastObjects = broadcastObjects;
+        this.surname = surname;
+        this.id = id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void changeName(String newName){
+    public String getSurname() {
+        return surname;
+    }
+
+    public void changeName(String newName) {
         name = newName;
     }
 
-    public void addBroadcastObject(BroadcastObject course){
-        broadcastObjects.add(course);
+    public void changeSurname(String newName){surname = newName;}
+
+    public String getId(){
+        return id;
     }
 
-    public void deleteBroadcastObject(int i){
-        broadcastObjects.remove(i);
-    }
-
-    public BroadcastObject getObject(int i){
-        if(broadcastObjects.size()-1 >= i){
-            return broadcastObjects.get(i);
-        }
-        return null;
-    }
 }

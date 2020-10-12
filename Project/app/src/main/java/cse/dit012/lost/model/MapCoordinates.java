@@ -5,10 +5,9 @@ import com.google.common.base.MoreObjects;
 import java.util.Objects;
 
 /**
- * This class represent the lat and long coordinates of a point on the map
- * AUTHOR: Benjamin Sannholm
+ * Representation of the lat and long coordinates of a point on the map.
+ * Author: Benjamin Sannholm
  */
-
 public final class MapCoordinates {
     private final double latitude;
     private final double longitude;
