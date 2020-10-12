@@ -72,6 +72,8 @@ public final class LoginScreenFragment extends Fragment {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {googleLoginService.permession(result); } );
 
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,7 +89,7 @@ public final class LoginScreenFragment extends Fragment {
 
         googleLoginService = new GoogleLoginService(getContext());
 
-        if (mailAndPasswordLoginService.returnTrueIfSignedIn() && ! mailAndPasswordLoginService.signOutUser()){
+        if (mailAndPasswordLoginService.getcurrentUser() != null){
             navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
             Toast.makeText(getContext(), "Welcome back", Toast.LENGTH_LONG).show();
         }
@@ -116,10 +118,22 @@ public final class LoginScreenFragment extends Fragment {
             public void onClick(View view) {
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
-                mailAndPasswordLoginService.userSignIn(email, password);
 
-                navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
-                Toast.makeText(getContext(), "Authentication Success", Toast.LENGTH_LONG).show();
+                mailAndPasswordLoginService.userSignIn(email, password, success -> {
+
+                    if (success){
+
+                        navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
+                        Toast.makeText(getContext(), "Authentication Success", Toast.LENGTH_LONG).show();
+                    }
+
+                    else {
+
+                        Toast.makeText(getContext(), "Check Your Registration", Toast.LENGTH_LONG).show();
+                    }
+
+
+                });
             }
             });
 
