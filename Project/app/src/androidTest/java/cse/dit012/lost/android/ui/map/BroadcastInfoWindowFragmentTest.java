@@ -2,15 +2,7 @@ package cse.dit012.lost.android.ui.map;
 
 import android.os.Bundle;
 
-import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.TypeTextAction;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.PositionAssertions;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
-
-import com.google.firebase.auth.UserInfo;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,10 +14,7 @@ import java.util.concurrent.ExecutionException;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.model.broadcast.BroadcastId;
-import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
 import cse.dit012.lost.service.UserInfoService;
@@ -34,7 +23,6 @@ import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
-import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.OWNER_ID;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_COURSE;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_DESCRIPTION;
@@ -42,13 +30,10 @@ import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_I
 import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.assertion.ViewAssertions.*;
-import static org.hamcrest.Matchers.allOf;
-import static org.junit.Assert.assertEquals;
+
 
 public class BroadcastInfoWindowFragmentTest {
 
-    //User user = new User("Berta", "Bertsson");
-    String userID = "BroadcastInfoWindowTester";
     MapCoordinates coordinates = new MapCoordinates(0, 0);
     String description = "test";
     CourseCode code = new CourseCode("DIT000");
@@ -142,26 +127,38 @@ public class BroadcastInfoWindowFragmentTest {
         onView(withId(R.id.cancelInfoWindowButton)).perform(click());
         onView(withId(R.id.course)).check(matches(withText(broadcast.getCourse().toString())));
     }
-/*
+
     //The description edited and then canceled should be not be changed in the database
     @Test
     public void cancelDescriptionInfoWindowDatabase() {
-
+        onView(withId(R.id.editInfoWindowButton)).perform(click());
+        onView(withId(R.id.editDescriptionText)).perform(replaceText("test123"));
+        onView(withId(R.id.cancelInfoWindowButton)).perform(click());
+        onView(withId(R.id.description)).check(matches(withText(broadcast.getDescription())));
     }
-
 
     //The course edited should be updated in the database
     @Test
     public void editCourseInfoWindowDatabase() {
-
+        onView(withId(R.id.editInfoWindowButton)).perform(click());
+        onView(withId(R.id.editCourseText)).perform(replaceText("DIT123"));
+        onView(withId(R.id.saveInfoWindowButton)).perform(click());
+        onView(withId(R.id.course)).check(matches(withText("DIT123")));
     }
 
     //The description edited should be updated in the database
     @Test
     public void editDescriptionInfoWindowDatabase() {
-
+        onView(withId(R.id.editInfoWindowButton)).perform(click());
+        onView(withId(R.id.editDescriptionText)).perform(replaceText("test123"));
+        onView(withId(R.id.saveInfoWindowButton)).perform(click());
+        onView(withId(R.id.description)).check(matches(withText("test123")));
     }
-    */
 
-
+    //The delete button should delete the broadcast
+    @Test
+    public void deleteBroadcast() {
+        //onView(withId(R.id.delete)).perform(click());
+        //onView(withId(R.id.frameLayout)).check(doesNotExist());
+    }
 }

@@ -44,6 +44,7 @@ public class BroadcastInfoWindowFragmentTestRecorder {
 
     @Test
     public void broadcastInfoWindowFragmentTestRecorder() {
+        //TODO check automatic log in
         ViewInteraction editText = onView(
                 allOf(withId(R.id.editTextEmail),
                         childAtPosition(
@@ -52,27 +53,7 @@ public class BroadcastInfoWindowFragmentTestRecorder {
                                         0),
                                 1),
                         isDisplayed()));
-        editText.perform(replaceText("sosop"), closeSoftKeyboard());
-
-        ViewInteraction editText2 = onView(
-                allOf(withId(R.id.editTextEmail), withText("sosop"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fragment2),
-                                        0),
-                                1),
-                        isDisplayed()));
-        editText2.perform(click());
-
-        ViewInteraction editText3 = onView(
-                allOf(withId(R.id.editTextEmail), withText("sosop"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fragment2),
-                                        0),
-                                1),
-                        isDisplayed()));
-        editText3.perform(replaceText("sophia_pham@hotmail.com"));
+        editText.perform(replaceText("sophia_pham@hotmail.com"), closeSoftKeyboard());
 
         ViewInteraction editText4 = onView(
                 allOf(withId(R.id.editTextEmail), withText("sophia_pham@hotmail.com"),

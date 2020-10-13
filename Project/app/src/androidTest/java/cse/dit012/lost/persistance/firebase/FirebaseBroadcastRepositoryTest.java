@@ -1,4 +1,4 @@
-package cse.dit012.lost.persistance.firebase;
+/*package cse.dit012.lost.persistance.firebase;
 
 import android.os.Looper;
 
@@ -140,4 +140,4 @@ public class FirebaseBroadcastRepositoryTest {
         assertFalse("Old broadcast is not excluded", returnedBroadcasts.contains(oldBroadcast));
         assertTrue("Recent broadcast is not included", returnedBroadcasts.contains(recentBroadcast));
     }
-}
+}*/
