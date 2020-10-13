@@ -13,17 +13,14 @@ import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 /**
  * Provides the GPS location of the Android device.
  * Author: Mathias Drage
- * Used by: {@link AddBroadcastFragment} and {@link LostMapFragment}
+ * Used by: GpsService
  */
-public final class Gps {
+public final class Gps implements GpsService{
     private LatLng location;
     // Communicates with the android system to manage location
     private LocationManager locationManager;
     // Singleton object
     private static Gps gps = new Gps();
-
-    private Gps() {
-    }
 
     /**
      * Precondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
@@ -46,7 +43,7 @@ public final class Gps {
     /**
      * Returns the singleton object
      */
-    public static Gps getGps() {
+    public static GpsService getGps() {
         return gps;
     }
 }

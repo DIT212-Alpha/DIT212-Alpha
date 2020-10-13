@@ -12,7 +12,6 @@ import java.util.List;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.user.User;
-import cse.dit012.lost.service.UserInfoService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

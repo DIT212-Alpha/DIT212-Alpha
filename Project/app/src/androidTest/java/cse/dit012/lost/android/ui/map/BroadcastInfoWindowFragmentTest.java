@@ -2,15 +2,7 @@ package cse.dit012.lost.android.ui.map;
 
 import android.os.Bundle;
 
-import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.TypeTextAction;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.PositionAssertions;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
-
-import com.google.firebase.auth.UserInfo;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,19 +14,15 @@ import java.util.concurrent.ExecutionException;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.model.broadcast.BroadcastId;
-import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
-import cse.dit012.lost.service.UserInfoService;
+import cse.dit012.lost.service.FirebaseUserInfoService;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
-import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.OWNER_ID;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_COURSE;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_DESCRIPTION;
@@ -62,7 +50,7 @@ public class BroadcastInfoWindowFragmentTest {
             completableFuture.complete(null);
         });
         completableFuture.get();
-        UserInfoService uis = new UserInfoService();
+        FirebaseUserInfoService uis = new FirebaseUserInfoService();
         BroadcastService broadcastService = BroadcastService.get();
         broadcast = broadcastService.createBroadcast(uis.getID(), coordinates, code, description).get();
         Bundle args = new Bundle();

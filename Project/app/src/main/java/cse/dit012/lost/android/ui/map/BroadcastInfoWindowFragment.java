@@ -10,14 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.Date;
-
 import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
+import cse.dit012.lost.service.FirebaseUserInfoService;
 import cse.dit012.lost.service.UserInfoService;
 
 /**

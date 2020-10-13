@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -24,10 +23,10 @@ import cse.dit012.lost.R;
 import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.Gps;
-import cse.dit012.lost.service.UserInfoService;
+import cse.dit012.lost.service.FirebaseUserInfoService;
+import cse.dit012.lost.service.GpsService;
 
 /**
  * View and controller for creating a broadcast.
@@ -76,11 +75,11 @@ public final class AddBroadcastFragment extends Fragment {
                 //Saves fragment context for the Gps call
                 Context context = requireContext();
                 //Get device location through the gps class
-                LatLng loc = Gps.getGps().getLocation(context);
+                LatLng loc = GpsService.getGps().getLocation(context);
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
                 //Gets user id from the logged in device
-                String ownerUID = UserInfoService.getUserInfoService().getID();
+                String ownerUID = FirebaseUserInfoService.getUserInfoService().getID();
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         ownerUID,
