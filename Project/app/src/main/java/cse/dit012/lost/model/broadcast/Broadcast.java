@@ -54,6 +54,7 @@ public final class Broadcast {
         this.lastActive = new Date(System.currentTimeMillis());
     }
 
+    //Sets the last active time 70 seconds back, making the broadcast "inactive"
     public void setToInactive(){this.lastActive = new Date(System.currentTimeMillis()-70000);}
 
     public MapCoordinates getCoordinates() {

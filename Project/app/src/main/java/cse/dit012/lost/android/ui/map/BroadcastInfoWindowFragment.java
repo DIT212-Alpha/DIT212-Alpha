@@ -22,7 +22,7 @@ import cse.dit012.lost.service.UserInfoService;
 
 /**
  * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
- * Author: Sophia Pham
+ * Author: Sophia Pham, Mathias Drage
  */
 public final class BroadcastInfoWindowFragment extends Fragment {
     static final String PARAM_COURSE = "course";
@@ -77,6 +77,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         layoutBinding.editCourseText.setText(course);
         layoutBinding.editDescriptionText.setText(description);
 
+        //Checks if the UID for the creator of the broadcast matches current users UID
         if(UserInfoService.getUserInfoService().getID().equals(ownerId)) {
             //EDIT button: Makes it possible for the user to Edit Course and Description
             layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
@@ -86,6 +87,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
                 layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
                 //TODO restore saved data
             });
+            //Delete button, sets the broadcast to "inactive" in the database, and stops updating on the broadcast
             layoutBinding.delete.setOnClickListener(v -> {
                 Intent intent = new Intent(this.requireContext(),ActiveBroadcastService.class);
                 getActivity().stopService(intent);
