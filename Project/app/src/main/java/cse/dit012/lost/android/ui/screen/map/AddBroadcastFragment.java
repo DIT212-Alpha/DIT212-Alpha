@@ -1,5 +1,7 @@
 package cse.dit012.lost.android.ui.screen.map;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +22,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.service.ActiveBroadcastService;
@@ -39,7 +46,7 @@ public final class AddBroadcastFragment extends Fragment {
 
     private Button addButton, cancelButton;
     private Spinner courseSpinner;
-    private EditText descriptionEditText;
+    private EditText descriptionEditText,selectDateEditText, selectStartTimeEditText,selectEndTimeEditText ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,6 +114,63 @@ public final class AddBroadcastFragment extends Fragment {
                 Toast.makeText(getActivity(), "select a course and set a description", Toast.LENGTH_LONG).show();
             }
         });
+    /*    //set a date for the broadcast
+        selectDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog(selectDateEditText);
+            }
+        });
 
+        //open time dialog for broadcast start
+        selectStartTimeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimeDialog(selectStartTimeEditText);
+            }
+        });
+
+        //open time dialog for broadcast end
+        selectEndTimeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimeDialog(selectEndTimeEditText);
+            }
+        });
+
+    }
+
+    //Creates and opens a time dialog (used by both start and end time)
+    private void showTimeDialog(EditText timeEditText) {
+        Calendar cal = Calendar.getInstance();
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                cal.set(Calendar.MINUTE, minute);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                timeEditText.setText(simpleDateFormat.format(cal));
+            }
+        };
+        new TimePickerDialog(getContext(), timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false).show();
+
+    }
+
+    //When the editTextField for date is pressed it triggers a datePickerDialog window
+    public void showDateDialog(EditText selectDateEditText)
+    {
+        Calendar cal = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yy-MM-dd"));
+                selectDateEditText.setText(simpleDateFormat.format(cal));
+            }
+        };
+        new DatePickerDialog(getContext(), dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
+    }*/
     }
 }
