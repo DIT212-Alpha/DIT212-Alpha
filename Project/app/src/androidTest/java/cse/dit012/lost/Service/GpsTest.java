@@ -1,4 +1,4 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.Service;
 
 import android.Manifest;
 import android.content.Context;
@@ -16,20 +16,30 @@ import org.junit.runner.RunWith;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.map.LostMapFragment;
 import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
+import cse.dit012.lost.service.GpsService;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests if getLocation returns a valid location (not null)
+ */
 @RunWith(AndroidJUnit4.class)
 public class GpsTest {
+    /**
+     * The app jumps to an appropriate fragment where the getLocation can be called
+     */
     @Before
     public void setUp() {
         FragmentScenario.launchInContainer(LostMapFragment.class);
     }
 
+    /**
+     * Test the GpsService getLocation() method
+     */
     @Test
     public void getLocation() {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        LatLng position = Gps.getGps().getLocation(appContext);
+        LatLng position = GpsService.getGps().getLocation(appContext);
         assertNotNull(position);
     }
 
