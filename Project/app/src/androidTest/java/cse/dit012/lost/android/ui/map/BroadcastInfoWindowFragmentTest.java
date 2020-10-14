@@ -1,5 +1,6 @@
 package cse.dit012.lost.android.ui.map;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.test.espresso.ViewInteraction;
@@ -8,12 +9,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import cse.dit012.lost.R;
+import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.broadcast.BroadcastId;
+import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
@@ -43,7 +48,7 @@ public class BroadcastInfoWindowFragmentTest {
     public void setup() throws ExecutionException, InterruptedException {
         CompletableFuture<Void> completableFuture = new CompletableFuture();
         MailAndPasswordLoginService login = new MailAndPasswordLoginService();
-        login.userSignIn("sophia_pham@hotmail.com", "abc1234", success -> {
+        login.userSignIn("test@test.com", "test123", success -> {
             completableFuture.complete(null);
         });
         completableFuture.get();
@@ -61,6 +66,7 @@ public class BroadcastInfoWindowFragmentTest {
     @After
     public void refresh() {
         //onView(withId(R.id.delete)).perform(click());
+        BroadcastService.get().updateBroadcastSetInactive(broadcast.getId());
     }
 
     //The course displayed should be the same as the one in the database
@@ -157,8 +163,9 @@ public class BroadcastInfoWindowFragmentTest {
 
     //The delete button should delete the broadcast
     @Test
-    public void deleteBroadcast() {
-        //onView(withId(R.id.delete)).perform(click());
-        //onView(withId(R.id.frameLayout)).check(doesNotExist());
+    public void deleteBroadcast() throws ExecutionException, InterruptedException {
+        onView(withId(R.id.delete)).perform(click());
+        BroadcastRepository broadcastRepository = BroadcastRepository.get();
+        broadcastRepository.getById(broadcast.getId()).get().isActive(new Date(System.currentTimeMillis()));
     }
 }
