@@ -1,5 +1,6 @@
 package cse.dit012.lost.android.ui.map;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.test.espresso.ViewInteraction;
@@ -8,10 +9,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import cse.dit012.lost.R;
+import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.course.CourseCode;
@@ -30,13 +33,10 @@ import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_I
 import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.assertion.ViewAssertions.*;
-import static org.hamcrest.Matchers.allOf;
-import static org.junit.Assert.assertEquals;
+
 
 public class BroadcastInfoWindowFragmentTest {
 
-    //User user = new User("Berta", "Bertsson");
-    String userID = "BroadcastInfoWindowTester";
     MapCoordinates coordinates = new MapCoordinates(0, 0);
     String description = "test";
     CourseCode code = new CourseCode("DIT000");
@@ -46,7 +46,7 @@ public class BroadcastInfoWindowFragmentTest {
     public void setup() throws ExecutionException, InterruptedException {
         CompletableFuture<Void> completableFuture = new CompletableFuture();
         MailAndPasswordLoginService login = new MailAndPasswordLoginService();
-        login.userSignIn("sophia_pham@hotmail.com", "abc1234", success -> {
+        login.userSignIn("test@test.com", "test123", success -> {
             completableFuture.complete(null);
         });
         completableFuture.get();
@@ -64,6 +64,7 @@ public class BroadcastInfoWindowFragmentTest {
     @After
     public void refresh() {
         //onView(withId(R.id.delete)).perform(click());
+        BroadcastService.get().updateBroadcastSetInactive(broadcast.getId());
     }
 
     //The course displayed should be the same as the one in the database
@@ -130,26 +131,39 @@ public class BroadcastInfoWindowFragmentTest {
         onView(withId(R.id.cancelInfoWindowButton)).perform(click());
         onView(withId(R.id.course)).check(matches(withText(broadcast.getCourse().toString())));
     }
-/*
+
     //The description edited and then canceled should be not be changed in the database
     @Test
     public void cancelDescriptionInfoWindowDatabase() {
-
+        onView(withId(R.id.editInfoWindowButton)).perform(click());
+        onView(withId(R.id.editDescriptionText)).perform(replaceText("test123"));
+        onView(withId(R.id.cancelInfoWindowButton)).perform(click());
+        onView(withId(R.id.description)).check(matches(withText(broadcast.getDescription())));
     }
-
 
     //The course edited should be updated in the database
     @Test
     public void editCourseInfoWindowDatabase() {
-
+        onView(withId(R.id.editInfoWindowButton)).perform(click());
+        onView(withId(R.id.editCourseText)).perform(replaceText("DIT123"));
+        onView(withId(R.id.saveInfoWindowButton)).perform(click());
+        onView(withId(R.id.course)).check(matches(withText("DIT123")));
     }
 
     //The description edited should be updated in the database
     @Test
     public void editDescriptionInfoWindowDatabase() {
-
+        onView(withId(R.id.editInfoWindowButton)).perform(click());
+        onView(withId(R.id.editDescriptionText)).perform(replaceText("test123"));
+        onView(withId(R.id.saveInfoWindowButton)).perform(click());
+        onView(withId(R.id.description)).check(matches(withText("test123")));
     }
-    */
 
-
+    //The delete button should delete the broadcast
+    @Test
+    public void deleteBroadcast() throws ExecutionException, InterruptedException {
+        onView(withId(R.id.delete)).perform(click());
+        BroadcastRepository broadcastRepository = BroadcastRepository.get();
+        broadcastRepository.getById(broadcast.getId()).get().isActive(new Date(System.currentTimeMillis()));
+    }
 }
