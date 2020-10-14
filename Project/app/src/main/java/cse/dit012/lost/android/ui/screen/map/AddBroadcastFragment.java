@@ -59,7 +59,7 @@ public final class AddBroadcastFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Allows for navigation to another fragments
-        final NavController navController = Navigation.findNavController(view);
+        //final NavController navController = Navigation.findNavController(view);
 
         //Cancels this fragment
         cancelButton = view.findViewById(R.id.cancelBtn);
@@ -73,6 +73,7 @@ public final class AddBroadcastFragment extends Fragment {
 
         cancelButton.setOnClickListener(view1 -> {
             //if cancelled, navigate back to mapscreenfragment
+            NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
         });
 
@@ -108,7 +109,10 @@ public final class AddBroadcastFragment extends Fragment {
                 });
 
                 //When the broadcast is added the user is taken back to the map view
+                NavController navController = Navigation.findNavController(view);
+                System.out.println(navController);
                 navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
+
             } else {
                 //If the requirements for creating a broadcast is not fulfilled
                 Toast.makeText(getActivity(), "select a course and set a description", Toast.LENGTH_LONG).show();
