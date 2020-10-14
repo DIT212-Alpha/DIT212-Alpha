@@ -1,4 +1,4 @@
-/*package cse.dit012.lost.persistance.firebase;
+package cse.dit012.lost.persistance.firebase;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
@@ -135,4 +135,4 @@ public class FirebaseBroadcastRepositoryTest {
         assertFalse("Old broadcast is not excluded", returnedBroadcasts.contains(oldBroadcast));
         assertTrue("Recent broadcast is not included", returnedBroadcasts.contains(recentBroadcast));
     }
-}*/
+}
