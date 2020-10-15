@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -64,6 +66,7 @@ public final class LoginScreenFragment extends Fragment {
     private ProgressBar progressBar;
 
     NavController navController;
+    NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build();
     GoogleLoginService googleLoginService;
     MailAndPasswordLoginService mailAndPasswordLoginService = new MailAndPasswordLoginService();
 
@@ -85,62 +88,123 @@ public final class LoginScreenFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
 
+
+        navController = Navigation.findNavController(view);
+        progressBar = fragmentLoginBinding.progressBar;
+
+        editTextEmail = fragmentLoginBinding.editTextEmail;
+        editTextPassword =fragmentLoginBinding.editTextPassword;
         googleLoginService = new GoogleLoginService(getContext());
 
+        imageButtonGoogleSignIn = fragmentLoginBinding.googleSignIn;
+        textViewNewUser = view.findViewById(R.id.clickable_text_new_user);
+        loginButton = view.findViewById(R.id.cirLoginButton);
+
+
+        checkIfUSerIsAlreadySignedIn();
+
+        setUpButtons();
+    }
+
+    /**
+     * Checks if the email and password fields are not empty
+     * @param email - mail of the user
+     * @param password - password of the user
+     * @return {boolean}
+     */
+
+    private boolean validate(String email, String password) {
+
+        editTextEmail.setError(null);
+        editTextPassword.setError(null);
+
+        if (TextUtils.isEmpty(email)) {
+            editTextEmail.setError("Email is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            return false;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            editTextPassword.setError("Password is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * check if the user is not null and proceed to the map
+     */
+
+    private void checkIfUSerIsAlreadySignedIn(){
+
         if (mailAndPasswordLoginService.getcurrentUser() != null){
-            navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
+            navController.navigate(R.id.action_loginFragment_to_mapScreenFragment, null, navOptions);
             Toast.makeText(getContext(), "Welcome back", Toast.LENGTH_LONG).show();
         }
 
-        imageButtonGoogleSignIn = fragmentLoginBinding.googleSignIn;
-
-        /**
-         * Initialize the navigation controller and change fragment on click
-         */
-
-        textViewNewUser = view.findViewById(R.id.clickable_text_new_user);
-
-        loginButton = view.findViewById(R.id.cirLoginButton);
-        textViewNewUser.setOnClickListener(view1 -> navController.navigate(R.id.action_loginFragment_to_registerFragment));
-        editTextEmail = fragmentLoginBinding.editTextEmail;
-        editTextPassword =fragmentLoginBinding.editTextPassword;
-
-
-        imageButtonGoogleSignIn.setOnClickListener(view12 -> googleLoginService.signIn(request, success -> {
-
-            navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
-        }));
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = editTextEmail.getText().toString();
-                String password = editTextPassword.getText().toString();
-
-                mailAndPasswordLoginService.userSignIn(email, password, success -> {
-
-                    if (success){
-
-                        navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
-                        Toast.makeText(getContext(), "Authentication Success", Toast.LENGTH_LONG).show();
-                    }
-
-                    else {
-
-                        Toast.makeText(getContext(), "Check Your Registration", Toast.LENGTH_LONG).show();
-                    }
-
-
-                });
-            }
-            });
-
-
-
-
-
-
     }
+
+
+    /**
+     * Set up the buttons with listeners
+     */
+    private void setUpButtons(){
+        imageButtonGoogleSignIn.setOnClickListener( this :: googleProceedToMapFragment);
+        textViewNewUser.setOnClickListener(this :: proceedToRegisterFragment);
+        loginButton.setOnClickListener(this ::  mailLoginUser);
+    }
+
+    /**
+     * Sign in with google and proceed to mapFragment
+     * @param view
+     */
+
+    private void  googleProceedToMapFragment(View view) {
+
+        googleLoginService.signIn(request, success -> {
+
+            navController.navigate(R.id.action_loginFragment_to_mapScreenFragment, null, navOptions);
+
+        });
+    }
+
+    /**
+     * proceed to registerFragment
+     * @param view
+     */
+    private void proceedToRegisterFragment(View view){
+        navController.navigate(R.id.action_loginFragment_to_registerFragment);
+    }
+
+    /**
+     * user mail login, and proceed to mapFragment
+     * @param view
+     */
+    private void mailLoginUser(View view){
+
+        progressBar.setVisibility(View.VISIBLE);
+        String email = editTextEmail.getText().toString();
+        String password = editTextPassword.getText().toString();
+
+        if (validate(email, password)) {
+
+            mailAndPasswordLoginService.userSignIn(email, password, success -> {
+
+                if (success) {
+
+                    navController.navigate(R.id.action_loginFragment_to_mapScreenFragment, null, navOptions);
+                    Toast.makeText(getContext(), "Authentication Success", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                } else {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getContext(), "Check Your Registration", Toast.LENGTH_LONG).show();
+                }
+
+            });
+        }
+    }
+
 }

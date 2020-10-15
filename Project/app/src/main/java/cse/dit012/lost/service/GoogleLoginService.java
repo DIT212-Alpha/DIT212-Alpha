@@ -45,6 +45,9 @@ public interface LoginCallBack{
 
     }
 
+    /**
+     * Configure google sign in and build
+     */
     private void createGoogleRequest(){
 
         // Configure Google Sign In
@@ -56,6 +59,12 @@ public interface LoginCallBack{
         mGoogleSignInClient = GoogleSignIn.getClient(googleSignInContext,gso);
 
     }
+
+    /**
+     * opens a google sign in window and tries to authenticate with firebase if google sign in
+     * succeeded
+     * @param activityResult - ActivityResult
+     */
 
     public void permession(ActivityResult activityResult){
 
@@ -82,6 +91,11 @@ public interface LoginCallBack{
         }
     }
 
+    /**
+     * gets the sign in intent and launches it
+     * @param activityResultLauncher - Launch intent with ActivityResultLauncher
+     * @param loginCallBack - Callback
+     */
 
     public void signIn(ActivityResultLauncher<Intent> activityResultLauncher, LoginCallBack loginCallBack) {
         LoginCallBack = loginCallBack;
@@ -89,6 +103,12 @@ public interface LoginCallBack{
         activityResultLauncher.launch(signInIntent);
 
     }
+
+
+    /**
+     * Tries to sign in the user with firebase  with the obtained credentials from google
+     * @param idToken - the idToken obtained from google
+     */
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -108,8 +128,11 @@ public interface LoginCallBack{
                             Toast.makeText(googleSignInContext,"Authentication Failed",Toast.LENGTH_SHORT).show();
 
                         }
-
                     }
+
                 });
     }
+
+
+
 }

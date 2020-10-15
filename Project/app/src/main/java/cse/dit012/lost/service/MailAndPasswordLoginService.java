@@ -25,8 +25,9 @@ public interface BooleanLoginCallBack{
     FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mailAndPasswordLogIn = FirebaseAuth.getInstance();
 
-
-
+    /**
+     * Check if the user already signed in and get the current user
+     */
 
     private void checkIfUserIsSignedIn(){
 
@@ -39,8 +40,14 @@ public interface BooleanLoginCallBack{
         };
     }
 
-
-
+    /**
+     *
+     * @param mail {String} - mail of the user
+     * @param password {String} - password of the user
+     * @param booleanLoginCallBack - Callback
+     *
+     *   Tries to sign in the user with the already gained mail and password
+     */
 
     public void userSignIn(String mail, String password, BooleanLoginCallBack booleanLoginCallBack){
 
@@ -64,11 +71,18 @@ public interface BooleanLoginCallBack{
 
     }
 
+    /**
+     * Sign out the user
+     */
 
     public void signOutUser(){
         FirebaseAuth.getInstance().signOut();
     }
 
+    /**
+     * get the current user
+      * @return - FirebaseUser
+     */
     public FirebaseUser getcurrentUser(){
        return mailAndPasswordLogIn.getCurrentUser();
     }
