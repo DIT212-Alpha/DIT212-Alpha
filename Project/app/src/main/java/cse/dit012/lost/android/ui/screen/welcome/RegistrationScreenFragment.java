@@ -58,8 +58,9 @@ public final class RegistrationScreenFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar = view.findViewById(R.id.progressBar);
+        progressBar = fragmentRegisterBinding.progressBar;
         registerAuthentication = FirebaseAuth.getInstance();
+        navController = Navigation.findNavController(view);
 
         userName = fragmentRegisterBinding.registerTextUserName;
         surName = fragmentRegisterBinding.registerTextSurName;
@@ -67,54 +68,31 @@ public final class RegistrationScreenFragment extends Fragment {
         userPassword = fragmentRegisterBinding.registerTextPassword;
         registerButton = fragmentRegisterBinding.cirRegisterButton;
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
-                String email = userEmail.getText().toString();
-                String password = userPassword.getText().toString();
-                navController = Navigation.findNavController(view);
 
-                if (validate(email, password)) {
-
-                    registerAuthentication.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if (!task.isSuccessful()) {
-                                try {
-                                    Toast.makeText(getContext(), "Registration unSucsessful!", Toast.LENGTH_LONG).show();
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    throw task.getException();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            } else {
-                                Toast.makeText(getContext(), "Registration Sucsessful! Welcome", Toast.LENGTH_LONG).show();
-                                navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
-
-                        }
-                    });
-                }
-            }
-        });
+        setupRegisterButton();
     }
 
+    /**
+     * Validate the obtained email and password from user
+     * @param email - users email
+     * @param password - users password
+     * @return {boolean}
+     */
+
     private boolean validate(String email, String password) {
+
         // Reset errors.
         userName.setError(null);
         userPassword.setError(null);
 
         if (TextUtils.isEmpty(email)) {
-            userEmail.setError("Email is required");
             progressBar.setVisibility(View.INVISIBLE);
+            userEmail.setError("Email is required");
+
             return false;
-        } else if (!isEmailValid(email)) {
+        } else if (!EmailValidate(email)) {
             userEmail.setError("Enter a valid email");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
         }
 
@@ -122,24 +100,81 @@ public final class RegistrationScreenFragment extends Fragment {
             userPassword.setError("Password is required");
             progressBar.setVisibility(View.INVISIBLE);
             return false;
-        } else if (!isPasswordValid(password)) {
+        } else if (!PasswordValidate(password)) {
             userPassword.setError("Password must contain at least 6 characters");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
         }
 
         return true;
     }
 
-    public boolean isEmailValid(String email) {
-        progressBar.setVisibility(View.INVISIBLE);
+    /**
+     * Check if the email is of a good kind
+     * @param email - mail of the user
+     * @return - boolean
+     */
+
+    public boolean EmailValidate(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
     //Check password with minimum requirement here(it should be minimum 6 characters)
-    public boolean isPasswordValid(String password) {
-        progressBar.setVisibility(View.INVISIBLE);
+
+    /**
+     * checks the minimum requirement for password
+     * @param password - password of the user
+     * @return - boolean
+     */
+    public boolean PasswordValidate(String password) {
         return password.length() >= 7;
+    }
+
+    /**
+     * Setup the register button
+     */
+
+    private void setupRegisterButton(){
+        registerButton.setOnClickListener(this :: registerWithMailAndPassword);
+    }
+
+    /**
+     * register the user with the email and password obtained
+     * @param view
+     */
+
+    private void registerWithMailAndPassword(View view){
+
+        progressBar.setVisibility(View.VISIBLE);
+        String email = userEmail.getText().toString();
+        String password = userPassword.getText().toString();
+
+        if (validate(email, password)) {
+
+            registerAuthentication.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+
+                if (!task.isSuccessful()) {
+                    progressBar.setVisibility(View.INVISIBLE);
+
+                    try {
+
+                        Toast.makeText(getContext(), "Registration unSucsessful!", Toast.LENGTH_LONG).show();
+                        throw task.getException();
+                    }
+
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(getContext(), "Registration Sucsessful! Welcome", Toast.LENGTH_LONG).show();
+                    navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
+            });
+        }
     }
 }
