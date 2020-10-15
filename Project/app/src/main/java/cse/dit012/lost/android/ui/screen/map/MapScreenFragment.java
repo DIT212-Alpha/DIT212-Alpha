@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import cse.dit012.lost.R;
@@ -48,16 +50,20 @@ public final class MapScreenFragment extends Fragment {
 
         autoCompleteTextForCourses();
 
+
         /**
          * Initialize the navigation controller and change the fragment on click
          */
         final NavController navController = Navigation.findNavController(vieww);
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mapScreenFragment, true).build();
 
-        mapScreenBinding.broadcastBtn.setOnClickListener(view -> navController.navigate(R.id.action_mapScreenFragment_to_add_broadcast_fragment));
+        mapScreenBinding.broadcastBtn.setOnClickListener(view ->
+                navController.navigate(R.id.action_mapScreenFragment_to_add_broadcast_fragment));
+
 
         mapScreenBinding.signOutBtn.setOnClickListener(view -> {
             mailAndPasswordLoginService.signOutUser();
-            navController.navigate(R.id.action_mapScreenFragment_to_loginFragment);
+            navController.navigate(R.id.action_mapScreenFragment_to_loginFragment, null, navOptions);
         });
 
     }
