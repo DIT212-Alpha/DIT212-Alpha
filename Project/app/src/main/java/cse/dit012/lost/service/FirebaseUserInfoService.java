@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseAuth;
  * Used by: BroadcastInfoWindowFragment
  */
 public class FirebaseUserInfoService implements UserInfoService {
-    private static FirebaseUserInfoService userInfo= new FirebaseUserInfoService();
 
     /**
      * @return Email of current user
@@ -24,12 +23,5 @@ public class FirebaseUserInfoService implements UserInfoService {
     public String getID(){
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         return id;
-    }
-
-    /**
-     * @return Singelton object
-     */
-    public static UserInfoService getUserInfoService(){
-        return userInfo;
     }
 }

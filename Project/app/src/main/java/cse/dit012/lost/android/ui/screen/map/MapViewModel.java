@@ -25,7 +25,6 @@ public final class MapViewModel extends ViewModel {
     public void setCourseCode(String course) {
         courseCode.setValue(checkNotNull(course));
     }
-    User user = new User("1","2");
     /**
      * Retrieves an immutable live list of all currently active broadcasts.
      *
@@ -63,8 +62,5 @@ public final class MapViewModel extends ViewModel {
             }
         }
         return filteredBroadcasts;
-    }
-    public User getUser(){
-        return user;
     }
 }

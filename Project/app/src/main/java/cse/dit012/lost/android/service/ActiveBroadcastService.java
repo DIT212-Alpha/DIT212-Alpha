@@ -26,6 +26,7 @@ import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.Gps;
+import cse.dit012.lost.service.GpsService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -181,7 +182,7 @@ public final class ActiveBroadcastService extends LifecycleService {
     private void keepAliveBroadcast() {
         if (currentBroadcast.getValue() != null) {
             // Fetch user's current coordinates
-            LatLng currentLatLng = Gps.getGps().getLocation(this);
+            LatLng currentLatLng = GpsService.getGps().getLocation(this);
             MapCoordinates currentCoords = new MapCoordinates(currentLatLng.latitude, currentLatLng.longitude);
 
             Log.v(TAG, "Distance to " + currentBroadcast.getValue().getId() + ": " + MapUtil.distanceBetweenPoints(currentCoords, currentBroadcast.getValue().getCoordinates()) + " meters");

@@ -9,13 +9,14 @@ import cse.dit012.lost.model.course.CourseCode;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class BroadcastTest {
     String id = "1";
     String userId = "mrbob";
     BroadcastId bId = new BroadcastId(id);
     Date date = new Date();
-    Date activeDate = new Date(1, 1, 1);
+    Date activeDate = new Date(System.currentTimeMillis());
     MapCoordinates coordinates = new MapCoordinates(2, 2);
     String description = "test";
     CourseCode code = new CourseCode("dit111");
@@ -25,6 +26,9 @@ public class BroadcastTest {
     public void getId() {
         assertEquals(test.getId(), bId);
     }
+
+    @Test
+    public void getOwnerUID(){assertEquals(test.getOwnerUID(),"mrbob");}
 
     @Test
     public void getCreatedAt() {
@@ -41,6 +45,12 @@ public class BroadcastTest {
         test.updateLastActive();
         assertNotEquals(test.getLastActive(), activeDate);
 
+    }
+
+    @Test
+    public void setToInActive(){
+        test.setToInactive();
+        assertTrue(activeDate.compareTo(new Date(System.currentTimeMillis()))<0);
     }
 
     @Test

@@ -27,6 +27,7 @@ import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.Gps;
 import cse.dit012.lost.service.FirebaseUserInfoService;
 import cse.dit012.lost.service.GpsService;
+import cse.dit012.lost.service.UserInfoService;
 
 /**
  * View and controller for creating a broadcast.
@@ -79,7 +80,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
                 //Gets user id from the logged in device
-                String ownerUID = FirebaseUserInfoService.getUserInfoService().getID();
+                String ownerUID = UserInfoService.getUserInfoService().getID();
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         ownerUID,

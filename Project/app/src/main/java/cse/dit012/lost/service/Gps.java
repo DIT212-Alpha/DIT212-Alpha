@@ -19,8 +19,6 @@ public final class Gps implements GpsService{
     private LatLng location;
     // Communicates with the android system to manage location
     private LocationManager locationManager;
-    // Singleton object
-    private static Gps gps = new Gps();
 
     /**
      * Precondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
@@ -38,12 +36,5 @@ public final class Gps implements GpsService{
             location = new LatLng(temp.getLatitude(), temp.getLongitude());
         }
         return location;
-    }
-
-    /**
-     * Returns the singleton object
-     */
-    public static GpsService getGps() {
-        return gps;
     }
 }
