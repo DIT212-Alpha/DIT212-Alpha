@@ -1,6 +1,5 @@
 package cse.dit012.lost.android.ui.screen.map;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +11,7 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -44,9 +44,9 @@ public final class MapScreenFragment extends Fragment {
     public void onViewCreated(@NonNull View vieww, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(vieww, savedInstanceState);
 
+        model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
 
         autoCompleteTextForCourses();
-
 
         // Initialize the navigation controller and change the fragment on click
         final NavController navController = Navigation.findNavController(vieww);
@@ -60,22 +60,17 @@ public final class MapScreenFragment extends Fragment {
             mailAndPasswordLoginService.signOutUser();
             navController.navigate(R.id.action_mapScreenFragment_to_loginFragment, null, navOptions);
         });
-
     }
 
     /**
      * reads the input from user and send it to filter the chosen course on map
      */
     private void autoCompleteTextForCourses() {
-        mapScreenBinding.autoCompleteTextView.setThreshold(1);
-        mapScreenBinding.autoCompleteTextView.setTextColor(Color.BLACK);
-        mapScreenBinding.autoCompleteTextView.setHint(R.string.enter_course_to_filter);
-
         String[] arrayCourses = getResources().getStringArray(R.array.StringCourses);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, arrayCourses);
-        mapScreenBinding.autoCompleteTextView.setAdapter(adapter);
+        mapScreenBinding.courseFilterTextbox.setAdapter(adapter);
 
-        mapScreenBinding.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+        mapScreenBinding.courseFilterTextbox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }

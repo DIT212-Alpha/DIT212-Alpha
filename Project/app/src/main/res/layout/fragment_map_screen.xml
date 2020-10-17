@@ -11,29 +11,20 @@
         android:name="cse.dit012.lost.android.ui.map.LostMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        tools:layout="@layout/fragment_map_infowindow" />
 
     <Button
         android:id="@+id/broadcast_btn"
         style="@style/broadCastButton"
-        android:layout_width="114dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="25dp"
-        android:padding="8dp"
         android:text="@string/broadcast"
-        android:textColor="#FAF7F7"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -41,32 +32,30 @@
     <Button
         android:id="@+id/sign_out_btn"
         style="@style/signOutBtn"
-        android:layout_width="114dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="25dp"
         android:text="@string/sign_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
+        android:id="@+id/course_filter_textbox"
         style="@android:style/Widget.AutoCompleteTextView"
         android:layout_width="200dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:text=""
+        android:completionThreshold="1"
+        android:hint="@string/enter_course_to_filter"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        android:hint="@string/enter_course_to_filter"
-        android:completionThreshold="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--Fragment for showing the map
-        AUTHOR: Benjamin Sannholm -->
+    <!--Fragment for everything displayed on the main map screen
+        Author: Benjamin Sannholm, Bashar Oumari -->

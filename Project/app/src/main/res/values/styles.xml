@@ -44,26 +44,34 @@
     </style>
 
     <style name="loginButton" parent="viewParent">
+        <item name="android:minWidth">182dp</item>
+        <item name="android:height">40dp</item>
         <item name="android:background">@drawable/button_background_blue</item>
         <item name="android:textColor">@color/whiteTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="signOutBtn" parent="viewParent">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
         <item name="android:background">@drawable/button_background_grey</item>
         <item name="android:textColor">@color/whiteTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="registerButton" parent="viewParent">
+        <item name="android:minWidth">182dp</item>
+        <item name="android:height">40dp</item>
         <item name="android:background">@drawable/button_background_white</item>
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="broadCastButton" parent="viewParent">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
         <item name="android:background">@drawable/button_background_red</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/whiteTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
 

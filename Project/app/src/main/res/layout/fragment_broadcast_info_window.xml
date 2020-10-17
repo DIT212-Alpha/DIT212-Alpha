@@ -2,20 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
+    android:id="@+id/infoWindowContainer"
     android:layout_width="200dp"
     android:layout_height="140dp"
-    android:textAlignment="textStart"
     tools:context=".android.ui.map.BroadcastInfoWindowFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/textViewInfoBox"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/course"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="6dp"
@@ -32,12 +35,15 @@
 
         <TextView
             android:id="@+id/description"
-            android:layout_width="180dp"
-            android:layout_height="70dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:paddingStart="4dp"
             android:paddingTop="8dp"
             android:textAlignment="viewStart"
             android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/editInfoWindowButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/course" />
@@ -45,21 +51,24 @@
         <Button
             android:id="@+id/editInfoWindowButton"
             android:layout_width="45dp"
-            android:layout_height="30dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
-            android:text="edit"
+            android:background="@drawable/button_background_grey"
+            android:text="@string/broadcast_info_window_edit"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/delete"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
             android:layout_marginStart="3dp"
             android:layout_marginBottom="3dp"
-            android:text="delete"
+            android:background="@drawable/button_background_red"
+            android:text="@string/broadcast_info_window_delete"
+            android:textColor="#FFFFFF"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -68,34 +77,22 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/editViewInfoBox"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <EditText
-            android:id="@+id/editDescriptionText"
-            android:layout_width="180dp"
-            android:layout_height="70dp"
-            android:ems="10"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:text="Name"
-            android:textAlignment="gravity"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editCourseText" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/editCourseText"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000000"
@@ -103,26 +100,47 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name" />
+
+        <EditText
+            android:id="@+id/editDescriptionText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:textAlignment="gravity"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/saveInfoWindowButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCourseText"
+            tools:text="Name" />
 
         <Button
             android:id="@+id/saveInfoWindowButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
+            android:layout_width="45dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
-            android:text="SAVE"
+            android:background="@drawable/button_background_grey"
+            android:text="@string/broadcast_info_window_save"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/cancelInfoWindowButton"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
             android:layout_marginStart="3dp"
             android:layout_marginBottom="3dp"
-            android:text="CANCEL"
+            android:background="@drawable/button_background_grey"
+            android:text="@string/broadcast_info_window_cancel"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

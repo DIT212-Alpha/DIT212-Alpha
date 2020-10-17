@@ -65,4 +65,9 @@
     <string name="select_time_end">Select end time</string>
 
     <string name="sign_out">Sign Out</string>
+
+    <string name="broadcast_info_window_save">Save</string>
+    <string name="broadcast_info_window_cancel">Cancel</string>
+    <string name="broadcast_info_window_edit">Edit</string>
+    <string name="broadcast_info_window_delete">Delete</string>
 </resources>

@@ -10,6 +10,7 @@
         android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--Fragment for showing the map
+        Author: Benjamin Sannholm -->
