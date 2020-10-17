@@ -18,7 +18,7 @@ import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
-import cse.dit012.lost.service.UserInfoService;
+import cse.dit012.lost.service.AuthenticatedUserService;
 import java9.util.concurrent.CompletableFuture;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
@@ -54,7 +54,7 @@ public class BroadcastInfoWindowFragmentTest {
         completableFuture.get();
 
         // Create dummy test broadcast
-        UserInfoService uis = UserInfoService.getUserInfoService();
+        AuthenticatedUserService uis = AuthenticatedUserService.get();
         BroadcastService broadcastService = BroadcastService.get();
         broadcast = broadcastService.createBroadcast(uis.getID(), coordinates, code, description).get();
 

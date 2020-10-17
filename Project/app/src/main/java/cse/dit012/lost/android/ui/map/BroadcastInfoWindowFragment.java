@@ -15,10 +15,9 @@ import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.model.user.UserId;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.UserInfoService;
+import cse.dit012.lost.service.AuthenticatedUserService;
 
 /**
  * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
@@ -77,7 +76,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         layoutBinding.editDescriptionText.setText(description);
 
         //Checks if the UID for the creator of the broadcast matches current users UID
-        if (UserInfoService.getUserInfoService().getID().equals(new UserId(ownerId))) {
+        if (AuthenticatedUserService.get().getID().equals(new UserId(ownerId))) {
             //EDIT button: Makes it possible for the user to Edit Course and Description
             layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
                 layoutBinding.editCourseText.setText(layoutBinding.course.getText());

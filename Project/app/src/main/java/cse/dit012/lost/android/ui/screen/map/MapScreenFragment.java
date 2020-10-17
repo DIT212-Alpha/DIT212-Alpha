@@ -1,5 +1,6 @@
 package cse.dit012.lost.android.ui.screen.map;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import androidx.navigation.Navigation;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentMapScreenBinding;
+import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
 
 /**
@@ -29,8 +31,6 @@ public final class MapScreenFragment extends Fragment {
     private FragmentMapScreenBinding mapScreenBinding;
 
     private MapViewModel model;
-
-    private final MailAndPasswordLoginService mailAndPasswordLoginService = new MailAndPasswordLoginService();
 
 
     @Nullable
@@ -57,7 +57,7 @@ public final class MapScreenFragment extends Fragment {
 
 
         mapScreenBinding.signOutBtn.setOnClickListener(view -> {
-            mailAndPasswordLoginService.signOutUser();
+            AuthenticatedUserService.get().signOutUser();
             navController.navigate(R.id.action_mapScreenFragment_to_loginFragment, null, navOptions);
         });
     }

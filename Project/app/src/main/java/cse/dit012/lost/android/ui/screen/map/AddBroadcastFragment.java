@@ -1,7 +1,5 @@
 package cse.dit012.lost.android.ui.screen.map;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,9 +19,6 @@ import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
@@ -33,7 +26,7 @@ import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.GpsService;
-import cse.dit012.lost.service.UserInfoService;
+import cse.dit012.lost.service.AuthenticatedUserService;
 
 /**
  * View and controller for creating a broadcast.
@@ -84,7 +77,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
                 //Gets user id from the logged in device
-                UserId ownerUID = UserInfoService.getUserInfoService().getID();
+                UserId ownerUID = AuthenticatedUserService.get().getID();
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         ownerUID,

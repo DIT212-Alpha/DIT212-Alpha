@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentLoginBinding;
+import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.GoogleLoginService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
 
@@ -119,12 +120,10 @@ public final class LoginScreenFragment extends Fragment {
      */
 
     private void checkIfUSerIsAlreadySignedIn() {
-
-        if (mailAndPasswordLoginService.getcurrentUser() != null) {
+        if (AuthenticatedUserService.get().isLoggedIn()) {
             navController.navigate(R.id.action_loginFragment_to_mapScreenFragment, null, navOptions);
             Toast.makeText(getContext(), "Welcome back", Toast.LENGTH_LONG).show();
         }
-
     }
 
 
