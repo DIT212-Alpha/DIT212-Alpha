@@ -1,11 +1,8 @@
 package cse.dit012.lost.android.ui.screen.welcome;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -26,22 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.util.Arrays;
-import java.util.List;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentLoginBinding;
@@ -72,9 +51,9 @@ public final class LoginScreenFragment extends Fragment {
 
 
     private final ActivityResultLauncher<Intent> request =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {googleLoginService.permession(result); } );
-
-
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                googleLoginService.permession(result);
+            });
 
 
     @Nullable
@@ -94,7 +73,7 @@ public final class LoginScreenFragment extends Fragment {
         progressBar = fragmentLoginBinding.progressBar;
 
         editTextEmail = fragmentLoginBinding.editTextEmail;
-        editTextPassword =fragmentLoginBinding.editTextPassword;
+        editTextPassword = fragmentLoginBinding.editTextPassword;
         googleLoginService = new GoogleLoginService(getContext());
 
         imageButtonGoogleSignIn = fragmentLoginBinding.googleSignIn;
@@ -109,7 +88,8 @@ public final class LoginScreenFragment extends Fragment {
 
     /**
      * Checks if the email and password fields are not empty
-     * @param email - mail of the user
+     *
+     * @param email    - mail of the user
      * @param password - password of the user
      * @return {boolean}
      */
@@ -138,9 +118,9 @@ public final class LoginScreenFragment extends Fragment {
      * check if the user is not null and proceed to the map
      */
 
-    private void checkIfUSerIsAlreadySignedIn(){
+    private void checkIfUSerIsAlreadySignedIn() {
 
-        if (mailAndPasswordLoginService.getcurrentUser() != null){
+        if (mailAndPasswordLoginService.getcurrentUser() != null) {
             navController.navigate(R.id.action_loginFragment_to_mapScreenFragment, null, navOptions);
             Toast.makeText(getContext(), "Welcome back", Toast.LENGTH_LONG).show();
         }
@@ -151,18 +131,19 @@ public final class LoginScreenFragment extends Fragment {
     /**
      * Set up the buttons with listeners
      */
-    private void setUpButtons(){
-        imageButtonGoogleSignIn.setOnClickListener( this :: googleProceedToMapFragment);
-        textViewNewUser.setOnClickListener(this :: proceedToRegisterFragment);
-        loginButton.setOnClickListener(this ::  mailLoginUser);
+    private void setUpButtons() {
+        imageButtonGoogleSignIn.setOnClickListener(this::googleProceedToMapFragment);
+        textViewNewUser.setOnClickListener(this::proceedToRegisterFragment);
+        loginButton.setOnClickListener(this::mailLoginUser);
     }
 
     /**
      * Sign in with google and proceed to mapFragment
+     *
      * @param view
      */
 
-    private void  googleProceedToMapFragment(View view) {
+    private void googleProceedToMapFragment(View view) {
 
         googleLoginService.signIn(request, success -> {
 
@@ -173,17 +154,19 @@ public final class LoginScreenFragment extends Fragment {
 
     /**
      * proceed to registerFragment
+     *
      * @param view
      */
-    private void proceedToRegisterFragment(View view){
+    private void proceedToRegisterFragment(View view) {
         navController.navigate(R.id.action_loginFragment_to_registerFragment);
     }
 
     /**
      * user mail login, and proceed to mapFragment
+     *
      * @param view
      */
-    private void mailLoginUser(View view){
+    private void mailLoginUser(View view) {
 
         progressBar.setVisibility(View.VISIBLE);
         String email = editTextEmail.getText().toString();

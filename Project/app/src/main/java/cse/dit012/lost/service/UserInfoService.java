@@ -24,7 +24,7 @@ public interface UserInfoService {
     /**
      * @return Singelton object
      */
-    static UserInfoService getUserInfoService(){
+    static UserInfoService getUserInfoService() {
         return useInfo;
-    };
+    }
 }

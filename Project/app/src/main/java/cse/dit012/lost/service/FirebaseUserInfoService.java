@@ -12,7 +12,7 @@ public class FirebaseUserInfoService implements UserInfoService {
     /**
      * @return Email of current user
      */
-    public String getEmail(){
+    public String getEmail() {
         String name = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         return name;
     }
@@ -20,7 +20,7 @@ public class FirebaseUserInfoService implements UserInfoService {
     /**
      * @return User id from firebase
      */
-    public String getID(){
+    public String getID() {
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         return id;
     }

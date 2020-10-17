@@ -12,12 +12,12 @@ public final class User {
     private String name;
     private String surname;
 
-    public User(String id,String name) {
+    public User(String id, String name) {
         this.name = name;
         this.id = id;
     }
 
-    public User(String id,String name, String surname) {
+    public User(String id, String name, String surname) {
         this.name = name;
         this.surname = surname;
         this.id = id;
@@ -35,9 +35,11 @@ public final class User {
         name = newName;
     }
 
-    public void changeSurname(String newName){surname = newName;}
+    public void changeSurname(String newName) {
+        surname = newName;
+    }
 
-    public String getId(){
+    public String getId() {
         return id;
     }
 

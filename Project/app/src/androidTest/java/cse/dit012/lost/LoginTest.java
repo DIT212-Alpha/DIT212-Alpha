@@ -1,6 +1,5 @@
 package cse.dit012.lost;
 
-import android.app.Activity;
 import android.content.Context;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -10,8 +9,6 @@ import androidx.test.rule.ActivityTestRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.lang.reflect.AccessibleObject;
 
 import cse.dit012.lost.android.ui.MainActivity;
 
@@ -32,21 +29,24 @@ public class LoginTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("cse.dit012.lost", appContext.getPackageName());
     }
+
     @Test
-    public void typeUsername(){
+    public void typeUsername() {
         onView(withId(R.id.editTextEmail)).perform(typeText("Mathias"));
     }
 
     @Test
-    public void typePassword(){
+    public void typePassword() {
         onView(withId(R.id.editTextPassword)).perform((typeText("hejhejhej")));
     }
+
     @Test
-    public void clickLogin(){
+    public void clickLogin() {
         onView(withId(R.id.cirLoginButton)).perform(click());
     }
+
     @Test
-    public void clickRegister(){
+    public void clickRegister() {
         onView(withId(R.id.cirRegisterButton)).perform(click());
     }
 }

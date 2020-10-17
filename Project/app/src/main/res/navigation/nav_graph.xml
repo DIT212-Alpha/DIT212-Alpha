@@ -9,7 +9,7 @@
         android:id="@+id/loginFragment"
         android:name="cse.dit012.lost.android.ui.screen.welcome.LoginScreenFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -21,7 +21,7 @@
         android:id="@+id/mapScreenFragment"
         android:name="cse.dit012.lost.android.ui.screen.map.MapScreenFragment"
         android:label="fragment_map_screen"
-        tools:layout="@layout/fragment_map_screen" >
+        tools:layout="@layout/fragment_map_screen">
         <action
             android:id="@+id/action_mapScreenFragment_to_add_broadcast_fragment"
             app:destination="@id/add_broadcast_fragment"
@@ -34,7 +34,7 @@
         android:id="@+id/add_broadcast_fragment"
         android:name="cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment"
         android:label="fragment_add_broadcast_fragment"
-        tools:layout="@layout/fragment_add_broadcast_fragment" >
+        tools:layout="@layout/fragment_add_broadcast_fragment">
         <action
             android:id="@+id/action_add_broadcast_fragment_to_mapScreenFragment"
             app:destination="@id/mapScreenFragment"
@@ -44,12 +44,12 @@
         android:id="@+id/registerFragment"
         android:name="cse.dit012.lost.android.ui.screen.welcome.RegistrationScreenFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_mapScreenFragment"
             app:destination="@id/mapScreenFragment" />
     </fragment>
 </navigation>
 
-<!--Navigation graph for navigation, used to navigate from fragments
-    AUTHOR: Bashar Oumari-->
+    <!--Navigation graph for navigation, used to navigate from fragments
+        AUTHOR: Bashar Oumari-->

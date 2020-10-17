@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,19 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.function.Consumer;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import cse.dit012.lost.R;
 
 public class GoogleLoginService {
 
-public interface LoginCallBack{
-    void OnLogIn(boolean success);
-}
+    public interface LoginCallBack {
+        void OnLogIn(boolean success);
+    }
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private GoogleSignInClient mGoogleSignInClient;
@@ -39,7 +37,7 @@ public interface LoginCallBack{
     private LoginCallBack LoginCallBack;
 
 
-    public GoogleLoginService(Context googleSignInContext){
+    public GoogleLoginService(Context googleSignInContext) {
         this.googleSignInContext = googleSignInContext;
         createGoogleRequest();
 
@@ -48,7 +46,7 @@ public interface LoginCallBack{
     /**
      * Configure google sign in and build
      */
-    private void createGoogleRequest(){
+    private void createGoogleRequest() {
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -56,17 +54,18 @@ public interface LoginCallBack{
                 .requestEmail()
                 .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(googleSignInContext,gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(googleSignInContext, gso);
 
     }
 
     /**
      * opens a google sign in window and tries to authenticate with firebase if google sign in
      * succeeded
+     *
      * @param activityResult - ActivityResult
      */
 
-    public void permession(ActivityResult activityResult){
+    public void permession(ActivityResult activityResult) {
 
         if (activityResult.getResultCode() == Activity.RESULT_OK) {
             // There are no request code
@@ -80,21 +79,21 @@ public interface LoginCallBack{
             } catch (ApiException e) {
 
                 LoginCallBack.OnLogIn(false);
-                Toast.makeText(googleSignInContext, e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(googleSignInContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
 
             }
 
-        }
-        else {
+        } else {
             Log.d("GoogleLoginService", "Activity result code not ok");
         }
     }
 
     /**
      * gets the sign in intent and launches it
+     *
      * @param activityResultLauncher - Launch intent with ActivityResultLauncher
-     * @param loginCallBack - Callback
+     * @param loginCallBack          - Callback
      */
 
     public void signIn(ActivityResultLauncher<Intent> activityResultLauncher, LoginCallBack loginCallBack) {
@@ -107,6 +106,7 @@ public interface LoginCallBack{
 
     /**
      * Tries to sign in the user with firebase  with the obtained credentials from google
+     *
      * @param idToken - the idToken obtained from google
      */
 
@@ -121,18 +121,17 @@ public interface LoginCallBack{
                             LoginCallBack.OnLogIn(true);
 
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(googleSignInContext, "Welcome "+user.getDisplayName(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(googleSignInContext, "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
                         } else {
                             // If sign in fails, display a message to the user.
                             LoginCallBack.OnLogIn(false);
-                            Toast.makeText(googleSignInContext,"Authentication Failed",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(googleSignInContext, "Authentication Failed", Toast.LENGTH_SHORT).show();
 
                         }
                     }
 
                 });
     }
-
 
 
 }

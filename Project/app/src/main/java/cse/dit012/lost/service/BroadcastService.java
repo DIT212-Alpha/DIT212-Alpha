@@ -5,7 +5,6 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 import java9.util.concurrent.CompletableFuture;
 
 /**
@@ -29,7 +28,7 @@ public interface BroadcastService {
      * @param description the description of the broadcast
      * @return the newly created broadcast
      */
-    CompletableFuture<Broadcast> createBroadcast(String userUID,MapCoordinates coordinates, CourseCode courseCode, String description);
+    CompletableFuture<Broadcast> createBroadcast(String userUID, MapCoordinates coordinates, CourseCode courseCode, String description);
 
     /**
      * Updates the time a broadcast was last active.

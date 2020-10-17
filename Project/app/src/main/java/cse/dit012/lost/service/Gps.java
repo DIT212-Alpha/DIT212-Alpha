@@ -7,15 +7,12 @@ import android.location.LocationManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import cse.dit012.lost.android.ui.map.LostMapFragment;
-import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
-
 /**
  * Provides the GPS location of the Android device.
  * Author: Mathias Drage
  * Used by: GpsService
  */
-public final class Gps implements GpsService{
+public class Gps implements GpsService {
     private LatLng location;
     // Communicates with the android system to manage location
     private LocationManager locationManager;

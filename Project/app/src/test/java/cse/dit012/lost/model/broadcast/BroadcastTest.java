@@ -28,7 +28,9 @@ public class BroadcastTest {
     }
 
     @Test
-    public void getOwnerUID(){assertEquals(test.getOwnerUID(),"mrbob");}
+    public void getOwnerUID() {
+        assertEquals(test.getOwnerUID(), "mrbob");
+    }
 
     @Test
     public void getCreatedAt() {
@@ -48,9 +50,9 @@ public class BroadcastTest {
     }
 
     @Test
-    public void setToInActive(){
+    public void setToInActive() {
         test.setToInactive();
-        assertTrue(activeDate.compareTo(new Date(System.currentTimeMillis()))<0);
+        assertTrue(activeDate.compareTo(new Date(System.currentTimeMillis())) < 0);
     }
 
     @Test

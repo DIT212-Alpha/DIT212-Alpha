@@ -41,16 +41,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <receiver android:name=".android.service.ActiveBroadcastService$NotificationActionsReceiver"
+        <receiver
+            android:name=".android.service.ActiveBroadcastService$NotificationActionsReceiver"
             android:exported="false" />
-        
+
         <service
             android:name=".android.service.ActiveBroadcastService"
             android:exported="false"
             android:description="@string/service_active_broadcast_description" />
 
     </application>
-
 
 
 </manifest>

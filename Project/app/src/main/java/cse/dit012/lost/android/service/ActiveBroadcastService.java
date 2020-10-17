@@ -25,7 +25,6 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.Gps;
 import cse.dit012.lost.service.GpsService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -53,7 +52,7 @@ public final class ActiveBroadcastService extends LifecycleService {
      * If the service is already running, the service switches to keep the new broadcast active instead.
      *
      * @param context Android {@link Context} to start the service in
-     * @param id {@link BroadcastId} of the broadcast to be kept active
+     * @param id      {@link BroadcastId} of the broadcast to be kept active
      */
     public static void startActiveBroadcastService(Context context, BroadcastId id) {
         Intent intent = new Intent(context, ActiveBroadcastService.class);
@@ -64,7 +63,7 @@ public final class ActiveBroadcastService extends LifecycleService {
     /**
      * Creates the notification that is permanently displayed while the user keeps a broadcast active.
      *
-     * @param context Android {@link Context} to create the {@link Notification} in
+     * @param context   Android {@link Context} to create the {@link Notification} in
      * @param broadcast the {@link Broadcast} that the notification should display
      * @return the created {@link Notification}
      */

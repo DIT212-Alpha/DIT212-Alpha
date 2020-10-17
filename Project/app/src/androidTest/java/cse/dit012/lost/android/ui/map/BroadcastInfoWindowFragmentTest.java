@@ -1,6 +1,5 @@
 package cse.dit012.lost.android.ui.map;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.test.espresso.ViewInteraction;
@@ -14,25 +13,27 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import cse.dit012.lost.R;
-import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.MailAndPasswordLoginService;
 import cse.dit012.lost.service.FirebaseUserInfoService;
+import cse.dit012.lost.service.MailAndPasswordLoginService;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.OWNER_ID;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_COURSE;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_DESCRIPTION;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_ID;
-import static androidx.test.espresso.action.ViewActions.*;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
-import static androidx.test.espresso.assertion.ViewAssertions.*;
 
 
 public class BroadcastInfoWindowFragmentTest {

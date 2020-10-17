@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -36,11 +35,14 @@ public final class Broadcast {
         this.course = checkNotNull(course);
         this.description = checkNotNull(description);
     }
+
     public BroadcastId getId() {
         return id;
     }
 
-    public String getOwnerUID(){return ownerUID;}
+    public String getOwnerUID() {
+        return ownerUID;
+    }
 
     public Date getCreatedAt() {
         return new Date(createdAt.getTime());
@@ -55,7 +57,9 @@ public final class Broadcast {
     }
 
     //Sets the last active time 70 seconds back, making the broadcast "inactive"
-    public void setToInactive(){this.lastActive = new Date(System.currentTimeMillis()-70000);}
+    public void setToInactive() {
+        this.lastActive = new Date(System.currentTimeMillis() - 70000);
+    }
 
     public MapCoordinates getCoordinates() {
         return coordinates;

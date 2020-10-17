@@ -27,5 +27,7 @@ public interface GpsService {
     /**
      * @return Singelton object
      */
-    static GpsService getGps(){return gps;};
+    static GpsService getGps() {
+        return gps;
+    }
 }

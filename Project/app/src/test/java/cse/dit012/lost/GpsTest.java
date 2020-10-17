@@ -2,10 +2,9 @@ package cse.dit012.lost;
 
 import org.junit.Test;
 
-import cse.dit012.lost.service.Gps;
 import cse.dit012.lost.service.GpsService;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class GpsTest {
 

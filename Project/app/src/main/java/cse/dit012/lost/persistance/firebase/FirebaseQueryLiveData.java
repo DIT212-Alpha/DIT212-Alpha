@@ -12,7 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * LiveData object encapsulating a query to the Firebase realtime database.
  * Inspired by Firebase blog: https://firebase.googleblog.com/2017/12/using-android-architecture-components.html
- *
+ * <p>
  * Author: Benjamin Sannholm, Bashar Oumari
  */
 final class FirebaseQueryLiveData extends LiveData<DataSnapshot> {

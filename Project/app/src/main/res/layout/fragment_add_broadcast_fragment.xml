@@ -14,7 +14,7 @@
         android:visibility="visible"
         android:entries="@array/StringCourses"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="20dp" />
 
     <Button
         android:id="@+id/addBtn"
@@ -51,7 +51,7 @@
         android:hint="@string/description"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <!--- <EditText
        android:id="@+id/selectDateEditText"

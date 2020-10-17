@@ -1,6 +1,5 @@
 package cse.dit012.lost.Service;
 
-import android.Manifest;
 import android.content.Context;
 
 import androidx.fragment.app.testing.FragmentScenario;
@@ -13,12 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.map.LostMapFragment;
-import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 import cse.dit012.lost.service.GpsService;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests if getLocation returns a valid location (not null)

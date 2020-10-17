@@ -17,9 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
@@ -74,7 +71,8 @@ public final class RegistrationScreenFragment extends Fragment {
 
     /**
      * Validate the obtained email and password from user
-     * @param email - users email
+     *
+     * @param email    - users email
      * @param password - users password
      * @return {boolean}
      */
@@ -111,6 +109,7 @@ public final class RegistrationScreenFragment extends Fragment {
 
     /**
      * Check if the email is of a good kind
+     *
      * @param email - mail of the user
      * @return - boolean
      */
@@ -125,6 +124,7 @@ public final class RegistrationScreenFragment extends Fragment {
 
     /**
      * checks the minimum requirement for password
+     *
      * @param password - password of the user
      * @return - boolean
      */
@@ -136,16 +136,17 @@ public final class RegistrationScreenFragment extends Fragment {
      * Setup the register button
      */
 
-    private void setupRegisterButton(){
-        registerButton.setOnClickListener(this :: registerWithMailAndPassword);
+    private void setupRegisterButton() {
+        registerButton.setOnClickListener(this::registerWithMailAndPassword);
     }
 
     /**
      * register the user with the email and password obtained
+     *
      * @param view
      */
 
-    private void registerWithMailAndPassword(View view){
+    private void registerWithMailAndPassword(View view) {
 
         progressBar.setVisibility(View.VISIBLE);
         String email = userEmail.getText().toString();
@@ -162,9 +163,7 @@ public final class RegistrationScreenFragment extends Fragment {
 
                         Toast.makeText(getContext(), "Registration unSucsessful!", Toast.LENGTH_LONG).show();
                         throw task.getException();
-                    }
-
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 

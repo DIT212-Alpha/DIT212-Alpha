@@ -31,8 +31,6 @@ import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.Gps;
-import cse.dit012.lost.service.FirebaseUserInfoService;
 import cse.dit012.lost.service.GpsService;
 import cse.dit012.lost.service.UserInfoService;
 

@@ -16,7 +16,6 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.FirebaseUserInfoService;
 import cse.dit012.lost.service.UserInfoService;
 
 /**
@@ -77,7 +76,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         layoutBinding.editDescriptionText.setText(description);
 
         //Checks if the UID for the creator of the broadcast matches current users UID
-        if(UserInfoService.getUserInfoService().getID().equals(ownerId)) {
+        if (UserInfoService.getUserInfoService().getID().equals(ownerId)) {
             //EDIT button: Makes it possible for the user to Edit Course and Description
             layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
                 layoutBinding.editCourseText.setText(layoutBinding.course.getText());
@@ -88,14 +87,13 @@ public final class BroadcastInfoWindowFragment extends Fragment {
             });
             //Delete button, sets the broadcast to "inactive" in the database, and stops updating on the broadcast
             layoutBinding.delete.setOnClickListener(v -> {
-                Intent intent = new Intent(this.requireContext(),ActiveBroadcastService.class);
+                Intent intent = new Intent(this.requireContext(), ActiveBroadcastService.class);
                 getActivity().stopService(intent);
                 BroadcastService.get().updateBroadcastSetInactive(new BroadcastId(id));
 
 
             });
-        }
-        else{
+        } else {
             layoutBinding.editInfoWindowButton.setVisibility(View.INVISIBLE);
             layoutBinding.cancelInfoWindowButton.setVisibility(View.INVISIBLE);
         }
@@ -110,7 +108,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
                 layoutBinding.description.setText(descriptionEdited);
 
                 //Saves it in the database
-            BroadcastService.get().updateBroadcastEdit(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
+                BroadcastService.get().updateBroadcastEdit(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
 
                 layoutBinding.editViewInfoBox.setVisibility(View.GONE);
                 layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);

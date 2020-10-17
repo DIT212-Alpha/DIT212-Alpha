@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cse.dit012.lost">
+<manifest package="cse.dit012.lost">
 
-    <application>
-    </application>
+    <application></application>
 
 </manifest>

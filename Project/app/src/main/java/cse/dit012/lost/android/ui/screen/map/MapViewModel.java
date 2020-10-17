@@ -11,7 +11,6 @@ import java.util.List;
 
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
-import cse.dit012.lost.model.user.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -22,9 +21,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = BroadcastRepository.get();
     private final MutableLiveData<String> courseCode = new MutableLiveData<>("");
+
     public void setCourseCode(String course) {
         courseCode.setValue(checkNotNull(course));
     }
+
     /**
      * Retrieves an immutable live list of all currently active broadcasts.
      *
