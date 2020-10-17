@@ -52,6 +52,41 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"/>
+
+    <!--- <EditText
+       android:id="@+id/selectDateEditText"
+       android:hint="@string/select_date"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/descriptionEdittext"
+       android:layout_marginTop="20dp"
+       android:layout_marginLeft="20dp"
+       android:layout_marginRight="20dp"
+       android:layout_centerHorizontal="true"
+       />
+
+    <EditText
+        android:id="@+id/selectStartTimeEditText"
+        android:hint="@string/select_time_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectDateEditText"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerHorizontal="true"
+        />
+    <EditText
+        android:id="@+id/selectEndTimeEditText"
+        android:hint="@string/select_time_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectStartTimeEditText"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerHorizontal="true"
+        />-->
 </RelativeLayout>
 
     <!--Fragment to add broadcast when user click broadcast
