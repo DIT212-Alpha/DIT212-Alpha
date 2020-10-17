@@ -69,14 +69,23 @@ public final class ActiveBroadcastService extends LifecycleService {
      */
     private static Notification createNotification(Context context, Broadcast broadcast) {
         // Actions to be executed for interactions with the notification
-        PendingIntent openAppIntent = PendingIntent.getActivity(context,
+        PendingIntent openAppPendingIntent = PendingIntent.getActivity(
+                context,
                 0,
                 new Intent(context, MainActivity.class),
-                0);
-        PendingIntent stopBroadcastIntent = PendingIntent.getBroadcast(context,
+                0
+        );
+
+        Intent stopBroadcastIntent = new Intent(context, NotificationActionsReceiver.class);
+        if (broadcast != null) {
+            stopBroadcastIntent.putExtra(NotificationActionsReceiver.PARAM_BROADCAST_ID, broadcast.getId().toString());
+        }
+        PendingIntent stopBroadcastPendingIntent = PendingIntent.getBroadcast(
+                context,
                 0,
-                new Intent(context, NotificationActionsReceiver.class),
-                0);
+                stopBroadcastIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
 
         // Build the notification
         return new NotificationCompat.Builder(context, NotificationChannels.NOTIFICATION_CHANNEL_ACTIVE_BROADCAST_ID)
@@ -95,14 +104,14 @@ public final class ActiveBroadcastService extends LifecycleService {
                         new androidx.media.app.NotificationCompat.MediaStyle()
                                 .setShowActionsInCompactView(0) // Stop button
                                 .setShowCancelButton(true)
-                                .setCancelButtonIntent(stopBroadcastIntent)
+                                .setCancelButtonIntent(stopBroadcastPendingIntent)
                 )
                 // Behavior
-                .setContentIntent(openAppIntent)
+                .setContentIntent(openAppPendingIntent)
                 .addAction(
                         R.drawable.common_full_open_on_phone, // TODO: Change icon
                         context.getString(R.string.notification_active_broadcast_stop),
-                        stopBroadcastIntent
+                        stopBroadcastPendingIntent
                 )
                 // Misc
                 .setPriority(NotificationCompat.PRIORITY_LOW) // Needed for older Android versions without notification channels
@@ -215,11 +224,18 @@ public final class ActiveBroadcastService extends LifecycleService {
      * Android {@link BroadcastReceiver} handling interactions with the active broadcast notification.
      */
     public final static class NotificationActionsReceiver extends BroadcastReceiver {
+        public static final String PARAM_BROADCAST_ID = "broadcast_id";
+
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (!intent.hasExtra(PARAM_BROADCAST_ID)) {
+                return;
+            }
+
             // When stop button is pressed
             Log.d(TAG, "Stopping broadcast service");
             context.stopService(new Intent(context, ActiveBroadcastService.class));
+            BroadcastService.get().updateBroadcastSetInactive(new BroadcastId(intent.getStringExtra(PARAM_BROADCAST_ID)));
         }
     }
 }
