@@ -3,6 +3,7 @@ package cse.dit012.lost.service;
 import android.content.Context;
 
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -34,9 +35,8 @@ public class GpsTest {
      */
     @Test
     public void getLocation() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context appContext = ApplicationProvider.getApplicationContext();
         LatLng position = GpsService.getGps().getLocation(appContext);
         assertNotNull(position);
     }
-
 }

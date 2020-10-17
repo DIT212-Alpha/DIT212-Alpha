@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".android.ui.map.LostMapFragment">
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
         android:id="@+id/google_map"
         android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment"
         android:layout_width="match_parent"

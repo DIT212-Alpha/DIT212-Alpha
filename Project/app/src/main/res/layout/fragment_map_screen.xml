@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".android.ui.screen.map.MapScreenFragment">
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
         android:id="@+id/map"
         android:name="cse.dit012.lost.android.ui.map.LostMapFragment"
         android:layout_width="0dp"
@@ -17,10 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-
-
-    </androidx.fragment.app.FragmentContainerView>
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/broadcast_btn"

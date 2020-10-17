@@ -1,5 +1,6 @@
 package cse.dit012.lost.model.broadcast;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
@@ -20,7 +21,12 @@ public class BroadcastTest {
     private final MapCoordinates coordinates = new MapCoordinates(2, 2);
     private final String description = "test";
     private final CourseCode code = new CourseCode("dit111");
-    private final Broadcast test = new Broadcast(bId, userId, date, activeDate, coordinates, code, description);
+    private Broadcast test;
+
+    @Before
+    public void setUp() {
+        test = new Broadcast(bId, userId, date, activeDate, coordinates, code, description);
+    }
 
     @Test
     public void getId() {
@@ -46,13 +52,12 @@ public class BroadcastTest {
     public void updateLastActive() {
         test.updateLastActive();
         assertNotEquals(test.getLastActive(), activeDate);
-
     }
 
     @Test
-    public void setToInActive() {
+    public void setToInactive() {
         test.setToInactive();
-        assertTrue(activeDate.compareTo(new Date(System.currentTimeMillis())) < 0);
+        assertTrue(test.getLastActive().compareTo(new Date(System.currentTimeMillis())) < 0);
     }
 
     @Test
@@ -83,6 +88,4 @@ public class BroadcastTest {
         test.updateDescription(newDescription);
         assertEquals(newDescription, test.getDescription());
     }
-
-
 }

@@ -1,15 +1,12 @@
-package cse.dit012.lost;
+package cse.dit012.lost.service;
 
 import org.junit.Test;
-
-import cse.dit012.lost.service.GpsService;
 
 import static org.junit.Assert.assertNotNull;
 
 public class GpsTest {
-
     /**
-     * Test if the Singelton object is returned
+     * Test if the Singleton object is returned
      */
     @Test
     public void getGps() {

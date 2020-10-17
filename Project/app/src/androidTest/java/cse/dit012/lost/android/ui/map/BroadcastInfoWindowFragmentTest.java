@@ -34,26 +34,31 @@ import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.OWNER_I
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_COURSE;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_DESCRIPTION;
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_ID;
+import static org.junit.Assert.assertFalse;
 
 
 public class BroadcastInfoWindowFragmentTest {
-
     private final MapCoordinates coordinates = new MapCoordinates(0, 0);
     private final String description = "test";
     private final CourseCode code = new CourseCode("DIT000");
     private Broadcast broadcast;
 
-    @Before //Adds a test-broadcast
+    @Before
     public void setup() throws ExecutionException, InterruptedException {
+        // Login
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
         MailAndPasswordLoginService login = new MailAndPasswordLoginService();
         login.userSignIn("test@test.com", "test123", success -> {
             completableFuture.complete(null);
         });
         completableFuture.get();
+
+        // Create dummy test broadcast
         UserInfoService uis = UserInfoService.getUserInfoService();
         BroadcastService broadcastService = BroadcastService.get();
         broadcast = broadcastService.createBroadcast(uis.getID(), coordinates, code, description).get();
+
+        // Launch fragment
         Bundle args = new Bundle();
         args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
@@ -64,7 +69,6 @@ public class BroadcastInfoWindowFragmentTest {
 
     @After
     public void refresh() {
-        //onView(withId(R.id.delete)).perform(click());
         BroadcastService.get().updateBroadcastSetInactive(broadcast.getId());
     }
 
@@ -165,6 +169,7 @@ public class BroadcastInfoWindowFragmentTest {
     public void deleteBroadcast() throws ExecutionException, InterruptedException {
         onView(withId(R.id.delete)).perform(click());
         BroadcastRepository broadcastRepository = BroadcastRepository.get();
-        broadcastRepository.getById(broadcast.getId()).get().isActive(new Date(System.currentTimeMillis()));
+        assertFalse("Deleted broadcast was not deactivated",
+                broadcastRepository.getById(broadcast.getId()).get().isActive(new Date(System.currentTimeMillis())));
     }
 }
