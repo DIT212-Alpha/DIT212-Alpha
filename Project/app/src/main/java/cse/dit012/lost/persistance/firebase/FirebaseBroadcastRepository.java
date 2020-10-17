@@ -69,13 +69,13 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                currentData.child(BROADCAST_OWNER_KEY).setValue(broadcast.getOwnerUID());
                 currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
                 currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
                 currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
                 currentData.child(BROADCAST_LONG_KEY).setValue(broadcast.getCoordinates().getLongitude());
                 currentData.child(BROADCAST_COURSECODE_KEY).setValue(broadcast.getCourse().toString());
                 currentData.child(BROADCAST_DESCRIPTION_KEY).setValue(broadcast.getDescription());
-                currentData.child(BROADCAST_OWNER_KEY).setValue(broadcast.getOwnerUID());
                 return Transaction.success(currentData);
             }
 

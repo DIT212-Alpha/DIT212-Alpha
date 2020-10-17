@@ -5,7 +5,10 @@
     "broadcasts": {
       ".write": "true",
       "$broadcastId": {
-        ".validate": "newData.hasChildren(['createdAt', 'lastActive', 'lat', 'long', 'courseCode', 'description'])",
+        ".validate": "newData.hasChildren(['ownerUID', 'createdAt', 'lastActive', 'lat', 'long', 'courseCode', 'description'])",
+        "ownerUID": {
+          ".validate": "newData.isString()"
+        },
         "createdAt": {
           ".validate": "newData.isNumber() && newData.val() <= now"
         },
