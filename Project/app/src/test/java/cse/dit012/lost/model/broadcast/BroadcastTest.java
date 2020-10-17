@@ -17,7 +17,7 @@ public class BroadcastTest {
     private final String userId = "mrbob";
     private final BroadcastId bId = new BroadcastId(id);
     private final Date date = new Date();
-    private final Date activeDate = new Date(System.currentTimeMillis());
+    private final Date activeDate = new Date(System.currentTimeMillis() - 1000);
     private final MapCoordinates coordinates = new MapCoordinates(2, 2);
     private final String description = "test";
     private final CourseCode code = new CourseCode("dit111");
