@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.UserId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,14 +20,14 @@ public final class Broadcast {
     public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
 
     private final BroadcastId id;
-    private final String ownerUID;
+    private final UserId ownerUID;
     private final Date createdAt;
     private Date lastActive;
     private final MapCoordinates coordinates;
     private CourseCode course;
     private String description;
 
-    public Broadcast(BroadcastId id, String ownerUID, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
+    public Broadcast(BroadcastId id, UserId ownerUID, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
         this.id = checkNotNull(id);
         this.ownerUID = checkNotNull(ownerUID);
         this.createdAt = checkNotNull(createdAt);
@@ -40,7 +41,7 @@ public final class Broadcast {
         return id;
     }
 
-    public String getOwnerUID() {
+    public UserId getOwnerUID() {
         return ownerUID;
     }
 

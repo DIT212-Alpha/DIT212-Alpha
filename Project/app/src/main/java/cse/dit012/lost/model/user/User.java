@@ -10,17 +10,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Used by: {@link Broadcast}
  */
 public final class User {
-    private final String id;
+    private final UserId id;
     private String name;
     private String surname;
 
-    public User(String id, String name, String surname) {
+    public User(UserId id, String name, String surname) {
         this.id = id;
         this.name = checkNotNull(name);
         this.surname = checkNotNull(surname);
     }
 
-    public String getId() {
+    public UserId getId() {
         return id;
     }
 

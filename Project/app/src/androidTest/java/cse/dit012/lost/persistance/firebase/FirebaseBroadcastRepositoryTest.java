@@ -22,6 +22,7 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.UserId;
 import cse.dit012.lost.service.BroadcastService;
 import java9.util.concurrent.CompletableFuture;
 
@@ -46,9 +47,10 @@ public class FirebaseBroadcastRepositoryTest {
 
     private Broadcast storeNewTestBroadcast() throws TimeoutException, ExecutionException, InterruptedException {
         MapCoordinates coordinates = new MapCoordinates(2, 2);
+        UserId userId = new UserId("mrbob");
         String description = "test";
         CourseCode code = new CourseCode("dit111");
-        return broadcastService.createBroadcast("mrbob", coordinates, code, description).get(5, TimeUnit.SECONDS);
+        return broadcastService.createBroadcast(userId, coordinates, code, description).get(5, TimeUnit.SECONDS);
     }
 
     @Test
@@ -108,7 +110,7 @@ public class FirebaseBroadcastRepositoryTest {
 
     @Test
     public void observeActiveBroadcasts_withNewlyCreatedAndOldBroadcast_observerIsCalledOnceWithRecentAndWithoutOldBroadcast() throws InterruptedException, ExecutionException, TimeoutException {
-        String ownerId = "mrbob";
+        UserId ownerId = new UserId("mrbob");
         MapCoordinates coordinates = new MapCoordinates(2, 2);
         String description = "test";
         CourseCode code = new CourseCode("dit111");

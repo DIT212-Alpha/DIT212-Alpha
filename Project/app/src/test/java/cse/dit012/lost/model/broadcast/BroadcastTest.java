@@ -7,6 +7,7 @@ import java.util.Date;
 
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.UserId;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class BroadcastTest {
     private final String id = "1";
-    private final String userId = "mrbob";
+    private final UserId userId = new UserId("mrbob");
     private final BroadcastId bId = new BroadcastId(id);
     private final Date date = new Date();
     private final Date activeDate = new Date(System.currentTimeMillis() - 1000);
@@ -35,7 +36,7 @@ public class BroadcastTest {
 
     @Test
     public void getOwnerUID() {
-        assertEquals(test.getOwnerUID(), "mrbob");
+        assertEquals(test.getOwnerUID(), new UserId("mrbob"));
     }
 
     @Test

@@ -63,7 +63,7 @@ public class BroadcastInfoWindowFragmentTest {
         args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
         args.putString(PARAM_ID, broadcast.getId().toString());
-        args.putString(OWNER_ID, broadcast.getOwnerUID());
+        args.putString(OWNER_ID, broadcast.getOwnerUID().toString());
         launchInContainer(BroadcastInfoWindowFragment.class, args);
     }
 

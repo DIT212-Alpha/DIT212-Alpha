@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class UserTest {
-    private final String userId = "userid";
+    private final UserId userId = new UserId("userid");
     private final String name = "1234";
     private final String surname = "abcd";
     private User user;

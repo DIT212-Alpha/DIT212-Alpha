@@ -1,5 +1,7 @@
 package cse.dit012.lost.service;
 
+import cse.dit012.lost.model.user.UserId;
+
 /**
  * Author: Mathias Drage
  * Responsibility: Interface for FireBaseUserInfoService
@@ -21,5 +23,5 @@ public interface UserInfoService {
     /**
      * @return current users UID
      */
-    String getID();
+    UserId getID();
 }

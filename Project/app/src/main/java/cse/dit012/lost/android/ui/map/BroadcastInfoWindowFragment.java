@@ -15,6 +15,8 @@ import cse.dit012.lost.databinding.FragmentBroadcastInfoWindowBinding;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.User;
+import cse.dit012.lost.model.user.UserId;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.UserInfoService;
 
@@ -43,8 +45,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         args.putString(PARAM_COURSE, broadcast.getCourse().toString());
         args.putString(PARAM_DESCRIPTION, broadcast.getDescription());
         args.putString(PARAM_ID, broadcast.getId().toString());
-        args.putString(OWNER_ID, broadcast.getOwnerUID());
-
+        args.putString(OWNER_ID, broadcast.getOwnerUID().toString());
 
         fragment.setArguments(args);
         return fragment;
@@ -76,7 +77,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         layoutBinding.editDescriptionText.setText(description);
 
         //Checks if the UID for the creator of the broadcast matches current users UID
-        if (UserInfoService.getUserInfoService().getID().equals(ownerId)) {
+        if (UserInfoService.getUserInfoService().getID().equals(new UserId(ownerId))) {
             //EDIT button: Makes it possible for the user to Edit Course and Description
             layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
                 layoutBinding.editCourseText.setText(layoutBinding.course.getText());
@@ -90,8 +91,6 @@ public final class BroadcastInfoWindowFragment extends Fragment {
                 Intent intent = new Intent(this.requireContext(), ActiveBroadcastService.class);
                 requireContext().stopService(intent);
                 BroadcastService.get().updateBroadcastSetInactive(new BroadcastId(id));
-
-
             });
         } else {
             layoutBinding.editInfoWindowButton.setVisibility(View.INVISIBLE);

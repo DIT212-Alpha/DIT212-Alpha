@@ -26,6 +26,7 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.UserId;
 import java9.util.concurrent.CompletableFuture;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -69,7 +70,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                currentData.child(BROADCAST_OWNER_KEY).setValue(broadcast.getOwnerUID());
+                currentData.child(BROADCAST_OWNER_KEY).setValue(broadcast.getOwnerUID().toString());
                 currentData.child(BROADCAST_CREATEDAT_KEY).setValue(broadcast.getCreatedAt().getTime() / 1000);
                 currentData.child(BROADCAST_LASTACTIVE_KEY).setValue(broadcast.getLastActive().getTime() / 1000);
                 currentData.child(BROADCAST_LAT_KEY).setValue(broadcast.getCoordinates().getLatitude());
@@ -183,7 +184,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
 
         return new Broadcast(
                 new BroadcastId(id),
-                ownerUID,
+                new UserId(ownerUID),
                 new Date(createdAt * 1000),
                 new Date(lastActive * 1000),
                 new MapCoordinates(lat, lon),
