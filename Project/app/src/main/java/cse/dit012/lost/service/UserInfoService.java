@@ -7,9 +7,11 @@ package cse.dit012.lost.service;
  */
 public interface UserInfoService {
     /**
-     * Singelton object of type FirebaseUserInfoService
+     * @return Singleton object
      */
-    UserInfoService useInfo = new FirebaseUserInfoService();
+    static UserInfoService getUserInfoService() {
+        return new FirebaseUserInfoService();
+    }
 
     /**
      * @return current users email
@@ -20,11 +22,4 @@ public interface UserInfoService {
      * @return current users UID
      */
     String getID();
-
-    /**
-     * @return Singelton object
-     */
-    static UserInfoService getUserInfoService() {
-        return useInfo;
-    }
 }

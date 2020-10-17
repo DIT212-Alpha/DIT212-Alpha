@@ -14,20 +14,15 @@ import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
  */
 public interface GpsService {
     /**
-     * Singelton object of type Gps
+     * @return Singleton object
      */
-    GpsService gps = new Gps();
+    static GpsService getGps() {
+        return new Gps();
+    }
 
     /**
      * @param context Given by the app activity using this class by method requireContext()
      * @return current or last known location of the device running this app
      */
     LatLng getLocation(Context context);
-
-    /**
-     * @return Singelton object
-     */
-    static GpsService getGps() {
-        return gps;
-    }
 }

@@ -1,5 +1,7 @@
 package cse.dit012.lost.model.broadcast;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -33,6 +35,7 @@ public final class BroadcastId {
     /**
      * @return a string representation of the {@link Broadcast} identifier.
      */
+    @NonNull
     @Override
     public String toString() {
         return id;

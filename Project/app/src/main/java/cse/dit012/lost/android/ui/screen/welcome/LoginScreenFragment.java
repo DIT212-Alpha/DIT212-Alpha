@@ -142,7 +142,6 @@ public final class LoginScreenFragment extends Fragment {
      *
      * @param view
      */
-
     private void googleProceedToMapFragment(View view) {
 
         googleLoginService.signIn(request, success -> {

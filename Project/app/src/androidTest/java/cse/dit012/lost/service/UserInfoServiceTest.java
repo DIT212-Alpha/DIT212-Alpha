@@ -1,4 +1,4 @@
-package cse.dit012.lost.Service;
+package cse.dit012.lost.service;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cse.dit012.lost.android.ui.map.LostMapFragment;
-import cse.dit012.lost.service.UserInfoService;
 
 import static org.junit.Assert.assertEquals;
 

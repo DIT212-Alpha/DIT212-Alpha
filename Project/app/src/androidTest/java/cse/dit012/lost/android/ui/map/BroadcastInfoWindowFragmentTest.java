@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import cse.dit012.lost.R;
@@ -18,8 +17,9 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.FirebaseUserInfoService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
+import cse.dit012.lost.service.UserInfoService;
+import java9.util.concurrent.CompletableFuture;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
 import static androidx.test.espresso.Espresso.onView;
@@ -38,20 +38,20 @@ import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_I
 
 public class BroadcastInfoWindowFragmentTest {
 
-    MapCoordinates coordinates = new MapCoordinates(0, 0);
-    String description = "test";
-    CourseCode code = new CourseCode("DIT000");
-    Broadcast broadcast;
+    private final MapCoordinates coordinates = new MapCoordinates(0, 0);
+    private final String description = "test";
+    private final CourseCode code = new CourseCode("DIT000");
+    private Broadcast broadcast;
 
     @Before //Adds a test-broadcast
     public void setup() throws ExecutionException, InterruptedException {
-        CompletableFuture<Void> completableFuture = new CompletableFuture();
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
         MailAndPasswordLoginService login = new MailAndPasswordLoginService();
         login.userSignIn("test@test.com", "test123", success -> {
             completableFuture.complete(null);
         });
         completableFuture.get();
-        FirebaseUserInfoService uis = new FirebaseUserInfoService();
+        UserInfoService uis = UserInfoService.getUserInfoService();
         BroadcastService broadcastService = BroadcastService.get();
         broadcast = broadcastService.createBroadcast(uis.getID(), coordinates, code, description).get();
         Bundle args = new Bundle();

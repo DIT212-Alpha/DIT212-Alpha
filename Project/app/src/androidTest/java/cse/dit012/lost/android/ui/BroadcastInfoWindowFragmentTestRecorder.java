@@ -41,7 +41,7 @@ public class BroadcastInfoWindowFragmentTestRecorder {
 
     @Test
     public void broadcastInfoWindowFragmentTestRecorder() throws ExecutionException, InterruptedException {
-        CompletableFuture<Void> completableFuture = new CompletableFuture();
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
         MailAndPasswordLoginService login = new MailAndPasswordLoginService();
         login.userSignIn("test@test.com", "test123", success -> {
             completableFuture.complete(null);

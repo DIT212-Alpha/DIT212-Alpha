@@ -48,9 +48,7 @@ public final class MapScreenFragment extends Fragment {
         autoCompleteTextForCourses();
 
 
-        /**
-         * Initialize the navigation controller and change the fragment on click
-         */
+        // Initialize the navigation controller and change the fragment on click
         final NavController navController = Navigation.findNavController(vieww);
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.mapScreenFragment, true).build();
 

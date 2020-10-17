@@ -1,4 +1,4 @@
-package cse.dit012.lost.Service;
+package cse.dit012.lost.service;
 
 import android.content.Context;
 
@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cse.dit012.lost.android.ui.map.LostMapFragment;
-import cse.dit012.lost.service.GpsService;
 
 import static org.junit.Assert.assertNotNull;
 

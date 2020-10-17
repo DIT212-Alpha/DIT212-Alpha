@@ -45,7 +45,7 @@ public final class RegistrationScreenFragment extends Fragment {
     FragmentRegisterBinding fragmentRegisterBinding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater, container, false);
@@ -145,7 +145,6 @@ public final class RegistrationScreenFragment extends Fragment {
      *
      * @param view
      */
-
     private void registerWithMailAndPassword(View view) {
 
         progressBar.setVisibility(View.VISIBLE);

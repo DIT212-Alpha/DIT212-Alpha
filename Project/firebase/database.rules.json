@@ -2,13 +2,10 @@
   "rules": {
     ".read": "true",
     ".validate": "newData.hasChildren(['broadcasts'])",
-
     "broadcasts": {
       ".write": "true",
-
       "$broadcastId": {
         ".validate": "newData.hasChildren(['createdAt', 'lastActive', 'lat', 'long', 'courseCode', 'description'])",
-
         "createdAt": {
           ".validate": "newData.isNumber() && newData.val() <= now"
         },

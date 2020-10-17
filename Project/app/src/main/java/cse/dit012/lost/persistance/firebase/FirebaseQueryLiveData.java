@@ -2,6 +2,7 @@ package cse.dit012.lost.persistance.firebase;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +25,7 @@ final class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
     // Listener called when database query updates
     private final ValueEventListener listener = new ValueEventListener() {
         @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             // Data changed in Firebase database, so update value in LiveData object
             setValue(dataSnapshot);
         }

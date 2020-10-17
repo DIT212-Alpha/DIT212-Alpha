@@ -10,16 +10,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MailAndPasswordLoginService {
+public final class MailAndPasswordLoginService {
+    private static final String TAG = "MailAndPasswordLoginService";
 
     public interface BooleanLoginCallBack {
         void onSuccess(Boolean success);
     }
 
-    private String Tag = "MailAndPasswordLoginService";
-
-    FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mailAndPasswordLogIn = FirebaseAuth.getInstance();
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private final FirebaseAuth mailAndPasswordLogIn = FirebaseAuth.getInstance();
 
     /**
      * Check if the user already signed in and get the current user
@@ -53,11 +52,11 @@ public class MailAndPasswordLoginService {
                 if (task.isSuccessful()) {
                     booleanLoginCallBack.onSuccess(true);
                     checkIfUserIsSignedIn();
-                    Log.d(Tag, "signInWithEmail: Success");
+                    Log.d(TAG, "signInWithEmail: Success");
 
                 } else {
                     booleanLoginCallBack.onSuccess(false);
-                    Log.w(Tag, "signInWithEmailAndPassword: failure", task.getException());
+                    Log.w(TAG, "signInWithEmailAndPassword: failure", task.getException());
 
                 }
             }

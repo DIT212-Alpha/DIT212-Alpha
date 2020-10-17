@@ -88,7 +88,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
             //Delete button, sets the broadcast to "inactive" in the database, and stops updating on the broadcast
             layoutBinding.delete.setOnClickListener(v -> {
                 Intent intent = new Intent(this.requireContext(), ActiveBroadcastService.class);
-                getActivity().stopService(intent);
+                requireContext().stopService(intent);
                 BroadcastService.get().updateBroadcastSetInactive(new BroadcastId(id));
 
 
@@ -98,21 +98,18 @@ public final class BroadcastInfoWindowFragment extends Fragment {
             layoutBinding.cancelInfoWindowButton.setVisibility(View.INVISIBLE);
         }
         //SAVE button: Saves the edit
-        layoutBinding.saveInfoWindowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Saves the edit into current TextView
-                String courseEdited = layoutBinding.editCourseText.getText().toString().trim();
-                String descriptionEdited = layoutBinding.editDescriptionText.getText().toString().trim();
-                layoutBinding.course.setText(courseEdited);
-                layoutBinding.description.setText(descriptionEdited);
+        layoutBinding.saveInfoWindowButton.setOnClickListener(v -> {
+            //Saves the edit into current TextView
+            String courseEdited = layoutBinding.editCourseText.getText().toString().trim();
+            String descriptionEdited = layoutBinding.editDescriptionText.getText().toString().trim();
+            layoutBinding.course.setText(courseEdited);
+            layoutBinding.description.setText(descriptionEdited);
 
-                //Saves it in the database
-                BroadcastService.get().updateBroadcastEdit(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
+            //Saves it in the database
+            BroadcastService.get().updateBroadcastEdit(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
 
-                layoutBinding.editViewInfoBox.setVisibility(View.GONE);
-                layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);
-            }
+            layoutBinding.editViewInfoBox.setVisibility(View.GONE);
+            layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);
         });
 
         //CANCEL button: Cancels the edit

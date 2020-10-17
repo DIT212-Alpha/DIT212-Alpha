@@ -201,7 +201,7 @@
                 android:startX="-4.841254528045653"
                 android:endY="-81.84894034767152"
                 android:endX="-6.898694286346441"
-                android:type="linear"></gradient>
+                android:type="linear" />
         </aapt:attr>
     </path>
     <path
@@ -215,7 +215,7 @@
                 android:startX="-33.407166919708246"
                 android:endY="-87.94725644111634"
                 android:endX="-35.47552605056762"
-                android:type="linear"></gradient>
+                android:type="linear" />
         </aapt:attr>
     </path>
     <path

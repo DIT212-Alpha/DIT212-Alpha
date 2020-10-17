@@ -25,15 +25,15 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import cse.dit012.lost.R;
 
-public class GoogleLoginService {
+public final class GoogleLoginService {
 
     public interface LoginCallBack {
         void OnLogIn(boolean success);
     }
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private GoogleSignInClient mGoogleSignInClient;
-    public Context googleSignInContext;
+    private final Context googleSignInContext;
     private LoginCallBack LoginCallBack;
 
 

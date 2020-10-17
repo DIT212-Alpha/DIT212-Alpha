@@ -2,45 +2,41 @@ package cse.dit012.lost.model.user;
 
 import cse.dit012.lost.model.broadcast.Broadcast;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Holds and manages user information.
  * Author: Mathias Drage
  * Used by: {@link Broadcast}
  */
 public final class User {
-    private String id;
+    private final String id;
     private String name;
     private String surname;
 
-    public User(String id, String name) {
-        this.name = name;
-        this.id = id;
-    }
-
     public User(String id, String name, String surname) {
-        this.name = name;
-        this.surname = surname;
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void changeName(String newName) {
-        name = newName;
-    }
-
-    public void changeSurname(String newName) {
-        surname = newName;
+        this.name = checkNotNull(name);
+        this.surname = checkNotNull(surname);
     }
 
     public String getId() {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void changeName(String newName) {
+        name = checkNotNull(newName);
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void changeSurname(String newName) {
+        surname = checkNotNull(newName);
+    }
 }

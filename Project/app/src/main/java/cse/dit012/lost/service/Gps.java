@@ -12,10 +12,8 @@ import com.google.android.gms.maps.model.LatLng;
  * Author: Mathias Drage
  * Used by: GpsService
  */
-public class Gps implements GpsService {
+final class Gps implements GpsService {
     private LatLng location;
-    // Communicates with the android system to manage location
-    private LocationManager locationManager;
 
     /**
      * Precondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
@@ -27,7 +25,8 @@ public class Gps implements GpsService {
      */
     @SuppressLint("MissingPermission")
     public LatLng getLocation(Context context) {
-        this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        // Communicates with the android system to manage location
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Location temp = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (temp != null) {
             location = new LatLng(temp.getLatitude(), temp.getLongitude());

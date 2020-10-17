@@ -12,15 +12,15 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class BroadcastTest {
-    String id = "1";
-    String userId = "mrbob";
-    BroadcastId bId = new BroadcastId(id);
-    Date date = new Date();
-    Date activeDate = new Date(System.currentTimeMillis());
-    MapCoordinates coordinates = new MapCoordinates(2, 2);
-    String description = "test";
-    CourseCode code = new CourseCode("dit111");
-    Broadcast test = new Broadcast(bId, userId, date, activeDate, coordinates, code, description);
+    private final String id = "1";
+    private final String userId = "mrbob";
+    private final BroadcastId bId = new BroadcastId(id);
+    private final Date date = new Date();
+    private final Date activeDate = new Date(System.currentTimeMillis());
+    private final MapCoordinates coordinates = new MapCoordinates(2, 2);
+    private final String description = "test";
+    private final CourseCode code = new CourseCode("dit111");
+    private final Broadcast test = new Broadcast(bId, userId, date, activeDate, coordinates, code, description);
 
     @Test
     public void getId() {

@@ -1,12 +1,14 @@
 package cse.dit012.lost.model.course;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Represents a unique course code.
+ * Represents a unique course identifier.
  * Author: Benjamin Sannholm
  */
 public final class CourseCode {
@@ -31,8 +33,9 @@ public final class CourseCode {
     }
 
     /**
-     * @return a string representation of the {@link Course} identifier.
+     * @return a string representation of the course identifier.
      */
+    @NonNull
     @Override
     public String toString() {
         return courseCode;

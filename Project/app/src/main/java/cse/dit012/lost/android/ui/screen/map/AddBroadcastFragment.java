@@ -30,6 +30,7 @@ import cse.dit012.lost.R;
 import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.model.user.UserId;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.GpsService;
 import cse.dit012.lost.service.UserInfoService;
@@ -41,11 +42,8 @@ import cse.dit012.lost.service.UserInfoService;
  */
 public final class AddBroadcastFragment extends Fragment {
     private static final String TAG = "AddBroadcastFragment";
-    private MapViewModel model;
 
-    private Button addButton, cancelButton;
-    private Spinner courseSpinner;
-    private EditText descriptionEditText,selectDateEditText, selectStartTimeEditText,selectEndTimeEditText ;
+    private EditText selectDateEditText, selectStartTimeEditText, selectEndTimeEditText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,13 +59,13 @@ public final class AddBroadcastFragment extends Fragment {
         //final NavController navController = Navigation.findNavController(view);
 
         //Cancels this fragment
-        cancelButton = view.findViewById(R.id.cancelBtn);
+        Button cancelButton = view.findViewById(R.id.cancelBtn);
         //Finishes this fragment if broadcast is accepted
-        addButton = view.findViewById(R.id.addBtn);
+        Button addButton = view.findViewById(R.id.addBtn);
         //Spinner to scroll trough available courses
-        courseSpinner = view.findViewById(R.id.courseSpinner);
+        Spinner courseSpinner = view.findViewById(R.id.courseSpinner);
         //Let user add a description as an input
-        descriptionEditText = view.findViewById(R.id.descriptionEdittext);
+        EditText descriptionEditText = view.findViewById(R.id.descriptionEdittext);
 
 
         cancelButton.setOnClickListener(view1 -> {
@@ -86,7 +84,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
                 //Gets user id from the logged in device
-                String ownerUID = UserInfoService.getUserInfoService().getID();
+                UserId ownerUID = UserInfoService.getUserInfoService().getID();
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         ownerUID,
@@ -109,9 +107,7 @@ public final class AddBroadcastFragment extends Fragment {
 
                 //When the broadcast is added the user is taken back to the map view
                 NavController navController = Navigation.findNavController(view);
-                System.out.println(navController);
                 navController.navigate(R.id.action_add_broadcast_fragment_to_mapScreenFragment);
-
             } else {
                 //If the requirements for creating a broadcast is not fulfilled
                 Toast.makeText(getActivity(), "select a course and set a description", Toast.LENGTH_LONG).show();
