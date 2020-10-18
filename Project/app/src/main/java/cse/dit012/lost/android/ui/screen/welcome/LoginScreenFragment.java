@@ -26,9 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentLoginBinding;
 import cse.dit012.lost.service.AuthenticatedUserService;
-import cse.dit012.lost.service.EmailAndPasswordLoginService;
-import cse.dit012.lost.service.GoogleLoginService;
 import cse.dit012.lost.service.LoginService;
+import cse.dit012.lost.service.LoginServiceFactory;
 import java9.util.concurrent.CompletableFuture;
 
 /**
@@ -47,7 +46,7 @@ public final class LoginScreenFragment extends Fragment {
 
     private final ActivityResultLauncher<Intent> googleSignInActivityLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                loginUsingService(new GoogleLoginService(result));
+                loginUsingService(LoginServiceFactory.createGoogleService(result));
             });
 
     /**
@@ -158,7 +157,7 @@ public final class LoginScreenFragment extends Fragment {
         String password = fragmentLoginBinding.editTextPassword.getText().toString();
 
         if (validate(email, password)) {
-            loginUsingService(new EmailAndPasswordLoginService(email, password))
+            loginUsingService(LoginServiceFactory.createEmailAndPasswordService(email, password))
                     .handle((aVoid, throwable) -> {
                         fragmentLoginBinding.progressBar.setVisibility(View.INVISIBLE);
                         return null;

@@ -4,7 +4,7 @@ public final class AuthenticatedUserServiceFactory {
     private AuthenticatedUserServiceFactory() {
     }
 
-    public static AuthenticatedUserService createUserService(){
+    public static AuthenticatedUserService createUserService() {
         return new FirebaseAuthenticatedUserService();
     }
 }

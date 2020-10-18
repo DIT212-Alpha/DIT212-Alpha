@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cse.dit012.lost.BroadcastRepositoryFactory;
+import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 
@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Author: Benjamin Sannholm, Bashar Oumari
  */
 public final class MapViewModel extends ViewModel {
-    private final BroadcastRepository broadcastRepository = BroadcastRepositoryFactory.get();
+    private final BroadcastRepository broadcastRepository = BroadcastRepositoryProvider.get();
     private final MutableLiveData<String> courseCode = new MutableLiveData<>("");
 
     public LiveData<String> getCourseCode() {

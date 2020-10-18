@@ -4,7 +4,7 @@ public final class GpsServiceFactory {
     private GpsServiceFactory() {
     }
 
-    public static GpsService createGps(){
+    public static GpsService createGps() {
         return new Gps();
     }
 }

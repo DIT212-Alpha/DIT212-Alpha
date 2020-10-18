@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.LiveData;
 
-import cse.dit012.lost.BroadcastRepositoryFactory;
+import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.NotificationChannels;
 import cse.dit012.lost.android.ui.MainActivity;
@@ -164,7 +164,7 @@ public final class ActiveBroadcastService extends LifecycleService {
         if (currentBroadcast != null) {
             currentBroadcast.removeObservers(this);
         }
-        currentBroadcast = BroadcastRepositoryFactory.get().observeById(activeBroadcastId);
+        currentBroadcast = BroadcastRepositoryProvider.get().observeById(activeBroadcastId);
         currentBroadcast.observe(this, this::onBroadcastUpdated);
     }
 

@@ -8,10 +8,10 @@ import java9.util.concurrent.CompletableFuture;
 
 /**
  * Login service utilizing e-mail and password as credentials.
- *
+ * <p>
  * Author: Bashar Oumari
  */
-public final class EmailAndPasswordLoginService implements LoginService {
+final class EmailAndPasswordLoginService implements LoginService {
     private static final String TAG = "EmailPassLoginService";
 
     private final String email;

@@ -10,13 +10,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import cse.dit012.lost.R;
-import cse.dit012.lost.service.EmailAndPasswordLoginService;
+import cse.dit012.lost.service.LoginService;
+import cse.dit012.lost.service.LoginServiceFactory;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -43,7 +43,7 @@ public class BroadcastInfoWindowFragmentTestRecorder {
 
     @Test
     public void broadcastInfoWindowFragmentTestRecorder() throws ExecutionException, InterruptedException, TimeoutException {
-        EmailAndPasswordLoginService login = new EmailAndPasswordLoginService("test@test.com", "test123");
+        LoginService login = LoginServiceFactory.createEmailAndPasswordService("test@test.com", "test123");
         login.login().get(5, TimeUnit.SECONDS);
 
         onView(withId(R.id.broadcast_btn))

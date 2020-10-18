@@ -14,7 +14,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java9.util.concurrent.CompletableFuture;
 
-public final class GoogleLoginService implements LoginService {
+final class GoogleLoginService implements LoginService {
     public static final String TAG = "GoogleLoginService";
 
     private final ActivityResult result;

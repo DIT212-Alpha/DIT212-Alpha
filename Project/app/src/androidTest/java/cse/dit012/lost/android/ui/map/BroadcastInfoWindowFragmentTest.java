@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import cse.dit012.lost.BroadcastRepositoryFactory;
+import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
@@ -21,8 +21,8 @@ import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.EmailAndPasswordLoginService;
-import java9.util.concurrent.CompletableFuture;
+import cse.dit012.lost.service.LoginService;
+import cse.dit012.lost.service.LoginServiceFactory;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
 import static androidx.test.espresso.Espresso.onView;
@@ -49,7 +49,7 @@ public class BroadcastInfoWindowFragmentTest {
     @Before
     public void setup() throws ExecutionException, InterruptedException, TimeoutException {
         // Login
-        EmailAndPasswordLoginService login = new EmailAndPasswordLoginService("test@test.com", "test123");
+        LoginService login = LoginServiceFactory.createEmailAndPasswordService("test@test.com", "test123");
         login.login().get(5, TimeUnit.SECONDS);
 
         // Create dummy test broadcast
@@ -167,7 +167,7 @@ public class BroadcastInfoWindowFragmentTest {
     @Test
     public void deleteBroadcast() throws ExecutionException, InterruptedException {
         onView(withId(R.id.delete)).perform(click());
-        BroadcastRepository broadcastRepository = BroadcastRepositoryFactory.get();
+        BroadcastRepository broadcastRepository = BroadcastRepositoryProvider.get();
         assertFalse("Deleted broadcast was not deactivated",
                 broadcastRepository.getById(broadcast.getId()).get().isActive(new Date(System.currentTimeMillis())));
     }
