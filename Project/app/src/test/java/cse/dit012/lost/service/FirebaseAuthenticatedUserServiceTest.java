@@ -7,6 +7,6 @@ import static org.junit.Assert.assertNotNull;
 public class FirebaseAuthenticatedUserServiceTest {
     @Test
     public void getUserInfoService() {
-        assertNotNull(AuthenticatedUserService.get());
+        assertNotNull(AuthenticatedUserService.userService);
     }
 }

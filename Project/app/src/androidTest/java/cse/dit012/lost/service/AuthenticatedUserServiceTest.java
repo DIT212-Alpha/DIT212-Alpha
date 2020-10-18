@@ -26,11 +26,11 @@ public class AuthenticatedUserServiceTest {
 
     @Test
     public void getEmailTest() {
-        assertEquals(AuthenticatedUserService.get().getEmail(), "test@test.com");
+        assertEquals(AuthenticatedUserService.userService.getEmail(), "test@test.com");
     }
 
     @Test
     public void getIDTest() {
-        assertEquals(AuthenticatedUserService.get().getID(), new UserId("zqy2GeW5GNNHSLUCEbl53dYe5zD2"));
+        assertEquals(AuthenticatedUserService.userService.getID(), new UserId("zqy2GeW5GNNHSLUCEbl53dYe5zD2"));
     }
 }

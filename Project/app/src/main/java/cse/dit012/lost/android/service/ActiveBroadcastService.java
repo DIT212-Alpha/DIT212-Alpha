@@ -188,8 +188,8 @@ public final class ActiveBroadcastService extends LifecycleService {
      */
     private void keepAliveBroadcast() {
         if (currentBroadcast.getValue() != null) {
-            if (!AuthenticatedUserService.get().isLoggedIn()
-                    || !AuthenticatedUserService.get().getID().equals(currentBroadcast.getValue().getOwnerUID())) {
+            if (!AuthenticatedUserService.userService.isLoggedIn()
+                    || !AuthenticatedUserService.userService.getID().equals(currentBroadcast.getValue().getOwnerUID())) {
                 Log.d(TAG, "User is logged out or does not own active broadcast, stopping service");
                 stopSelf();
                 return;

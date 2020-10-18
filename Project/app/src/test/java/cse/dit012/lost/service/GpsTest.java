@@ -10,6 +10,6 @@ public class GpsTest {
      */
     @Test
     public void getGps() {
-        assertNotNull(GpsService.getGps());
+        assertNotNull(GpsService.gps);
     }
 }

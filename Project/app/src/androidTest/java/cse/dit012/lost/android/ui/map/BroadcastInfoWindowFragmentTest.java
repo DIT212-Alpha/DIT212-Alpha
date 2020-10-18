@@ -53,7 +53,7 @@ public class BroadcastInfoWindowFragmentTest {
         login.login().get(5, TimeUnit.SECONDS);
 
         // Create dummy test broadcast
-        AuthenticatedUserService uis = AuthenticatedUserService.get();
+        AuthenticatedUserService uis = AuthenticatedUserService.userService;
         BroadcastService broadcastService = BroadcastService.get();
         broadcast = broadcastService.createBroadcast(uis.getID(), coordinates, code, description).get();
 
