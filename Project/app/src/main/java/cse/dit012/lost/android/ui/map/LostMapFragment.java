@@ -139,7 +139,7 @@ public final class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        MapCoordinates location = GpsService.getGps().getLocation(requireContext());
+        MapCoordinates location = GpsService.gps.getLocation(requireContext());
         if (location != null) {
             googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15)));
         }

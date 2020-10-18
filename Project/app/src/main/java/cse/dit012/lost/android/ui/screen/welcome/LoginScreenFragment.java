@@ -120,7 +120,7 @@ public final class LoginScreenFragment extends Fragment {
      */
 
     private void checkIfUSerIsAlreadySignedIn() {
-        if (AuthenticatedUserService.get().isLoggedIn()) {
+        if (AuthenticatedUserService.userService.isLoggedIn()) {
             navController.navigate(R.id.action_loginFragment_to_mapScreenFragment, null, navOptions);
             Toast.makeText(getContext(), "Welcome back", Toast.LENGTH_LONG).show();
         }

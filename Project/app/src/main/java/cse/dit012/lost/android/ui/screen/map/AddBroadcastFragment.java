@@ -71,11 +71,11 @@ public final class AddBroadcastFragment extends Fragment {
                 //Saves fragment context for the Gps call
                 Context context = requireContext();
                 //Get device location through the gps class
-                MapCoordinates loc = GpsService.getGps().getLocation(context);
+                MapCoordinates loc = GpsService.gps.getLocation(context);
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
                 //Gets user id from the logged in device
-                UserId ownerUID = AuthenticatedUserService.get().getID();
+                UserId ownerUID = AuthenticatedUserService.userService.getID();
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         ownerUID,

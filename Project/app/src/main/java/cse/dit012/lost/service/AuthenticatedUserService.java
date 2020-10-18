@@ -6,15 +6,13 @@ import cse.dit012.lost.model.user.UserId;
  * Service providing information about the currently authenticated user.
  * <p>
  * Author: Mathias Drage
- * Used by: BroadcastInfoWindowFragment
+ * Used by: BroadcastInfoWindowFragment, LostMapFragment
  */
 public interface AuthenticatedUserService {
     /**
      * @return Singleton object
      */
-    static AuthenticatedUserService get() {
-        return new FirebaseAuthenticatedUserService();
-    }
+    AuthenticatedUserService userService = AuthenticatedUserServiceFactory.createUserService();
 
     /**
      * Get weather a user is currently logged in or not.

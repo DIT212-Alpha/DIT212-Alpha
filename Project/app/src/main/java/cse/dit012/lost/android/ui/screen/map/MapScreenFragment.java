@@ -55,7 +55,7 @@ public final class MapScreenFragment extends Fragment {
 
 
         mapScreenBinding.signOutBtn.setOnClickListener(view -> {
-            AuthenticatedUserService.get().signOutUser();
+            AuthenticatedUserService.userService.signOutUser();
             navController.navigate(R.id.action_mapScreenFragment_to_loginFragment, null, navOptions);
         });
     }

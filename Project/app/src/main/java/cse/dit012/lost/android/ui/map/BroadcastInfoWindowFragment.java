@@ -76,7 +76,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
         layoutBinding.editDescriptionText.setText(description);
 
         //Checks if the UID for the creator of the broadcast matches current users UID
-        if (AuthenticatedUserService.get().getID().equals(new UserId(ownerId))) {
+        if (AuthenticatedUserService.userService.getID().equals(new UserId(ownerId))) {
             //EDIT button: Makes it possible for the user to Edit Course and Description
             layoutBinding.editInfoWindowButton.setOnClickListener(v -> {
                 layoutBinding.editCourseText.setText(layoutBinding.course.getText());

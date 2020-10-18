@@ -9,15 +9,13 @@ import cse.dit012.lost.model.MapCoordinates;
 /**
  * Author: Mathias Drage
  * Responsibility: Interface for Gps
- * Used by: {@link AddBroadcastFragment} and {@link LostMapFragment}
+ * Used by: {@link AddBroadcastFragment},{@Link ActiveBroadcastService} and {@link LostMapFragment}
  */
 public interface GpsService {
     /**
      * @return Singleton object
      */
-    static GpsService getGps() {
-        return new Gps();
-    }
+    GpsService gps = GpsServiceFactory.createGps();
 
     /**
      * @param context Given by the app activity using this class by method requireContext()
