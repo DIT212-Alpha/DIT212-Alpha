@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
+import cse.dit012.lost.BroadcastRepositoryFactory;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
@@ -168,7 +169,7 @@ public class BroadcastInfoWindowFragmentTest {
     @Test
     public void deleteBroadcast() throws ExecutionException, InterruptedException {
         onView(withId(R.id.delete)).perform(click());
-        BroadcastRepository broadcastRepository = BroadcastRepository.get();
+        BroadcastRepository broadcastRepository = BroadcastRepositoryFactory.get();
         assertFalse("Deleted broadcast was not deactivated",
                 broadcastRepository.getById(broadcast.getId()).get().isActive(new Date(System.currentTimeMillis())));
     }

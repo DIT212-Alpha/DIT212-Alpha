@@ -14,11 +14,6 @@ import java9.util.concurrent.CompletableFuture;
  * Author: Benjamin Sannholm
  */
 public interface BroadcastRepository {
-    // TODO: Move somewhere else to not have model depend on implementation and Firebase
-    static BroadcastRepository get() {
-        return new FirebaseBroadcastRepository(FirebaseDatabase.getInstance());
-    }
-
     /**
      * Creates and returns a new broadcast ID.
      * The ID will be reasonably unique, but not guaranteed.

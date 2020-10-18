@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import cse.dit012.lost.BroadcastRepositoryFactory;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 import cse.dit012.lost.model.broadcast.Broadcast;
@@ -105,7 +106,7 @@ public class AddBroadcastFragmentTest {
         onView(withId(R.id.addBtn))
                 .perform(click());
 
-        BroadcastRepository repository = BroadcastRepository.get();
+        BroadcastRepository repository = BroadcastRepositoryFactory.get();
 
         CompletableFuture<List<Broadcast>> future = new CompletableFuture<>();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
@@ -147,7 +148,7 @@ public class AddBroadcastFragmentTest {
         onView(withId(R.id.addBtn))
                 .perform(click());
 
-        BroadcastRepository repository = BroadcastRepository.get();
+        BroadcastRepository repository = BroadcastRepositoryFactory.get();
 
         java9.util.concurrent.CompletableFuture<List<Broadcast>> future = new java9.util.concurrent.CompletableFuture<>();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
