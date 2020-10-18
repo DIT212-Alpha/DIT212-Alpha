@@ -85,6 +85,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
                 layoutBinding.editViewInfoBox.setVisibility(View.VISIBLE);
                 //TODO restore saved data
             });
+
             //Delete button, sets the broadcast to "inactive" in the database, and stops updating on the broadcast
             layoutBinding.delete.setOnClickListener(v -> {
                 Intent intent = new Intent(this.requireContext(), ActiveBroadcastService.class);
@@ -93,8 +94,9 @@ public final class BroadcastInfoWindowFragment extends Fragment {
             });
         } else {
             layoutBinding.editInfoWindowButton.setVisibility(View.INVISIBLE);
-            layoutBinding.cancelInfoWindowButton.setVisibility(View.INVISIBLE);
+            layoutBinding.delete.setVisibility(View.INVISIBLE);
         }
+
         //SAVE button: Saves the edit
         layoutBinding.saveInfoWindowButton.setOnClickListener(v -> {
             //Saves the edit into current TextView
