@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import cse.dit012.lost.BroadcastRepositoryFactory;
 import cse.dit012.lost.R;
@@ -19,7 +21,7 @@ import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.MailAndPasswordLoginService;
+import cse.dit012.lost.service.EmailAndPasswordLoginService;
 import java9.util.concurrent.CompletableFuture;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
@@ -45,14 +47,10 @@ public class BroadcastInfoWindowFragmentTest {
     private Broadcast broadcast;
 
     @Before
-    public void setup() throws ExecutionException, InterruptedException {
+    public void setup() throws ExecutionException, InterruptedException, TimeoutException {
         // Login
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        MailAndPasswordLoginService login = new MailAndPasswordLoginService();
-        login.userSignIn("test@test.com", "test123", success -> {
-            completableFuture.complete(null);
-        });
-        completableFuture.get();
+        EmailAndPasswordLoginService login = new EmailAndPasswordLoginService("test@test.com", "test123");
+        login.login().get(5, TimeUnit.SECONDS);
 
         // Create dummy test broadcast
         AuthenticatedUserService uis = AuthenticatedUserService.get();

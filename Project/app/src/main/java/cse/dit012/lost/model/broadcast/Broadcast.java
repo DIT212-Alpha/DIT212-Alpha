@@ -150,7 +150,7 @@ public final class Broadcast {
     /**
      * Checks if a point is within range to keep the given broadcast alive.
      *
-     * @param coords    the coordinates of the point
+     * @param coords the coordinates of the point
      * @return true, if it is in range, false otherwise
      */
     public boolean isPointInRangeOfBroadcast(MapCoordinates coords) {

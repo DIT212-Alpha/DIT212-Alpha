@@ -20,12 +20,8 @@ import static org.junit.Assert.assertTrue;
 public class AuthenticatedUserServiceTest {
     @Before
     public void setUp() throws InterruptedException, ExecutionException, TimeoutException {
-        CompletableFuture<Boolean> future = new CompletableFuture<>();
-        new MailAndPasswordLoginService().userSignIn("test@test.com", "test123", success -> {
-            future.complete(success);
-        });
-        boolean result = future.get(5, TimeUnit.SECONDS);
-        assertTrue("Failed to login test user", result);
+        EmailAndPasswordLoginService login = new EmailAndPasswordLoginService("test@test.com", "test123");
+        login.login().get(5, TimeUnit.SECONDS);
     }
 
     @Test
