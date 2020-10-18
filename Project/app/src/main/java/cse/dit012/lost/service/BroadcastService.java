@@ -1,5 +1,6 @@
 package cse.dit012.lost.service;
 
+import cse.dit012.lost.BroadcastRepositoryFactory;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -19,7 +20,7 @@ public interface BroadcastService {
      * @return an instance of the {@link BroadcastService}
      */
     static BroadcastService get() {
-        return fromRepository(BroadcastRepository.get());
+        return fromRepository(BroadcastRepositoryFactory.get());
     }
 
     /**

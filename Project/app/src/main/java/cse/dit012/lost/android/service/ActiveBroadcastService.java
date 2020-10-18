@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.LiveData;
 
+import cse.dit012.lost.BroadcastRepositoryFactory;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.NotificationChannels;
 import cse.dit012.lost.android.ui.MainActivity;
@@ -21,7 +22,6 @@ import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.MapUtil;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
-import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.GpsService;
 
@@ -163,7 +163,7 @@ public final class ActiveBroadcastService extends LifecycleService {
         if (currentBroadcast != null) {
             currentBroadcast.removeObservers(this);
         }
-        currentBroadcast = BroadcastRepository.get().observeById(activeBroadcastId);
+        currentBroadcast = BroadcastRepositoryFactory.get().observeById(activeBroadcastId);
         currentBroadcast.observe(this, this::onBroadcastUpdated);
     }
 
