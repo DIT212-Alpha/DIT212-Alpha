@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import cse.dit012.lost.model.MapCoordinates;
+import cse.dit012.lost.model.MapUtil;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.model.user.UserId;
@@ -21,6 +22,8 @@ public final class Broadcast {
      * How long ago a broadcast had to be last active to be considered alive, in seconds
      */
     public static final long ACTIVE_TIME_MARGIN_SECONDS = 60;
+    // How far away the owner of a broadcast may move and still have the broadcast be considered active.
+    private static final double BROADCAST_ACTIVATION_RADIUS_METERS = 20;
 
     private final BroadcastId id;
     private final UserId ownerUID;
@@ -142,6 +145,16 @@ public final class Broadcast {
     public boolean isActive(Date atTime) {
         long ageSinceLastActive = (atTime.getTime() - getLastActive().getTime()) / 1000;
         return ageSinceLastActive <= ACTIVE_TIME_MARGIN_SECONDS;
+    }
+
+    /**
+     * Checks if a point is within range to keep the given broadcast alive.
+     *
+     * @param coords    the coordinates of the point
+     * @return true, if it is in range, false otherwise
+     */
+    public boolean isPointInRangeOfBroadcast(MapCoordinates coords) {
+        return MapUtil.distanceBetweenPoints(getCoordinates(), coords) <= BROADCAST_ACTIVATION_RADIUS_METERS;
     }
 
     @Override

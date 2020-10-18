@@ -191,7 +191,7 @@ public final class ActiveBroadcastService extends LifecycleService {
             MapCoordinates currentCoords = GpsService.getGps().getLocation(this);
 
             Log.v(TAG, "Distance to " + currentBroadcast.getValue().getId() + ": " + MapUtil.distanceBetweenPoints(currentCoords, currentBroadcast.getValue().getCoordinates()) + " meters");
-            if (MapUtil.isPointInRangeOfBroadcast(currentCoords, currentBroadcast.getValue())) {
+            if (currentBroadcast.getValue().isPointInRangeOfBroadcast(currentCoords)) {
                 Log.v(TAG, "Broadcast " + currentBroadcast.getValue().getId() + ": In range so keep alive!");
 
                 // Keep alive broadcast

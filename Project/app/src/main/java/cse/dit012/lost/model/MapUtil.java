@@ -13,21 +13,8 @@ import static java.lang.Math.toRadians;
  * Author: Benjamin Sannholm
  */
 public final class MapUtil {
-    // How far away the owner of a broadcast may move and still have the broadcast be considered active.
-    private static final double BROADCAST_ACTIVATION_RADIUS_METERS = 20;
 
     private MapUtil() {
-    }
-
-    /**
-     * Checks if a point is within range to keep the given broadcast alive.
-     *
-     * @param coords    the coordinates of the point
-     * @param broadcast the broadcast
-     * @return true, if it is in range, false otherwise
-     */
-    public static boolean isPointInRangeOfBroadcast(MapCoordinates coords, Broadcast broadcast) {
-        return distanceBetweenPoints(broadcast.getCoordinates(), coords) <= BROADCAST_ACTIVATION_RADIUS_METERS;
     }
 
     /**
