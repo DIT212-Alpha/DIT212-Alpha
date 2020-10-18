@@ -23,6 +23,10 @@ public final class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = BroadcastRepositoryFactory.get();
     private final MutableLiveData<String> courseCode = new MutableLiveData<>("");
 
+    public LiveData<String> getCourseCode() {
+        return courseCode;
+    }
+
     public void setCourseCode(String course) {
         courseCode.setValue(checkNotNull(course));
     }

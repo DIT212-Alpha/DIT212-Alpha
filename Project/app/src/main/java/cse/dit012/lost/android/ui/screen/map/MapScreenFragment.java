@@ -44,7 +44,7 @@ public final class MapScreenFragment extends Fragment {
 
         model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
 
-        autoCompleteTextForCourses();
+        setupCourseFilterTextbox();
 
         // Initialize the navigation controller and change the fragment on click
         final NavController navController = Navigation.findNavController(vieww);
@@ -63,7 +63,10 @@ public final class MapScreenFragment extends Fragment {
     /**
      * reads the input from user and send it to filter the chosen course on map
      */
-    private void autoCompleteTextForCourses() {
+    private void setupCourseFilterTextbox() {
+        // Repopulate textbox with any previously entered value
+        mapScreenBinding.courseFilterTextbox.setText(model.getCourseCode().getValue());
+
         String[] arrayCourses = getResources().getStringArray(R.array.StringCourses);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, arrayCourses);
         mapScreenBinding.courseFilterTextbox.setAdapter(adapter);
