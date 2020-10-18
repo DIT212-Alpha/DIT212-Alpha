@@ -16,9 +16,9 @@ import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
+import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.MailAndPasswordLoginService;
-import cse.dit012.lost.service.AuthenticatedUserService;
 import java9.util.concurrent.CompletableFuture;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
@@ -69,7 +69,7 @@ public class BroadcastInfoWindowFragmentTest {
 
     @After
     public void refresh() {
-        BroadcastService.get().updateBroadcastSetInactive(broadcast.getId());
+        BroadcastService.get().setBroadcastInactive(broadcast.getId());
     }
 
     //The course displayed should be the same as the one in the database

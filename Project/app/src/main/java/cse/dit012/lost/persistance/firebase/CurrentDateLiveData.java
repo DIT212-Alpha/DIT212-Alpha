@@ -13,19 +13,26 @@ import java.util.Date;
 final class CurrentDateLiveData extends LiveData<Date> {
     private final Handler handler = new Handler();
 
+    // Task that runs at the given interval and updates the current LiveData value
     private final Runnable updateTask = new Runnable() {
         @Override
         public void run() {
             setValue(new Date(System.currentTimeMillis()));
-            handler.postDelayed(this, updateFrequencyMs);
+            handler.postDelayed(this, updateIntervalMs);
         }
     };
 
-    private final long updateFrequencyMs;
+    // How often the current time should be updated
+    private final long updateIntervalMs;
 
-    public CurrentDateLiveData(long updateFrequencyMs) {
+    /**
+     * Creates a new {@link CurrentDateLiveData} with a given update interval.
+     *
+     * @param updateIntervalMs the interval to wait between updates, in milliseconds
+     */
+    public CurrentDateLiveData(long updateIntervalMs) {
         super(new Date(System.currentTimeMillis()));
-        this.updateFrequencyMs = updateFrequencyMs;
+        this.updateIntervalMs = updateIntervalMs;
     }
 
     @Override

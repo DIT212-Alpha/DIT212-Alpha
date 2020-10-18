@@ -12,15 +12,27 @@ public final class MapCoordinates {
     private final double latitude;
     private final double longitude;
 
+    /**
+     * Creates a new pair of coordinates given a longitude and latitude.
+     *
+     * @param latitude  the longitude
+     * @param longitude the latitude
+     */
     public MapCoordinates(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
+    /**
+     * @return the latitude part of the coordinate pair
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * @return the longitude part of the coordinate pair
+     */
     public double getLongitude() {
         return longitude;
     }

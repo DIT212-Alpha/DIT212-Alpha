@@ -124,10 +124,8 @@ public class FirebaseBroadcastRepositoryTest {
             observableBroadcasts.observeForever(new Observer<List<Broadcast>>() {
                 @Override
                 public void onChanged(List<Broadcast> broadcast) {
-                    if (!broadcast.isEmpty()) { // Keep listening and waiting if no broadcasts came back yet
-                        observableBroadcasts.removeObserver(this);
-                        future.complete(broadcast);
-                    }
+                    observableBroadcasts.removeObserver(this);
+                    future.complete(broadcast);
                 }
             });
         });

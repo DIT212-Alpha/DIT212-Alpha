@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +17,6 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -50,10 +50,21 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database instance
     private final FirebaseDatabase db;
 
+    /**
+     * Creates a new broadcast repository backed by the given Firebase database instance.
+     *
+     * @param firebase the {@link FirebaseDatabase} instance to use in the repository
+     */
     public FirebaseBroadcastRepository(FirebaseDatabase firebase) {
         db = checkNotNull(firebase);
     }
 
+    /**
+     * Constructs a database reference for the given broadcast id in the Firebase database.
+     *
+     * @param id the {@link BroadcastId} to use in the path of the {@link DatabaseReference}
+     * @return a {@link DatabaseReference} to the root of the given {@link BroadcastId}
+     */
     private DatabaseReference getBroadcastReference(BroadcastId id) {
         return db.getReference(BROADCASTS_KEY).child(id.toString());
     }
@@ -140,24 +151,31 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
         // Refresh inactive broadcasts every 20 seconds
         LiveData<Date> currentTime = new CurrentDateLiveData(1000 * 20);
 
+        // Filter broadcasts to only keep active broadcasts and
+        // make sure this is kept up-to-date as the current time changes
         MediatorLiveData<List<Broadcast>> activeBroadcasts = new MediatorLiveData<>();
-        activeBroadcasts.addSource(recentBroadcasts, broadcasts -> {
-            activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts, currentTime));
-        });
-        activeBroadcasts.addSource(currentTime, broadcasts -> {
-            activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts, currentTime));
-        });
+        Observer<Object> onInputsChanged = unused -> {
+            if (recentBroadcasts.getValue() != null && currentTime.getValue() != null) {
+                activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts.getValue(), currentTime.getValue()));
+            }
+        };
+        activeBroadcasts.addSource(recentBroadcasts, onInputsChanged);
+        activeBroadcasts.addSource(currentTime, onInputsChanged);
         return activeBroadcasts;
     }
 
-    private static List<Broadcast> filterActiveBroadcasts(LiveData<List<Broadcast>> broadcasts, LiveData<Date> currentTime) {
-        if (broadcasts.getValue() == null || currentTime.getValue() == null) {
-            return Collections.emptyList();
-        }
-
-        List<Broadcast> filteredBroadcasts = new ArrayList<>(broadcasts.getValue().size());
-        for (Broadcast broadcast : broadcasts.getValue()) {
-            if (broadcast.isActive(currentTime.getValue())) {
+    /**
+     * Takes a list of broadcasts, the current time and gives back the list of broadcasts
+     * where inactive broadcasts are filtered away based on the current time.
+     *
+     * @param broadcasts  the list of broadcasts
+     * @param currentTime the current time
+     * @return a filtered list containing only active broadcasts
+     */
+    private static List<Broadcast> filterActiveBroadcasts(List<Broadcast> broadcasts, Date currentTime) {
+        List<Broadcast> filteredBroadcasts = new ArrayList<>(broadcasts.size());
+        for (Broadcast broadcast : broadcasts) {
+            if (broadcast.isActive(currentTime)) {
                 filteredBroadcasts.add(broadcast);
             }
         }

@@ -2,10 +2,9 @@ package cse.dit012.lost.service;
 
 import android.content.Context;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import cse.dit012.lost.android.ui.map.LostMapFragment;
 import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
+import cse.dit012.lost.model.MapCoordinates;
 
 /**
  * Author: Mathias Drage
@@ -22,7 +21,8 @@ public interface GpsService {
 
     /**
      * @param context Given by the app activity using this class by method requireContext()
-     * @return current or last known location of the device running this app
+     * @return current, last known location of the device running this app
+     * or null if not location was found yet
      */
-    LatLng getLocation(Context context);
+    MapCoordinates getLocation(Context context);
 }

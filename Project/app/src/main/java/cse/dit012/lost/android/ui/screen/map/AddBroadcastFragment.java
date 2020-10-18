@@ -17,16 +17,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
+import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.GpsService;
-import cse.dit012.lost.service.AuthenticatedUserService;
 
 /**
  * View and controller for creating a broadcast.
@@ -73,7 +71,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Saves fragment context for the Gps call
                 Context context = requireContext();
                 //Get device location through the gps class
-                LatLng loc = GpsService.getGps().getLocation(context);
+                MapCoordinates loc = GpsService.getGps().getLocation(context);
                 //Gets course from spinner
                 CourseCode course = new CourseCode(courseSpinner.getSelectedItem().toString());
                 //Gets user id from the logged in device
@@ -81,7 +79,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Creates broadcast object
                 BroadcastService.get().createBroadcast(
                         ownerUID,
-                        new MapCoordinates(loc.latitude, loc.longitude),
+                        loc,
                         course,
                         descriptionEditText.getText().toString()
                 ).whenComplete((broadcast, throwable) -> {

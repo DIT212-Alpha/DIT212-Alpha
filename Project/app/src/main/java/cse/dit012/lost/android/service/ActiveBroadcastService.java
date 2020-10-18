@@ -14,8 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.LiveData;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.NotificationChannels;
 import cse.dit012.lost.android.ui.MainActivity;
@@ -190,8 +188,7 @@ public final class ActiveBroadcastService extends LifecycleService {
     private void keepAliveBroadcast() {
         if (currentBroadcast.getValue() != null) {
             // Fetch user's current coordinates
-            LatLng currentLatLng = GpsService.getGps().getLocation(this);
-            MapCoordinates currentCoords = new MapCoordinates(currentLatLng.latitude, currentLatLng.longitude);
+            MapCoordinates currentCoords = GpsService.getGps().getLocation(this);
 
             Log.v(TAG, "Distance to " + currentBroadcast.getValue().getId() + ": " + MapUtil.distanceBetweenPoints(currentCoords, currentBroadcast.getValue().getCoordinates()) + " meters");
             if (MapUtil.isPointInRangeOfBroadcast(currentCoords, currentBroadcast.getValue())) {
@@ -235,7 +232,7 @@ public final class ActiveBroadcastService extends LifecycleService {
             // When stop button is pressed
             Log.d(TAG, "Stopping broadcast service");
             context.stopService(new Intent(context, ActiveBroadcastService.class));
-            BroadcastService.get().updateBroadcastSetInactive(new BroadcastId(intent.getStringExtra(PARAM_BROADCAST_ID)));
+            BroadcastService.get().setBroadcastInactive(new BroadcastId(intent.getStringExtra(PARAM_BROADCAST_ID)));
         }
     }
 }

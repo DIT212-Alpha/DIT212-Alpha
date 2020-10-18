@@ -5,15 +5,13 @@ import android.content.Context;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cse.dit012.lost.android.ui.map.LostMapFragment;
+import cse.dit012.lost.model.MapCoordinates;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -36,7 +34,7 @@ public class GpsTest {
     @Test
     public void getLocation() {
         Context appContext = ApplicationProvider.getApplicationContext();
-        LatLng position = GpsService.getGps().getLocation(appContext);
-        assertNotNull(position);
+        MapCoordinates position = GpsService.getGps().getLocation(appContext);
+        assertNotNull(position); // TODO: Return value can be null!
     }
 }

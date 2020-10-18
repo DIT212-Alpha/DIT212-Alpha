@@ -13,15 +13,13 @@ public final class PermissionUtil {
     private PermissionUtil() {
     }
 
-    public static boolean hasPermissions(Context context, String[] permissions) {
-        for (String permission : permissions) {
-            if (!hasPermission(context, permission)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    /**
+     * Checks if the given permission has been granted to the application by the user.
+     *
+     * @param context    Android application {@link Context}
+     * @param permission the permission id for the permission to check
+     * @return true if the permission has been granted, false otherwise
+     */
     public static boolean hasPermission(Context context, String permission) {
         return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }

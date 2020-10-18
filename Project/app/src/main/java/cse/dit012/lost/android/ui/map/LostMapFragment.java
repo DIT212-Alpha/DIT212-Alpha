@@ -26,6 +26,7 @@ import cse.dit012.lost.R;
 import cse.dit012.lost.android.PermissionUtil;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
+import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.service.GpsService;
 
@@ -138,9 +139,9 @@ public final class LostMapFragment extends Fragment {
      */
     @SuppressLint("MissingPermission")
     private void gotoCurrentLocation() {
-        LatLng location = GpsService.getGps().getLocation(requireContext());
+        MapCoordinates location = GpsService.getGps().getLocation(requireContext());
         if (location != null) {
-            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(location, 15)));
+            googleMap.moveCamera((CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15)));
         }
     }
 

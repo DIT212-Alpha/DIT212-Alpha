@@ -7,30 +7,27 @@ import android.location.LocationManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import cse.dit012.lost.model.MapCoordinates;
+
 /**
  * Provides the GPS location of the Android device.
  * Author: Mathias Drage
- * Used by: GpsService
+ * Used by: {@link GpsService}
  */
 final class Gps implements GpsService {
-    private LatLng location;
+    private LatLng lastKnownLocation;
 
-    /**
-     * Precondition: Fragment-Context which can not be null (use requireContext(), not getContext(),
-     * Must check permission wherever the method is called, as "@SuppressLint("MissingPermission")" skips permission check.
-     *
-     * @param context provided by a "Fragment" from the "requireContext()" method
-     *                needed by the LocationManager to communicate with android
-     * @return returns the latest location, might be null if no location yet have been found
-     */
     @SuppressLint("MissingPermission")
-    public LatLng getLocation(Context context) {
+    public MapCoordinates getLocation(Context context) {
         // Communicates with the android system to manage location
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Location temp = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (temp != null) {
-            location = new LatLng(temp.getLatitude(), temp.getLongitude());
+            lastKnownLocation = new LatLng(temp.getLatitude(), temp.getLongitude());
         }
-        return location;
+        if (lastKnownLocation == null) {
+            return null;
+        }
+        return new MapCoordinates(lastKnownLocation.latitude, lastKnownLocation.longitude);
     }
 }

@@ -12,6 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 /**
  * LiveData object encapsulating a query to the Firebase realtime database.
+ * When updates happen to the query, the LiveData object is updated.
  * Inspired by Firebase blog: https://firebase.googleblog.com/2017/12/using-android-architecture-components.html
  * <p>
  * Author: Benjamin Sannholm, Bashar Oumari
@@ -37,9 +38,9 @@ final class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
     };
 
     /**
-     * Constructs a live data object with the given Firebase {@link Query}.
+     * Constructs a live data object using a given Firebase query.
      *
-     * @param query the query
+     * @param query the {@link Query}
      */
     public FirebaseQueryLiveData(Query query) {
         this.query = query;

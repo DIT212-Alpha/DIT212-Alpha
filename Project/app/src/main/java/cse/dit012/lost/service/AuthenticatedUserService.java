@@ -24,12 +24,14 @@ public interface AuthenticatedUserService {
     boolean isLoggedIn();
 
     /**
-     * @return current users UID
+     * @return current user's {@link UserId}
+     * @throws IllegalStateException if no user is currently logged in
      */
     UserId getID();
 
     /**
-     * @return current users email
+     * @return current user's e-mail
+     * @throws IllegalStateException if no user is currently logged in
      */
     String getEmail();
 

@@ -21,7 +21,15 @@ final class BroadcastServiceImpl implements BroadcastService {
 
     @Override
     public CompletableFuture<Broadcast> createBroadcast(UserId ownerUID, MapCoordinates coordinates, CourseCode courseCode, String description) {
-        Broadcast broadcast = new Broadcast(broadcastRepository.nextIdentity(), ownerUID, new Date(), new Date(), coordinates, courseCode, description);
+        Broadcast broadcast = new Broadcast(
+                broadcastRepository.nextIdentity(),
+                ownerUID,
+                new Date(),
+                new Date(),
+                coordinates,
+                courseCode,
+                description
+        );
         return broadcastRepository.store(broadcast);
     }
 
@@ -34,7 +42,7 @@ final class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
-    public CompletableFuture<Broadcast> updateBroadcastSetInactive(BroadcastId id) {
+    public CompletableFuture<Broadcast> setBroadcastInactive(BroadcastId id) {
         return broadcastRepository.getById(id).thenCompose(broadcast -> {
             broadcast.setToInactive();
             return broadcastRepository.store(broadcast);
@@ -42,11 +50,11 @@ final class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
-    public CompletableFuture<Void> updateBroadcastEdit(BroadcastId id, CourseCode course, String description) {
-        return broadcastRepository.getById(id).thenAccept(broadcast -> {
+    public CompletableFuture<Broadcast> editBroadcast(BroadcastId id, CourseCode course, String description) {
+        return broadcastRepository.getById(id).thenCompose(broadcast -> {
             broadcast.updateCourse(course);
             broadcast.updateDescription(description);
-            broadcastRepository.store(broadcast);
+            return broadcastRepository.store(broadcast);
         });
     }
 }
