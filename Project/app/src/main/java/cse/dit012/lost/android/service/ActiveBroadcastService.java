@@ -22,6 +22,7 @@ import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.MapUtil;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
+import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.GpsService;
 
@@ -187,6 +188,13 @@ public final class ActiveBroadcastService extends LifecycleService {
      */
     private void keepAliveBroadcast() {
         if (currentBroadcast.getValue() != null) {
+            if (!AuthenticatedUserService.get().isLoggedIn()
+                    || !AuthenticatedUserService.get().getID().equals(currentBroadcast.getValue().getOwnerUID())) {
+                Log.d(TAG, "User is logged out or does not own active broadcast, stopping service");
+                stopSelf();
+                return;
+            }
+
             // Fetch user's current coordinates
             MapCoordinates currentCoords = GpsService.gps.getLocation(this);
 
