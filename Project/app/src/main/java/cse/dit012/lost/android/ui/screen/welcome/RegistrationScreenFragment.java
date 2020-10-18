@@ -17,7 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,6 +152,8 @@ public final class RegistrationScreenFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
+        String firstname = userName.getText().toString();
+        String lastname = surName.getText().toString();
 
         if (validate(email, password)) {
 
@@ -158,20 +162,20 @@ public final class RegistrationScreenFragment extends Fragment {
                 if (!task.isSuccessful()) {
                     progressBar.setVisibility(View.INVISIBLE);
 
-                    try {
-
-                        Toast.makeText(getContext(), "Registration unSucsessful!", Toast.LENGTH_LONG).show();
-                        throw task.getException();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    Toast.makeText(getContext(), "Registration unsuccessful!", Toast.LENGTH_LONG).show();
+                    task.getException().printStackTrace();
                 } else {
-                    Toast.makeText(getContext(), "Registration Sucsessful! Welcome", Toast.LENGTH_LONG).show();
-                    navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
-                    progressBar.setVisibility(View.INVISIBLE);
+                    AuthResult result = task.getResult();
+                    result.getUser().updateProfile(
+                            new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(firstname + " " + lastname)
+                                    .build()
+                    ).addOnSuccessListener(command -> {
+                        Toast.makeText(getContext(), "Registration Successful! Welcome", Toast.LENGTH_LONG).show();
+                        navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
+                        progressBar.setVisibility(View.INVISIBLE);
+                    });
                 }
-
             });
         }
     }
