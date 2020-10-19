@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import cse.dit012.lost.model.MapCoordinates;
-import cse.dit012.lost.model.MapUtil;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
 
@@ -36,7 +35,7 @@ public final class Broadcast {
      * Creates a new {@link Broadcast} with the given properties.
      *
      * @param id          the {@link BroadcastId} of the {@link Broadcast}
-     * @param ownerUID    the {@link UserId} of the {@link User} who owns the {@link Broadcast}
+     * @param ownerUID    the {@link UserId} who owns the {@link Broadcast}
      * @param createdAt   the {@link Date} at which the {@link Broadcast} was created
      * @param lastActive  the {@link Date} at which the {@link Broadcast} was last kept active
      * @param coordinates the {@link MapCoordinates} at which the {@link Broadcast} was created
@@ -61,7 +60,7 @@ public final class Broadcast {
     }
 
     /**
-     * @return the {@link UserId} of the {@link User} who owns the {@link Broadcast}
+     * @return the {@link UserId} who owns the {@link Broadcast}
      */
     public UserId getOwnerUID() {
         return ownerUID;
@@ -153,7 +152,7 @@ public final class Broadcast {
      * @return true, if it is in range, false otherwise
      */
     public boolean isPointInRangeOfBroadcast(MapCoordinates coords) {
-        return MapUtil.distanceBetweenPoints(getCoordinates(), coords) <= BROADCAST_ACTIVATION_RADIUS_METERS;
+        return getCoordinates().distanceTo(coords) <= BROADCAST_ACTIVATION_RADIUS_METERS;
     }
 
     @Override

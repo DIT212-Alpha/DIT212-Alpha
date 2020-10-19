@@ -19,7 +19,6 @@ import cse.dit012.lost.R;
 import cse.dit012.lost.android.NotificationChannels;
 import cse.dit012.lost.android.ui.MainActivity;
 import cse.dit012.lost.model.MapCoordinates;
-import cse.dit012.lost.model.MapUtil;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.service.AuthenticatedUserService;
@@ -198,7 +197,7 @@ public final class ActiveBroadcastService extends LifecycleService {
             // Fetch user's current coordinates
             MapCoordinates currentCoords = GpsService.gps.getLocation(this);
 
-            Log.v(TAG, "Distance to " + currentBroadcast.getValue().getId() + ": " + MapUtil.distanceBetweenPoints(currentCoords, currentBroadcast.getValue().getCoordinates()) + " meters");
+            Log.v(TAG, "Distance to " + currentBroadcast.getValue().getId() + ": " + currentBroadcast.getValue().getCoordinates().distanceTo(currentCoords) + " meters");
             if (currentBroadcast.getValue().isPointInRangeOfBroadcast(currentCoords)) {
                 Log.v(TAG, "Broadcast " + currentBroadcast.getValue().getId() + ": In range so keep alive!");
 
