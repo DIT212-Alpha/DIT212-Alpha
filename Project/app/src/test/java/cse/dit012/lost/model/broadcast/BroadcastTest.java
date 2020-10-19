@@ -1,4 +1,4 @@
-package cse.dit012.lost.model.broadcast;
+/*package cse.dit012.lost.model.broadcast;
 
 import org.junit.Test;
 
@@ -74,4 +74,4 @@ public class BroadcastTest {
     }
 
 
-}
+}*/
