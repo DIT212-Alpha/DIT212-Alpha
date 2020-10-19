@@ -26,8 +26,10 @@ public class UserIdTest {
     public void testHashCode() {
         UserId test1= new UserId("123");
         UserId test2 = new UserId("123");
+        UserId test3 = new UserId("abc");
         assertNotNull(test1.hashCode());
         assertEquals(test1.hashCode(),test2.hashCode());
+        assertNotEquals(test1,test3);
     }
 
     /**
@@ -41,6 +43,7 @@ public class UserIdTest {
         assertEquals(test1.toString(),"123");
         assertEquals(test2.toString(),"åæø!?%$#$");
         assertEquals(test3.toString(),"111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+        assertNotEquals(test1,"321");
     }
 
     /**

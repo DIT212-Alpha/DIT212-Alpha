@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static java.lang.Math.max;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * @Author: Sophia Pham
@@ -13,6 +14,7 @@ public class MapCoordinatesTest {
     double latitude = 1;
     double longitude = 1;
     MapCoordinates mapCoordinates = new MapCoordinates(latitude, longitude);
+    MapCoordinates mapCoordinates2 = new MapCoordinates(2,2);
 
     @Test
     public void getLatitude(){
@@ -27,11 +29,13 @@ public class MapCoordinatesTest {
     @Test
     public void equalsTest() {
         assertEquals(new MapCoordinates(latitude, longitude), mapCoordinates);
+        assertNotEquals(mapCoordinates,mapCoordinates2);
     }
 
     @Test
     public void hashCodeTest() {
         assertEquals(new MapCoordinates(latitude, longitude).hashCode(), mapCoordinates.hashCode());
+        assertNotEquals(mapCoordinates,mapCoordinates2);
     }
 
     @Test
