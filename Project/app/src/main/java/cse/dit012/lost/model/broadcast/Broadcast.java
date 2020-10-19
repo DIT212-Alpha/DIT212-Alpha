@@ -8,7 +8,6 @@ import java.util.Objects;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.MapUtil;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.model.user.User;
 import cse.dit012.lost.model.user.UserId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
