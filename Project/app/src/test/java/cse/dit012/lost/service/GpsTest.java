@@ -3,6 +3,7 @@ package cse.dit012.lost.service;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class GpsTest {
     /**
@@ -10,6 +11,6 @@ public class GpsTest {
      */
     @Test
     public void getGps() {
-        assertNotNull(GpsService.getGps());
+        assertNotNull(GpsService.gps);
     }
 }
