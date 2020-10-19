@@ -13,7 +13,7 @@ public class MapCoordinatesTest {
     double latitude = 1;
     double longitude = 1;
     MapCoordinates mapCoordinates = new MapCoordinates(latitude, longitude);
-    MapCoordinates mapCoordinates2 = new MapCoordinates(2,2);
+    MapCoordinates mapCoordinates2 = new MapCoordinates(2, 2);
 
     @Test
     public void getLatitude() {
@@ -28,13 +28,13 @@ public class MapCoordinatesTest {
     @Test
     public void equalsTest() {
         assertEquals(new MapCoordinates(latitude, longitude), mapCoordinates);
-        assertNotEquals(mapCoordinates,mapCoordinates2);
+        assertNotEquals(mapCoordinates, mapCoordinates2);
     }
 
     @Test
     public void hashCodeTest() {
         assertEquals(new MapCoordinates(latitude, longitude).hashCode(), mapCoordinates.hashCode());
-        assertNotEquals(mapCoordinates,mapCoordinates2);
+        assertNotEquals(mapCoordinates, mapCoordinates2);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class MapCoordinatesTest {
     }
 
     @Test
-    public void distanceTo(){
+    public void distanceTo() {
         double meters = mapCoordinates.distanceTo(mapCoordinates);
         assertEquals(0, meters, 0.5);
     }

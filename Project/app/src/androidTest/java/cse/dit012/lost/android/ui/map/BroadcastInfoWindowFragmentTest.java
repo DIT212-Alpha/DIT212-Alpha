@@ -41,7 +41,7 @@ import static org.junit.Assert.assertFalse;
 
 /**
  * @Author: Sophia Pham
- * */
+ */
 
 public class BroadcastInfoWindowFragmentTest {
     private final MapCoordinates coordinates = new MapCoordinates(0, 0);

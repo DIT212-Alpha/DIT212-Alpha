@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * @Author: Sophia Pham
- * */
+ */
 
 public class BroadcastTest {
     private final String id = "1";

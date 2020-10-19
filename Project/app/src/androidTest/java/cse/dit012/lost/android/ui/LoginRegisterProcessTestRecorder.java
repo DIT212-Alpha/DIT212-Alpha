@@ -24,7 +24,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * @Author: Sophia Pham
- * */
+ */
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -41,7 +41,7 @@ public class LoginRegisterProcessTestRecorder {
     /**
      * @Author: Sophia Pham
      * This is a test process of logging in and registering an account.
-     * */
+     */
 
     @Test
     public void loginRegisterProcessTestRecorder() throws InterruptedException {

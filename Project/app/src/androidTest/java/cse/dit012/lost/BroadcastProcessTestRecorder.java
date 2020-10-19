@@ -33,7 +33,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * @Author: Sophia Pham
- * */
+ */
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
