@@ -2,8 +2,6 @@ package cse.dit012.lost.model.course;
 
 import org.junit.Test;
 
-import cse.dit012.lost.model.broadcast.BroadcastId;
-
 import static org.junit.Assert.assertEquals;
 
 public class CourseCodeTest {
@@ -24,4 +22,10 @@ public class CourseCodeTest {
     public void toStringTest(){
         assertEquals(code.toString(), course);
     }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void emptyString(){
+        new CourseCode("");
+    }
+
 }
