@@ -1,4 +1,4 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.service.gps;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

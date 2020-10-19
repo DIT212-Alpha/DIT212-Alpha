@@ -1,6 +1,6 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.service.authenticateduser;
 
-public final class AuthenticatedUserServiceFactory {
+final class AuthenticatedUserServiceFactory {
     private AuthenticatedUserServiceFactory() {
     }
 

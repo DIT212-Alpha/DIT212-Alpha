@@ -22,9 +22,9 @@ import cse.dit012.lost.android.service.ActiveBroadcastService;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
-import cse.dit012.lost.service.AuthenticatedUserService;
-import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.GpsService;
+import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
+import cse.dit012.lost.service.broadcast.BroadcastService;
+import cse.dit012.lost.service.gps.GpsService;
 
 /**
  * View and controller for creating a broadcast.
@@ -77,7 +77,7 @@ public final class AddBroadcastFragment extends Fragment {
                 //Gets user id from the logged in device
                 UserId ownerUID = AuthenticatedUserService.userService.getID();
                 //Creates broadcast object
-                BroadcastService.get().createBroadcast(
+                BroadcastService.INSTANCE.createBroadcast(
                         ownerUID,
                         loc,
                         course,

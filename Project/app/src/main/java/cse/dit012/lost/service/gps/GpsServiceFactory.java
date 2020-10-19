@@ -1,6 +1,6 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.service.gps;
 
-public final class GpsServiceFactory {
+final class GpsServiceFactory {
     private GpsServiceFactory() {
     }
 

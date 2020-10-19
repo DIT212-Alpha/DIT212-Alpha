@@ -25,9 +25,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentLoginBinding;
-import cse.dit012.lost.service.AuthenticatedUserService;
-import cse.dit012.lost.service.LoginService;
-import cse.dit012.lost.service.LoginServiceFactory;
+import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
+import cse.dit012.lost.service.login.LoginService;
+import cse.dit012.lost.service.login.LoginServiceFactory;
 import java9.util.concurrent.CompletableFuture;
 
 /**

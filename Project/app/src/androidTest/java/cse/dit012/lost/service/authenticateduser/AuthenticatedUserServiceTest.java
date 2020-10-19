@@ -1,4 +1,4 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.service.authenticateduser;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import cse.dit012.lost.model.user.UserId;
+import cse.dit012.lost.service.login.LoginService;
+import cse.dit012.lost.service.login.LoginServiceFactory;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class AuthenticatedUserServiceTest {
     @Before
     public void setUp() throws InterruptedException, ExecutionException, TimeoutException {
-        EmailAndPasswordLoginService login = new EmailAndPasswordLoginService("test@test.com", "test123");
+        LoginService login = LoginServiceFactory.createEmailAndPasswordService("test@test.com", "test123");
         login.login().get(5, TimeUnit.SECONDS);
     }
 

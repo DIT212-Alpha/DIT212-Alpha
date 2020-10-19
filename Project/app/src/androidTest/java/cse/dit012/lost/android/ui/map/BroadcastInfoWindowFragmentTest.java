@@ -19,10 +19,10 @@ import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
-import cse.dit012.lost.service.AuthenticatedUserService;
-import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.LoginService;
-import cse.dit012.lost.service.LoginServiceFactory;
+import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
+import cse.dit012.lost.service.broadcast.BroadcastService;
+import cse.dit012.lost.service.login.LoginService;
+import cse.dit012.lost.service.login.LoginServiceFactory;
 
 import static androidx.fragment.app.testing.FragmentScenario.launchInContainer;
 import static androidx.test.espresso.Espresso.onView;
@@ -54,7 +54,7 @@ public class BroadcastInfoWindowFragmentTest {
 
         // Create dummy test broadcast
         AuthenticatedUserService uis = AuthenticatedUserService.userService;
-        BroadcastService broadcastService = BroadcastService.get();
+        BroadcastService broadcastService = BroadcastService.INSTANCE;
         broadcast = broadcastService.createBroadcast(uis.getID(), coordinates, code, description).get();
 
         // Launch fragment
@@ -68,7 +68,7 @@ public class BroadcastInfoWindowFragmentTest {
 
     @After
     public void refresh() {
-        BroadcastService.get().setBroadcastInactive(broadcast.getId());
+        BroadcastService.INSTANCE.setBroadcastInactive(broadcast.getId());
     }
 
     //The course displayed should be the same as the one in the database
