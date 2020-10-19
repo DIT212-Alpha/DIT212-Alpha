@@ -35,17 +35,17 @@ public class RegistrationTest {
 
     @Test
     public void typeEmail() {
-        onView(withId(R.id.registerTextEmail)).perform(typeText("gusdragema@student.gu.se"));
+        onView(withId(R.id.registerTextEmail)).perform(typeText("test@test.com"));
     }
 
     @Test
     public void typeName() {
-        onView(withId(R.id.registerTextUserName)).perform(typeText("Mathias"));
+        onView(withId(R.id.registerTextUserName)).perform(typeText("test"));
     }
 
     @Test
     public void typeSurName() {
-        onView(withId(R.id.registerTextSurName)).perform(typeText("Drage"));
+        onView(withId(R.id.registerTextSurName)).perform(typeText("testson"));
     }
 
     @Test
