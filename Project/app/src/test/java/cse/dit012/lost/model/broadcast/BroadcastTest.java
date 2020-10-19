@@ -10,6 +10,7 @@ import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -88,5 +89,11 @@ public class BroadcastTest {
         String newDescription = "test2";
         test.updateDescription(newDescription);
         assertEquals(newDescription, test.getDescription());
+    }
+
+    @Test
+    public void isPointInRangeOfBroadcastTest(){
+        assertFalse(test.isPointInRangeOfBroadcast(new MapCoordinates(0,0)));
+        assertTrue(test.isPointInRangeOfBroadcast(coordinates));
     }
 }
