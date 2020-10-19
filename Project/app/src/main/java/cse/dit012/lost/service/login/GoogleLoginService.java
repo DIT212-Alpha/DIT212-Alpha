@@ -1,4 +1,4 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.service.login;
 
 import android.app.Activity;
 import android.util.Log;

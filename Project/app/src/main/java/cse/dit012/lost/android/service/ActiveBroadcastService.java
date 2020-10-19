@@ -21,9 +21,9 @@ import cse.dit012.lost.android.ui.MainActivity;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
-import cse.dit012.lost.service.AuthenticatedUserService;
-import cse.dit012.lost.service.BroadcastService;
-import cse.dit012.lost.service.GpsService;
+import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
+import cse.dit012.lost.service.broadcast.BroadcastService;
+import cse.dit012.lost.service.gps.GpsService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -202,7 +202,7 @@ public final class ActiveBroadcastService extends LifecycleService {
                 Log.v(TAG, "Broadcast " + currentBroadcast.getValue().getId() + ": In range so keep alive!");
 
                 // Keep alive broadcast
-                BroadcastService.get().updateBroadcastLastActive(currentBroadcast.getValue().getId()).exceptionally(throwable -> {
+                BroadcastService.INSTANCE.updateBroadcastLastActive(currentBroadcast.getValue().getId()).exceptionally(throwable -> {
                     Log.w(TAG, "Failed to keep alive broadcast", throwable);
                     return null;
                 });
@@ -239,7 +239,7 @@ public final class ActiveBroadcastService extends LifecycleService {
             // When stop button is pressed
             Log.d(TAG, "Stopping broadcast service");
             context.stopService(new Intent(context, ActiveBroadcastService.class));
-            BroadcastService.get().setBroadcastInactive(new BroadcastId(intent.getStringExtra(PARAM_BROADCAST_ID)));
+            BroadcastService.INSTANCE.setBroadcastInactive(new BroadcastId(intent.getStringExtra(PARAM_BROADCAST_ID)));
         }
     }
 }

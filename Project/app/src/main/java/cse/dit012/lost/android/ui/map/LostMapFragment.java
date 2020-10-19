@@ -28,7 +28,7 @@ import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.databinding.FragmentLostMapBinding;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.service.GpsService;
+import cse.dit012.lost.service.gps.GpsService;
 
 /**
  * Fragment controlling everything which is displayed on the map and the map itself.

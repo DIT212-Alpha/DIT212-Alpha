@@ -1,13 +1,10 @@
-package cse.dit012.lost.persistance.firebase;
+package cse.dit012.lost.model.broadcast;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -17,13 +14,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.model.MapCoordinates;
-import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.model.broadcast.BroadcastId;
-import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
-import cse.dit012.lost.service.BroadcastService;
+import cse.dit012.lost.service.broadcast.BroadcastService;
 import java9.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
@@ -32,18 +27,12 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class FirebaseBroadcastRepositoryTest {
+public class BroadcastRepositoryTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    private BroadcastRepository repository;
-    private BroadcastService broadcastService;
-
-    @Before
-    public void setup() {
-        repository = new FirebaseBroadcastRepository(FirebaseDatabase.getInstance());
-        broadcastService = BroadcastService.fromRepository(repository);
-    }
+    private final BroadcastRepository repository = BroadcastRepositoryProvider.get();
+    private final BroadcastService broadcastService = BroadcastService.INSTANCE;
 
     private Broadcast storeNewTestBroadcast() throws TimeoutException, ExecutionException, InterruptedException {
         MapCoordinates coordinates = new MapCoordinates(2, 2);

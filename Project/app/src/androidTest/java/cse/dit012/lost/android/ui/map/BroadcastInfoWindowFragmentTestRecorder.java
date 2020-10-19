@@ -1,4 +1,4 @@
-package cse.dit012.lost.android.ui;
+package cse.dit012.lost.android.ui.map;
 
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -15,8 +15,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import cse.dit012.lost.R;
-import cse.dit012.lost.service.LoginService;
-import cse.dit012.lost.service.LoginServiceFactory;
+import cse.dit012.lost.android.ui.MainActivity;
+import cse.dit012.lost.service.login.LoginService;
+import cse.dit012.lost.service.login.LoginServiceFactory;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;

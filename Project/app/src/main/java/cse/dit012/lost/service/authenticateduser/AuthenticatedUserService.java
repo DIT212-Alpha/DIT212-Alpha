@@ -1,4 +1,4 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.service.authenticateduser;
 
 import cse.dit012.lost.model.user.UserId;
 
