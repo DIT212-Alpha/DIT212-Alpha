@@ -53,4 +53,9 @@ public class UserIdTest {
     public void testException(){
         new UserId("");
     }
+
+    @Test (expected = NullPointerException.class)
+    public void testException2(){
+        new UserId(null);
+    }
 }
