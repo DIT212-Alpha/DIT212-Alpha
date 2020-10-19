@@ -34,4 +34,11 @@ public class MapCoordinatesTest {
     public void toStringTest(){
         assertEquals(new MapCoordinates(latitude, longitude).toString(), mapCoordinates.toString());
     }
+
+    @Test
+    public void distanceTo(){
+        double meters = mapCoordinates.distanceTo(mapCoordinates);
+        assertEquals(0, meters, 0.5);
+    }
+
 }
