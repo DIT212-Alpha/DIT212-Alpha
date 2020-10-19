@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.AuthResult;
@@ -42,6 +43,10 @@ public final class RegistrationScreenFragment extends Fragment {
 
     ProgressBar progressBar;
     NavController navController;
+
+    private static final NavOptions NAV_OPTIONS = new NavOptions.Builder()
+            .setPopUpTo(R.id.registerFragment, true)
+            .build();
 
     private FirebaseAuth registerAuthentication;
     FragmentRegisterBinding fragmentRegisterBinding;
@@ -172,7 +177,7 @@ public final class RegistrationScreenFragment extends Fragment {
                                     .build()
                     ).addOnSuccessListener(command -> {
                         Toast.makeText(getContext(), "Registration Successful! Welcome", Toast.LENGTH_LONG).show();
-                        navController.navigate(R.id.action_registerFragment_to_mapScreenFragment);
+                        navController.navigate(R.id.action_registerFragment_to_mapScreenFragment, null, NAV_OPTIONS);
                         progressBar.setVisibility(View.INVISIBLE);
                     });
                 }
