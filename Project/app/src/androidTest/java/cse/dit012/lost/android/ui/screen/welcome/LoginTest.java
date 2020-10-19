@@ -48,6 +48,6 @@ public class LoginTest {
 
     @Test
     public void clickRegister() {
-        onView(withId(R.id.cirRegisterButton)).perform(click());
+        onView(withId(R.id.clickable_text_new_user)).perform(click());
     }
 }
