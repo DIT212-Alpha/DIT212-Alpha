@@ -14,6 +14,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @Author: Sophia Pham
+ * */
+
 public class BroadcastTest {
     private final String id = "1";
     private final UserId userId = new UserId("mrbob");

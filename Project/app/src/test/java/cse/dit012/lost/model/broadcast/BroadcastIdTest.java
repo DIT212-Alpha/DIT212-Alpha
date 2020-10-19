@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @Author: Sophia Pham
+ * */
+
 public class BroadcastIdTest {
     String id = "0";
     BroadcastId bId = new BroadcastId(id);

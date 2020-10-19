@@ -33,6 +33,10 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+/**
+ * @Author: Sophia Pham
+ * */
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class BroadcastProcessTestRecorder {

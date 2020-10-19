@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @Author: Sophia Pham
+ * */
+
 public class CourseCodeTest {
     String course = "DIT000";
     CourseCode code = new CourseCode(course);

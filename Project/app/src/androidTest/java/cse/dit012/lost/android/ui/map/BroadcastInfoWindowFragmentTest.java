@@ -39,6 +39,9 @@ import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_D
 import static cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment.PARAM_ID;
 import static org.junit.Assert.assertFalse;
 
+/**
+ * @Author: Sophia Pham
+ * */
 
 public class BroadcastInfoWindowFragmentTest {
     private final MapCoordinates coordinates = new MapCoordinates(0, 0);

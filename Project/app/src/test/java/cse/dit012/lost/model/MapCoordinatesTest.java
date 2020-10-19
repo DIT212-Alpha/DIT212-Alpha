@@ -5,6 +5,10 @@ import org.junit.Test;
 import static java.lang.Math.max;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @Author: Sophia Pham
+ */
+
 public class MapCoordinatesTest {
     double latitude = 1;
     double longitude = 1;
