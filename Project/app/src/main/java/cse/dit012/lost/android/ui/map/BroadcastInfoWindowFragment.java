@@ -21,7 +21,11 @@ import cse.dit012.lost.service.broadcast.BroadcastService;
 
 /**
  * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
+ * <p>
  * Author: Sophia Pham, Mathias Drage
+ * Uses: res/layout/fragment_broadcast_info_window.xml, {@link ActiveBroadcastService}, {@link Broadcast},
+ * {@link BroadcastId}, {@link CourseCode}, {@link UserId}, {@link AuthenticatedUserService}, {@link BroadcastService}
+ * Used by: {@link LostMapFragment}
  */
 public final class BroadcastInfoWindowFragment extends Fragment {
     static final String PARAM_COURSE = "course";
@@ -61,7 +65,6 @@ public final class BroadcastInfoWindowFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         //Hide the EditText in InfoWindow
         layoutBinding.editViewInfoBox.setVisibility(View.GONE);
 

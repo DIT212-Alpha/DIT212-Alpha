@@ -5,15 +5,26 @@ import com.google.common.base.MoreObjects;
 import java.util.Date;
 import java.util.Objects;
 
+import cse.dit012.lost.android.service.ActiveBroadcastService;
+import cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment;
+import cse.dit012.lost.android.ui.map.LostMapFragment;
+import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
+import cse.dit012.lost.persistance.firebase.FirebaseBroadcastRepository;
+import cse.dit012.lost.service.broadcast.BroadcastService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents a single broadcast owned by a user and placed at a location on the map.
+ * <p>
  * Author: Mathias Drage, Benjamin Sannholm, Sophia Pham
+ * Uses: {@link BroadcastId}, {@link UserId}, {@link MapCoordinates}, {@link CourseCode}
+ * Used by: {@link ActiveBroadcastService}, {@link BroadcastInfoWindowFragment}, {@link BroadcastRepository},
+ * {@link BroadcastService}, BroadcastServiceImpl, {@link FirebaseBroadcastRepository},
+ * {@link LostMapFragment}, {@link MapViewModel}
  */
 public final class Broadcast {
     /**
@@ -41,6 +52,7 @@ public final class Broadcast {
      * @param coordinates the {@link MapCoordinates} at which the {@link Broadcast} was created
      * @param course      the {@link CourseCode} of the course the {@link Broadcast} is for
      * @param description the user given description for the {@link Broadcast}
+     * @throws NullPointerException if any parameter is null
      */
     public Broadcast(BroadcastId id, UserId ownerUID, Date createdAt, Date lastActive, MapCoordinates coordinates, CourseCode course, String description) {
         this.id = checkNotNull(id);

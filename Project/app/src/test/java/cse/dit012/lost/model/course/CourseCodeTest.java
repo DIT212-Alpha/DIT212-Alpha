@@ -23,7 +23,7 @@ public class CourseCodeTest {
     }
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         assertEquals(code.toString(), course);
     }
 

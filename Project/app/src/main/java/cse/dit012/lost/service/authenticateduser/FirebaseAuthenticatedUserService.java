@@ -7,10 +7,11 @@ import cse.dit012.lost.model.user.UserId;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Retrieve information from firebase about the user who is logged in on the device.
+ * Retrieves information from Firebase about the user who is logged in on the device.
  * <p>
- * Author: Mathias
- * Used by: BroadcastInfoWindowFragment
+ * Author: Mathias Drage
+ * Uses: {@link UserId}
+ * Used by: {@link AuthenticatedUserServiceFactory}
  */
 final class FirebaseAuthenticatedUserService implements AuthenticatedUserService {
     @Override

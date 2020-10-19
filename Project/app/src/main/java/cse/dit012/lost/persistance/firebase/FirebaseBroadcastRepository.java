@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -34,7 +35,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Firebase backed implementation of repository responsible for storing and retrieving information about broadcasts.
- * Author: Benjamin Sannholm, Bashar Oumari
+ * <p>
+ * Author: Benjamin Sannholm, Bashar Oumari, Mathias Drage
+ * Uses: {@link MapCoordinates}, {@link Broadcast}, {@link BroadcastId}, {@link BroadcastRepository},
+ * {@link CourseCode}, {@link UserId}, {@link CurrentDateLiveData}, {@link FirebaseQueryLiveData}
+ * Used by: {@link BroadcastRepositoryProvider}
  */
 public final class FirebaseBroadcastRepository implements BroadcastRepository {
     // Firebase database keys
@@ -53,7 +58,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     /**
      * Creates a new broadcast repository backed by the given Firebase database instance.
      *
-     * @param firebase the {@link FirebaseDatabase} instance to use in the repository
+     * @param firebase the {@link FirebaseDatabase} instance to use for the repository
      */
     public FirebaseBroadcastRepository(FirebaseDatabase firebase) {
         db = checkNotNull(firebase);
@@ -71,12 +76,15 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
 
     @Override
     public BroadcastId nextIdentity() {
+        // Generate a random UUID each time a new BroadcastId is requested
         return new BroadcastId(UUID.randomUUID().toString().toLowerCase());
     }
 
     @Override
     public CompletableFuture<Broadcast> store(Broadcast broadcast) {
         CompletableFuture<Broadcast> future = new CompletableFuture<>();
+
+        // Perform transaction to save all properties of broadcast atomically
         getBroadcastReference(broadcast.getId()).runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
@@ -100,6 +108,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
                 }
             }
         });
+
         return future;
     }
 
@@ -128,6 +137,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
 
     @Override
     public LiveData<Broadcast> observeById(BroadcastId id) {
+        // Query root of desired broadcast
         Query query = getBroadcastReference(id);
         LiveData<DataSnapshot> queryLiveData = new FirebaseQueryLiveData(query);
 
@@ -155,10 +165,12 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
         // make sure this is kept up-to-date as the current time changes
         MediatorLiveData<List<Broadcast>> activeBroadcasts = new MediatorLiveData<>();
         Observer<Object> onInputsChanged = unused -> {
+            // Only propagate changes to broadcast list when both current time and broadcasts list is available
             if (recentBroadcasts.getValue() != null && currentTime.getValue() != null) {
                 activeBroadcasts.setValue(filterActiveBroadcasts(recentBroadcasts.getValue(), currentTime.getValue()));
             }
         };
+        // Trigger onInputsChanged either when list of broadcasts or current time updates
         activeBroadcasts.addSource(recentBroadcasts, onInputsChanged);
         activeBroadcasts.addSource(currentTime, onInputsChanged);
         return activeBroadcasts;
@@ -185,7 +197,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     /**
      * Extracts information about a single broadcast in database into a {@link Broadcast} object.
      *
-     * @param broadcastSnapshot the {@link DataSnapshot} representing a single broadcast
+     * @param broadcastSnapshot a {@link DataSnapshot} representing a single broadcast
      * @return the corresponding {@link Broadcast}
      */
     private Broadcast deserializeBroadcastFromDataSnapshot(DataSnapshot broadcastSnapshot) {
@@ -214,7 +226,7 @@ public final class FirebaseBroadcastRepository implements BroadcastRepository {
     /**
      * Extracts information about a collection of broadcasts in database into a {@link List<Broadcast>} object.
      *
-     * @param broadcastsSnapshot the {@link DataSnapshot} representing a collection of broadcasts
+     * @param broadcastsSnapshot a {@link DataSnapshot} representing a collection of broadcasts
      * @return the corresponding {@link List<Broadcast>}
      */
     private List<Broadcast> deserializeBroadcastsFromDataSnapshot(DataSnapshot broadcastsSnapshot) {

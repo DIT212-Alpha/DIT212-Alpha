@@ -23,13 +23,15 @@ import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
 /**
  * This class shows the map and contains the autocomplete text box for course filtration,
  * and the button broadcast to add a broadcast.
+ * <p>
  * Author: Bashar Oumari, Benjamin Sannholm
+ * Uses: res/layout/fragment_map_screen.xml, {@link AuthenticatedUserService}, {@link MapViewModel}
+ * Used by: res/navigation/nav_graph.xml
  */
 public final class MapScreenFragment extends Fragment {
     private FragmentMapScreenBinding mapScreenBinding;
 
     private MapViewModel model;
-
 
     @Nullable
     @Override
@@ -40,9 +42,7 @@ public final class MapScreenFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View vieww, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(vieww, savedInstanceState);
-
-        model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(MapViewModel.class);
 
         setupCourseFilterTextbox();
 
@@ -53,7 +53,6 @@ public final class MapScreenFragment extends Fragment {
         mapScreenBinding.broadcastBtn.setOnClickListener(view ->
                 navController.navigate(R.id.action_mapScreenFragment_to_add_broadcast_fragment));
 
-
         mapScreenBinding.signOutBtn.setOnClickListener(view -> {
             AuthenticatedUserService.userService.signOutUser();
             navController.navigate(R.id.action_mapScreenFragment_to_loginFragment, null, navOptions);
@@ -61,14 +60,14 @@ public final class MapScreenFragment extends Fragment {
     }
 
     /**
-     * reads the input from user and send it to filter the chosen course on map
+     * Reads the input from user and send it to filter the chosen course on map
      */
     private void setupCourseFilterTextbox() {
         // Repopulate textbox with any previously entered value
-        mapScreenBinding.courseFilterTextbox.setText(model.getCourseCode().getValue());
+        mapScreenBinding.courseFilterTextbox.setText(model.getCourseCode());
 
         String[] arrayCourses = getResources().getStringArray(R.array.StringCourses);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, arrayCourses);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, arrayCourses);
         mapScreenBinding.courseFilterTextbox.setAdapter(adapter);
 
         mapScreenBinding.courseFilterTextbox.addTextChangedListener(new TextWatcher() {

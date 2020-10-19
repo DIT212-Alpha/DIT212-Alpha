@@ -23,7 +23,7 @@ public class BroadcastIdTest {
     }
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         assertEquals(bId.toString(), id);
     }
 }

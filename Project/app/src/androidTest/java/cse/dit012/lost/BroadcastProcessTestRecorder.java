@@ -9,7 +9,6 @@ import androidx.test.espresso.action.CoordinatesProvider;
 import androidx.test.espresso.action.GeneralClickAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Tap;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
@@ -22,7 +21,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import cse.dit012.lost.R;
 import cse.dit012.lost.android.ui.MainActivity;
 import cse.dit012.lost.service.login.LoginService;
 import cse.dit012.lost.service.login.LoginServiceFactory;
@@ -52,7 +50,7 @@ public class BroadcastProcessTestRecorder {
      */
 
 
-    public static ViewAction clickPercent(final float pctX, final float pctY){
+    public static ViewAction clickPercent(final float pctX, final float pctY) {
         return new GeneralClickAction(
                 Tap.SINGLE,
                 new CoordinatesProvider() {

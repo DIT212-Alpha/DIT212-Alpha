@@ -8,9 +8,12 @@ import java.util.Date;
 
 /**
  * An observable object that gives the current time at a set interval.
+ * <p>
  * Author: Benjamin Sannholm
+ * Used by: {@link FirebaseBroadcastRepository}
  */
 final class CurrentDateLiveData extends LiveData<Date> {
+    // Handler used to schedule update task periodically
     private final Handler handler = new Handler();
 
     // Task that runs at the given interval and updates the current LiveData value

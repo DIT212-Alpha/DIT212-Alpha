@@ -32,7 +32,10 @@ import cse.dit012.lost.service.gps.GpsService;
 
 /**
  * Fragment controlling everything which is displayed on the map and the map itself.
+ * <p>
  * Author: Benjamin Sannholm, Bashar Oumari, Mathias Drage
+ * Uses: {@link PermissionUtil}, {@link MapViewModel}, {@link MapCoordinates}, {@link Broadcast}, {@link GpsService}
+ * Used by: res/layout/fragment_map_screen.xml
  */
 public final class LostMapFragment extends Fragment {
     // View Binding for layout file
@@ -61,10 +64,8 @@ public final class LostMapFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         // Retrieve view model for map
-        model = new ViewModelProvider(getActivity()).get(MapViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(MapViewModel.class);
 
         initializeGoogleMap();
     }

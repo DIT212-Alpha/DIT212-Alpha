@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cse.dit012.lost.BroadcastRepositoryProvider;
+import cse.dit012.lost.android.ui.map.LostMapFragment;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 
@@ -17,14 +18,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * View model handling data to be displayed on the map screen.
+ * <p>
  * Author: Benjamin Sannholm, Bashar Oumari
+ * Uses: {@link BroadcastRepositoryProvider}, {@link Broadcast}, {@link BroadcastRepository}
+ * Used by: {@link LostMapFragment}, {@link MapScreenFragment}
  */
 public final class MapViewModel extends ViewModel {
     private final BroadcastRepository broadcastRepository = BroadcastRepositoryProvider.get();
     private final MutableLiveData<String> courseCode = new MutableLiveData<>("");
 
-    public LiveData<String> getCourseCode() {
-        return courseCode;
+    public String getCourseCode() {
+        return courseCode.getValue();
     }
 
     public void setCourseCode(String course) {

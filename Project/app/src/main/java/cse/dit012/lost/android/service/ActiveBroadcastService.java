@@ -18,6 +18,8 @@ import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.NotificationChannels;
 import cse.dit012.lost.android.ui.MainActivity;
+import cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment;
+import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -29,7 +31,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * This class takes a broadcast and tells the database periodically that the current broadcast is still there.
+ * <p>
  * Author: Benjamin Sannholm
+ * Uses: {@link BroadcastRepositoryProvider}, {@link NotificationChannels}, {@link MainActivity},
+ * {@link MapCoordinates}, {@link Broadcast}, {@link BroadcastId}, {@link AuthenticatedUserService},
+ * {@link BroadcastService}, {@link GpsService}
+ * Used by: {@link BroadcastInfoWindowFragment}, {@link AddBroadcastFragment}
  */
 public final class ActiveBroadcastService extends LifecycleService {
     private static final String TAG = "ActiveBroadcastService";

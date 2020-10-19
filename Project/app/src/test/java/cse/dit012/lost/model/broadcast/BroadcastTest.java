@@ -96,8 +96,8 @@ public class BroadcastTest {
     }
 
     @Test
-    public void isPointInRangeOfBroadcastTest(){
-        assertFalse(test.isPointInRangeOfBroadcast(new MapCoordinates(0,0)));
+    public void isPointInRangeOfBroadcastTest() {
+        assertFalse(test.isPointInRangeOfBroadcast(new MapCoordinates(0, 0)));
         assertTrue(test.isPointInRangeOfBroadcast(coordinates));
     }
 }

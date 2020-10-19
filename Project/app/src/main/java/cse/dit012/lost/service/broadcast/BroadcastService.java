@@ -1,5 +1,8 @@
 package cse.dit012.lost.service.broadcast;
 
+import cse.dit012.lost.android.service.ActiveBroadcastService;
+import cse.dit012.lost.android.ui.map.BroadcastInfoWindowFragment;
+import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
@@ -9,7 +12,11 @@ import java9.util.concurrent.CompletableFuture;
 
 /**
  * Service responsible for preforming tasks related to broadcasts.
- * Author: Benjamin Sannholm, Sophia Pham
+ * <p>
+ * Author: Benjamin Sannholm, Sophia Pham, Mathias Drage
+ * Uses: {@link BroadcastServiceFactory}, {@link Broadcast}, {@link UserId}, {@link MapCoordinates}, {@link CourseCode},
+ * Used by: {@link ActiveBroadcastService}, {@link AddBroadcastFragment}, {@link BroadcastInfoWindowFragment},
+ * {@link BroadcastServiceFactory}, {@link BroadcastServiceImpl}
  */
 public interface BroadcastService {
     /**

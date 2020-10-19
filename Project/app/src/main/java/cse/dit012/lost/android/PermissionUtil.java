@@ -5,9 +5,13 @@ import android.content.pm.PackageManager;
 
 import androidx.core.content.ContextCompat;
 
+import cse.dit012.lost.android.ui.map.LostMapFragment;
+
 /**
  * Utilities for dealing with Android permissions.
+ * <p>
  * Author: Benjamin Sannholm
+ * Used by: {@link LostMapFragment}
  */
 public final class PermissionUtil {
     private PermissionUtil() {
