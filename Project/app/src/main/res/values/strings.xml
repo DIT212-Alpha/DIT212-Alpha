@@ -22,7 +22,7 @@
     <string name="Welcome">Welcome,</string>
     <string name="full_name">Full Name</string>
     <string name="username">Username</string>
-    <string name="email">Email</string>
+    <string name="email">E-mail</string>
     <string name="phone_no">Phone No</string>
     <string name="password">Password</string>
     <string name="already_have_an_account_login">Already have an account? LogIn</string>
@@ -34,7 +34,7 @@
     <string name="todo">TODO</string>
     <string name="loginFragment">Login</string>
     <string name="here_s_nyour_first_nstep_with_nus">Here’s\nyour first\nstep with \nus!</string>
-    <string name="userNameRegister">UserName</string>
+    <string name="firstname">Firstname</string>
     <string name="surname">Surname</string>
     <string name="register">Register</string>
 

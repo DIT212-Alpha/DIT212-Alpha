@@ -1,7 +1,5 @@
 package cse.dit012.lost.model;
 
-import cse.dit012.lost.model.broadcast.Broadcast;
-
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;

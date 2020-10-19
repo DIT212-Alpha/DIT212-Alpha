@@ -21,12 +21,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import cse.dit012.lost.BroadcastRepositoryFactory;
+import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
-import cse.dit012.lost.service.MailAndPasswordLoginService;
+import cse.dit012.lost.service.LoginService;
+import cse.dit012.lost.service.LoginServiceFactory;
 import java9.util.concurrent.CompletableFuture;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -51,13 +52,9 @@ public class AddBroadcastFragmentTest {
      */
 
     @Before
-    public void setup() throws ExecutionException, InterruptedException {
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        MailAndPasswordLoginService login = new MailAndPasswordLoginService();
-        login.userSignIn("pontus.nellgard@gmail.com", "password", success -> {
-            completableFuture.complete(null);
-        });
-        completableFuture.get();
+    public void setup() throws ExecutionException, InterruptedException, TimeoutException {
+        LoginService login = LoginServiceFactory.createEmailAndPasswordService("pontus.nellgard@gmail.com", "password");
+        login.login().get(5, TimeUnit.SECONDS);
 
         // launchInContainer(AddBroadcastFragment.class, args);
         //    final NavController navController = Navigation.findNavController(mActivityTestRule.getActivity().findViewById(R.id.broadcast_btn));
@@ -106,7 +103,7 @@ public class AddBroadcastFragmentTest {
         onView(withId(R.id.addBtn))
                 .perform(click());
 
-        BroadcastRepository repository = BroadcastRepositoryFactory.get();
+        BroadcastRepository repository = BroadcastRepositoryProvider.get();
 
         CompletableFuture<List<Broadcast>> future = new CompletableFuture<>();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
@@ -148,7 +145,7 @@ public class AddBroadcastFragmentTest {
         onView(withId(R.id.addBtn))
                 .perform(click());
 
-        BroadcastRepository repository = BroadcastRepositoryFactory.get();
+        BroadcastRepository repository = BroadcastRepositoryProvider.get();
 
         java9.util.concurrent.CompletableFuture<List<Broadcast>> future = new java9.util.concurrent.CompletableFuture<>();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {

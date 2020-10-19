@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.LiveData;
 
-import cse.dit012.lost.BroadcastRepositoryFactory;
+import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
 import cse.dit012.lost.android.NotificationChannels;
 import cse.dit012.lost.android.ui.MainActivity;
@@ -22,6 +22,7 @@ import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.MapUtil;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
+import cse.dit012.lost.service.AuthenticatedUserService;
 import cse.dit012.lost.service.BroadcastService;
 import cse.dit012.lost.service.GpsService;
 
@@ -163,7 +164,7 @@ public final class ActiveBroadcastService extends LifecycleService {
         if (currentBroadcast != null) {
             currentBroadcast.removeObservers(this);
         }
-        currentBroadcast = BroadcastRepositoryFactory.get().observeById(activeBroadcastId);
+        currentBroadcast = BroadcastRepositoryProvider.get().observeById(activeBroadcastId);
         currentBroadcast.observe(this, this::onBroadcastUpdated);
     }
 
@@ -187,6 +188,13 @@ public final class ActiveBroadcastService extends LifecycleService {
      */
     private void keepAliveBroadcast() {
         if (currentBroadcast.getValue() != null) {
+            if (!AuthenticatedUserService.userService.isLoggedIn()
+                    || !AuthenticatedUserService.userService.getID().equals(currentBroadcast.getValue().getOwnerUID())) {
+                Log.d(TAG, "User is logged out or does not own active broadcast, stopping service");
+                stopSelf();
+                return;
+            }
+
             // Fetch user's current coordinates
             MapCoordinates currentCoords = GpsService.gps.getLocation(this);
 
