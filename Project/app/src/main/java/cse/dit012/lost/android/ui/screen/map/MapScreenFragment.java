@@ -18,7 +18,7 @@ import androidx.navigation.Navigation;
 
 import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentMapScreenBinding;
-import cse.dit012.lost.service.AuthenticatedUserService;
+import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
 
 /**
  * This class shows the map and contains the autocomplete text box for course filtration,

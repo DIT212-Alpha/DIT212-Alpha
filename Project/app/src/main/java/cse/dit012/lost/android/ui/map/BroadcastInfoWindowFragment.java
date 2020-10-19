@@ -16,8 +16,8 @@ import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
-import cse.dit012.lost.service.AuthenticatedUserService;
-import cse.dit012.lost.service.BroadcastService;
+import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
+import cse.dit012.lost.service.broadcast.BroadcastService;
 
 /**
  * A fragment for the contents of the information popup shown when a broadcast is pressed on the map.
@@ -90,7 +90,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
             layoutBinding.delete.setOnClickListener(v -> {
                 Intent intent = new Intent(this.requireContext(), ActiveBroadcastService.class);
                 requireContext().stopService(intent);
-                BroadcastService.get().setBroadcastInactive(new BroadcastId(id));
+                BroadcastService.INSTANCE.setBroadcastInactive(new BroadcastId(id));
             });
         } else {
             layoutBinding.editInfoWindowButton.setVisibility(View.INVISIBLE);
@@ -106,7 +106,7 @@ public final class BroadcastInfoWindowFragment extends Fragment {
             layoutBinding.description.setText(descriptionEdited);
 
             //Saves it in the database
-            BroadcastService.get().editBroadcast(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
+            BroadcastService.INSTANCE.editBroadcast(new BroadcastId(id), new CourseCode(courseEdited), descriptionEdited);
 
             layoutBinding.editViewInfoBox.setVisibility(View.GONE);
             layoutBinding.textViewInfoBox.setVisibility(View.VISIBLE);

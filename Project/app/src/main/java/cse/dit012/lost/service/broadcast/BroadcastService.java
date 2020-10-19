@@ -1,10 +1,8 @@
-package cse.dit012.lost.service;
+package cse.dit012.lost.service.broadcast;
 
-import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastId;
-import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
 import java9.util.concurrent.CompletableFuture;
@@ -15,23 +13,9 @@ import java9.util.concurrent.CompletableFuture;
  */
 public interface BroadcastService {
     /**
-     * Gives an instance of the broadcast service.
-     *
-     * @return an instance of the {@link BroadcastService}
+     * @return Singleton object
      */
-    static BroadcastService get() {
-        return fromRepository(BroadcastRepositoryProvider.get());
-    }
-
-    /**
-     * Gives an instance of the broadcast service backed by the given broadcast repository.
-     *
-     * @param repository the {@link BroadcastRepository} to use
-     * @return an instance of the {@link BroadcastService}
-     */
-    static BroadcastService fromRepository(BroadcastRepository repository) {
-        return new BroadcastServiceImpl(repository);
-    }
+    BroadcastService INSTANCE = BroadcastServiceFactory.get();
 
     /**
      * Creates a new broadcast placed at the given coordinates, owned by a given user,

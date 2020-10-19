@@ -1,4 +1,4 @@
-package cse.dit012.lost.android.ui;
+package cse.dit012.lost.android.ui.screen.map;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.LiveData;
@@ -23,11 +23,10 @@ import java.util.concurrent.TimeoutException;
 
 import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
-import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
-import cse.dit012.lost.service.LoginService;
-import cse.dit012.lost.service.LoginServiceFactory;
+import cse.dit012.lost.service.login.LoginService;
+import cse.dit012.lost.service.login.LoginServiceFactory;
 import java9.util.concurrent.CompletableFuture;
 
 import static androidx.test.espresso.Espresso.onData;

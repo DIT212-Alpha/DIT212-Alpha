@@ -1,4 +1,4 @@
-package cse.dit012.lost.android.ui;
+package cse.dit012.lost.android.ui.screen.welcome;
 
 import android.content.Context;
 
@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import cse.dit012.lost.R;
-import cse.dit012.lost.android.ui.screen.welcome.RegistrationScreenFragment;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
