@@ -33,7 +33,7 @@ public final class UserId {
     }
 
     /**
-     * @return a string representation of the {@link User} identifier.
+     * @return a string representation of the user identifier.
      */
     @NonNull
     @Override
