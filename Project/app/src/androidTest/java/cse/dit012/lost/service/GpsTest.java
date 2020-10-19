@@ -41,6 +41,6 @@ public class GpsTest {
     public void getLocation() {
         Context appContext = ApplicationProvider.getApplicationContext();
         MapCoordinates position = GpsService.gps.getLocation(appContext);
-        assertNotNull(position);
+        assertNotNull(position); // TODO: Return value can be null!
     }
 }
