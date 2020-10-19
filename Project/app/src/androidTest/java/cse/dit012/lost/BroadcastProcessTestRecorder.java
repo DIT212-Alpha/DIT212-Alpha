@@ -1,6 +1,14 @@
-package cse.dit012.lost.android.ui.map;
+package cse.dit012.lost;
 
 
+import android.view.View;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.action.CoordinatesProvider;
+import androidx.test.espresso.action.GeneralClickAction;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.action.Tap;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -27,10 +35,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class BroadcastInfoWindowFragmentTestRecorder {
-
-    @Rule
-    public ActivityScenarioRule<MainActivity> mActivityTestRule = new ActivityScenarioRule<>(MainActivity.class);
+public class BroadcastProcessTestRecorder {
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
@@ -42,10 +47,38 @@ public class BroadcastInfoWindowFragmentTestRecorder {
      * See the emulator on how it tests.
      */
 
+
+    public static ViewAction clickPercent(final float pctX, final float pctY){
+        return new GeneralClickAction(
+                Tap.SINGLE,
+                new CoordinatesProvider() {
+                    @Override
+                    public float[] calculateCoordinates(View view) {
+
+                        final int[] screenPos = new int[2];
+                        view.getLocationOnScreen(screenPos);
+                        int w = view.getWidth();
+                        int h = view.getHeight();
+
+                        float x = w * pctX;
+                        float y = h * pctY;
+
+                        final float screenX = screenPos[0] + x;
+                        final float screenY = screenPos[1] + y;
+                        float[] coordinates = {screenX, screenY};
+
+                        return coordinates;
+                    }
+                },
+                Press.FINGER);
+    }
+
     @Test
     public void broadcastInfoWindowFragmentTestRecorder() throws ExecutionException, InterruptedException, TimeoutException {
         LoginService login = LoginServiceFactory.createEmailAndPasswordService("test@test.com", "test123");
         login.login().get(5, TimeUnit.SECONDS);
+
+        ActivityScenario.launch(MainActivity.class);
 
         onView(withId(R.id.broadcast_btn))
                 .perform(click());
@@ -56,7 +89,12 @@ public class BroadcastInfoWindowFragmentTestRecorder {
         onView(withId(R.id.addBtn))
                 .perform(click());
 
-        //TODO get the broadcast window
+        Thread.sleep(500);
+
+        onView(withId(R.id.map))
+                .perform(clickPercent(0.5f, 0.5f));
+
+        Thread.sleep(500);
 
         onView(withId(R.id.editInfoWindowButton))
                 .perform(click());

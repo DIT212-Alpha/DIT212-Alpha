@@ -1,8 +1,15 @@
 package cse.dit012.lost.android.ui.screen.welcome;
 
-import android.content.Context;
+import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.navigation.Navigation;
+import androidx.navigation.testing.TestNavHostController;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -16,20 +23,34 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class RegistrationTest {
     @Before
     public void setUp() {
-        FragmentScenario.launchInContainer(RegistrationScreenFragment.class);
-    }
+        // Create a TestNavHostController
+        TestNavHostController navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            navController.setGraph(R.navigation.nav_graph);
+            navController.setCurrentDestination(R.id.registerFragment);
+        });
 
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("cse.dit012.lost", appContext.getPackageName());
+        // Launch fragment with nav controller overridden
+        FragmentScenario.launchInContainer(RegistrationScreenFragment.class,
+                null,
+                new FragmentFactory() {
+                    @NonNull
+                    @Override
+                    public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
+                        RegistrationScreenFragment fragment = new RegistrationScreenFragment();
+                        fragment.getViewLifecycleOwnerLiveData().observeForever(viewLifecycleOwner -> {
+                            if (viewLifecycleOwner != null) {
+                                Navigation.setViewNavController(fragment.requireView(), navController);
+                            }
+                        });
+                        return fragment;
+                    }
+                });
     }
 
     @Test

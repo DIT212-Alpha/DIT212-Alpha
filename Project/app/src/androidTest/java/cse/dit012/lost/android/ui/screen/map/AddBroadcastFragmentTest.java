@@ -55,18 +55,9 @@ public class AddBroadcastFragmentTest {
         LoginService login = LoginServiceFactory.createEmailAndPasswordService("pontus.nellgard@gmail.com", "password");
         login.login().get(5, TimeUnit.SECONDS);
 
-        // launchInContainer(AddBroadcastFragment.class, args);
-        //    final NavController navController = Navigation.findNavController(mActivityTestRule.getActivity().findViewById(R.id.broadcast_btn));
-        //  navController.navigate(R.id.action_loginFragment_to_mapScreenFragment);
-
         // Create a TestNavHostController
-        TestNavHostController navController = new TestNavHostController(
-                ApplicationProvider.getApplicationContext());
-        //navController.setGraph(R.navigation.nav_graph);
-
+        TestNavHostController navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
-            // navController.navigate(R.id.action_mapScreenFragment_to_add_broadcast_fragment);
-
             navController.setGraph(R.navigation.nav_graph);
             navController.setCurrentDestination(R.id.add_broadcast_fragment);
         });
