@@ -1,5 +1,7 @@
 package cse.dit012.lost.android.ui.screen.map;
 
+import android.app.Activity;
+
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -8,18 +10,21 @@ import androidx.navigation.testing.TestNavHostController;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
@@ -34,9 +39,16 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.runner.lifecycle.Stage.RESUMED;
 import static org.hamcrest.Matchers.anything;
-import static org.junit.Assert.assertFalse;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @LargeTest
@@ -50,14 +62,16 @@ public class AddBroadcastFragmentTest {
      * OBS! there hjas to exist at least one broadcast for the emptybroadcast test to work. otherwise it times out
      */
 
+    private TestNavHostController navController;
+
     @Before
     public void setup() throws ExecutionException, InterruptedException, TimeoutException {
         LoginService login = LoginServiceFactory.createEmailAndPasswordService("pontus.nellgard@gmail.com", "password");
         login.login().get(5, TimeUnit.SECONDS);
 
         // Create a TestNavHostController
-        TestNavHostController navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+        navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+        getInstrumentation().runOnMainSync(() -> {
             navController.setGraph(R.navigation.nav_graph);
             navController.setCurrentDestination(R.id.add_broadcast_fragment);
         });
@@ -81,14 +95,14 @@ public class AddBroadcastFragmentTest {
     //In order to add a broadcast the user has to be logged in
     @Test
     public void addBroadcast() throws InterruptedException, ExecutionException, TimeoutException {
-
         onView(withId(R.id.courseSpinner)).perform(click());
 
         //Selects the second item in the course select spinner
         onData(anything()).atPosition(1).perform(click());
 
+        String randomDescription = "" + new Random().nextDouble();
         onView(withId(R.id.descriptionEdittext))
-                .perform(replaceText("test description"), closeSoftKeyboard());
+                .perform(replaceText(randomDescription), closeSoftKeyboard());
 
         onView(withId(R.id.addBtn))
                 .perform(click());
@@ -96,15 +110,13 @@ public class AddBroadcastFragmentTest {
         BroadcastRepository repository = BroadcastRepositoryProvider.get();
 
         CompletableFuture<List<Broadcast>> future = new CompletableFuture<>();
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+        getInstrumentation().runOnMainSync(() -> {
             LiveData<List<Broadcast>> observableBroadcasts = repository.observeActiveBroadcasts();
             observableBroadcasts.observeForever(new Observer<List<Broadcast>>() {
                 @Override
                 public void onChanged(List<Broadcast> broadcast) {
-                    if (!broadcast.isEmpty()) { // Keep listening and waiting if no broadcasts came back yet
-                        observableBroadcasts.removeObserver(this);
-                        future.complete(broadcast);
-                    }
+                    observableBroadcasts.removeObserver(this);
+                    future.complete(broadcast);
                 }
             });
         });
@@ -112,53 +124,55 @@ public class AddBroadcastFragmentTest {
         List<Broadcast> returnedBroadcasts = future.get(5, TimeUnit.SECONDS);
         boolean exists = false;
         for (int i = 0; i < returnedBroadcasts.size(); i++) {
-            if (returnedBroadcasts.get(i).getDescription().equals("test description")) {
+            if (returnedBroadcasts.get(i).getDescription().equals(randomDescription)) {
                 exists = true;
                 break;
             }
         }
         assertTrue("Broadcast not found", exists);
+        // Navigation goes back to map screen
+        assertEquals(navController.getCurrentDestination().getId(), R.id.mapScreenFragment);
     }
 
     @Test
     // Tests if a user tries to add a broadcast without setting a description which should not be possible
-    public void addEmptyBroadcast() throws InterruptedException, ExecutionException, TimeoutException {
-
+    public void addEmptyBroadcast() {
         onView(withId(R.id.courseSpinner)).perform(click());
 
         //Selects the second item in the course select spinner
         onData(anything()).atPosition(1).perform(click());
 
-       /* onView(withId(R.id.descriptionEdittext))
-                .perform(replaceText("test description"), closeSoftKeyboard());*/
-
         onView(withId(R.id.addBtn))
                 .perform(click());
 
-        BroadcastRepository repository = BroadcastRepositoryProvider.get();
+        // Toast shows up
+        onView(withText("Please select a course and set a description"))
+                .inRoot(withDecorView(not(getActivityInstance().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
+        // Navigation does not go back to map screen
+        assertEquals(navController.getCurrentDestination().getId(), R.id.add_broadcast_fragment);
+    }
 
-        java9.util.concurrent.CompletableFuture<List<Broadcast>> future = new java9.util.concurrent.CompletableFuture<>();
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
-            LiveData<List<Broadcast>> observableBroadcasts = repository.observeActiveBroadcasts();
-            observableBroadcasts.observeForever(new Observer<List<Broadcast>>() {
-                @Override
-                public void onChanged(List<Broadcast> broadcast) {
-                    if (!broadcast.isEmpty()) { // Keep listening and waiting if no broadcasts came back yet
-                        observableBroadcasts.removeObserver(this);
-                        future.complete(broadcast);
-                    }
-                }
-            });
+    @Test
+    // Tests if pressing the cancel button goes back to map screen
+    public void cancelGoesToMap() {
+        onView(withId(R.id.cancelBtn))
+                .perform(click());
+
+        // Navigation does not go back to map screen
+        assertEquals(navController.getCurrentDestination().getId(), R.id.mapScreenFragment);
+    }
+
+    public Activity getActivityInstance() {
+        AtomicReference<Activity> currentActivity = new AtomicReference<>();
+        getInstrumentation().runOnMainSync(() -> {
+            Collection<Activity> resumedActivities =
+                    ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(RESUMED);
+            if (resumedActivities.iterator().hasNext()) {
+                currentActivity.set(resumedActivities.iterator().next());
+            }
         });
 
-        List<Broadcast> returnedBroadcasts = future.get(5, TimeUnit.SECONDS);
-        boolean exists = false;
-        for (int i = 0; i < returnedBroadcasts.size(); i++) {
-            if (returnedBroadcasts.get(i).getDescription().equals("test description")) {
-                exists = true;
-                break;
-            }
-        }
-        assertFalse("Broadcast was found when it should not", exists);
+        return currentActivity.get();
     }
 }

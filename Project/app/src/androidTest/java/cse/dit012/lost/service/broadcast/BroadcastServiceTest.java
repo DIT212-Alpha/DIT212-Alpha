@@ -48,6 +48,7 @@ public class BroadcastServiceTest {
                 new CourseCode("testCourse"),
                 "description");
         Date date = result.get().getLastActive();
+        Thread.sleep(2000);
         result = bs.updateBroadcastLastActive(result.get().getId());
         assertNotEquals(date, result.get().getLastActive());
     }
