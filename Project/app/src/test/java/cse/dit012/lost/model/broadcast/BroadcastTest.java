@@ -116,4 +116,12 @@ public class BroadcastTest {
         assertEquals(test.toString(), new Broadcast(bId, userId, date, activeDate, coordinates, code, description).toString());
     }
 
+    @Test
+    public void isActiveTest() {
+        Broadcast b1 = new Broadcast(bId,userId,date,new Date(System.currentTimeMillis()),coordinates,code,description);
+        assertTrue(b1.isActive(new Date(System.currentTimeMillis())));
+        b1.setToInactive();
+        assertFalse(b1.isActive(new Date(System.currentTimeMillis())));
+    }
+
 }
