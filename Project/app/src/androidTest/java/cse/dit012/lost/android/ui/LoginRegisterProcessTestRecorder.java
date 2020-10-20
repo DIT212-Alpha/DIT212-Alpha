@@ -47,14 +47,16 @@ public class LoginRegisterProcessTestRecorder {
     public void loginRegisterProcessTestRecorder() throws InterruptedException {
         AuthenticatedUserService.userService.signOutUser();
 
+        onView(withId(R.id.cirLoginButton))
+                .perform(click());
+
+        Thread.sleep(1000);
+
         onView(withId(R.id.editTextEmail))
                 .perform(replaceText("test@test.com"), closeSoftKeyboard());
 
         onView(withId(R.id.editTextPassword))
-                .perform(replaceText("test123"), closeSoftKeyboard());
-
-        onView(withId(R.id.editTextPassword))
-                .perform(pressImeActionButton());
+                .perform(replaceText("test123"), closeSoftKeyboard(), pressImeActionButton());
 
         onView(withId(R.id.cirLoginButton))
                 .perform(click());
@@ -63,6 +65,8 @@ public class LoginRegisterProcessTestRecorder {
 
         onView(withId(R.id.sign_out_btn))
                 .perform(click());
+
+        Thread.sleep(1000);
 
         onView(withId(R.id.editTextEmail))
                 .perform(replaceText("thisshouldfail"), closeSoftKeyboard());
@@ -80,16 +84,18 @@ public class LoginRegisterProcessTestRecorder {
                 .perform(click());
 
         onView(withId(R.id.editTextPassword))
-                .perform(replaceText("1234567"));
-
-        onView(withId(R.id.editTextPassword))
-                .perform(closeSoftKeyboard());
+                .perform(replaceText("1234567"), closeSoftKeyboard());
 
         onView(withId(R.id.cirLoginButton))
                 .perform(click());
 
         onView(withId(R.id.clickable_text_new_user))
                 .perform(click());
+
+        onView(withId(R.id.cirRegisterButton))
+                .perform(click());
+
+        Thread.sleep(1000);
 
         onView(withId(R.id.registerTextUserName))
                 .perform(replaceText("Lorenzo"), closeSoftKeyboard());
@@ -107,10 +113,13 @@ public class LoginRegisterProcessTestRecorder {
                 .perform(click());
 
         onView(withId(R.id.registerTextEmail))
-                .perform(replaceText("lorenzovon@matterhorn.com"));
+                .perform(replaceText("lorenzovo@matterhorn.com"), closeSoftKeyboard());
 
-        onView(withId(R.id.registerTextEmail))
-                .perform(closeSoftKeyboard());
+        onView(withId(R.id.registerTextPassword))
+                .perform(replaceText("123"), closeSoftKeyboard());
+
+        onView(withId(R.id.cirRegisterButton))
+                .perform(click());
 
         onView(withId(R.id.registerTextPassword))
                 .perform(replaceText("lorenzo123"), closeSoftKeyboard());
@@ -121,7 +130,7 @@ public class LoginRegisterProcessTestRecorder {
         onView(withId(R.id.cirRegisterButton))
                 .perform(click());
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -129,6 +138,45 @@ public class LoginRegisterProcessTestRecorder {
                 .perform(click());
 
         user.delete();
+
+        onView(withId(R.id.clickable_text_new_user))
+                .perform(click());
+
+        onView(withId(R.id.registerTextUserName))
+                .perform(replaceText("Test"), closeSoftKeyboard());
+
+        onView(withId(R.id.registerTextSurName))
+                .perform(replaceText("Test"), closeSoftKeyboard());
+
+        onView(withId(R.id.registerTextEmail))
+                .perform(replaceText("Test"), closeSoftKeyboard());
+
+        onView(withId(R.id.registerTextEmail))
+                .perform(click());
+
+        onView(withId(R.id.registerTextEmail))
+                .perform(replaceText("test"), closeSoftKeyboard());
+
+        onView(withId(R.id.cirRegisterButton))
+                .perform(click());
+
+        onView(withId(R.id.registerTextEmail))
+                .perform(replaceText("test@test.com"), closeSoftKeyboard());
+
+        onView(withId(R.id.cirRegisterButton))
+                .perform(click());
+
+        onView(withId(R.id.registerTextPassword))
+                .perform(replaceText(""), closeSoftKeyboard());
+
+        onView(withId(R.id.cirRegisterButton))
+                .perform(click());
+
+        onView(withId(R.id.registerTextPassword))
+                .perform(replaceText("test123"), closeSoftKeyboard(), pressImeActionButton());
+
+        onView(withId(R.id.cirRegisterButton))
+                .perform(click());
 
     }
 }
