@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @Author: Sophia Pham
+ * @Author: Mathias Drage & Sophia Pham
  */
 
 public class BroadcastTest {
@@ -100,4 +100,20 @@ public class BroadcastTest {
         assertFalse(test.isPointInRangeOfBroadcast(new MapCoordinates(0, 0)));
         assertTrue(test.isPointInRangeOfBroadcast(coordinates));
     }
+
+    @Test
+    public void equalsTest() {
+        assertEquals(new Broadcast(bId, userId, date, activeDate, coordinates, code, description), test);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        assertEquals(test.hashCode(), new Broadcast(bId, userId, date, activeDate, coordinates, code, description).hashCode());
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals(test.toString(), new Broadcast(bId, userId, date, activeDate, coordinates, code, description).toString());
+    }
+
 }
