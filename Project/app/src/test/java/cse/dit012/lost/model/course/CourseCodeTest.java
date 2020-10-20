@@ -32,4 +32,9 @@ public class CourseCodeTest {
         new CourseCode("");
     }
 
+    @Test(expected = NullPointerException.class)
+    public void nullString() {
+        new CourseCode(null);
+    }
+
 }
