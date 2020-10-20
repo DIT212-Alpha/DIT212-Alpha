@@ -3,10 +3,10 @@ package cse.dit012.lost.android.ui.screen.map;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import cse.dit012.lost.BroadcastRepositoryProvider;
@@ -45,29 +45,36 @@ public final class MapViewModel extends ViewModel {
 
         LiveData<List<Broadcast>> activeBroadcasts = broadcastRepository.observeActiveBroadcasts();
 
-        mediatorLiveDataMerger.addSource(activeBroadcasts, broadcasts -> {
-            mediatorLiveDataMerger.setValue(filterBroadcastsOnCourse(activeBroadcasts, courseCode));
-        });
-        mediatorLiveDataMerger.addSource(courseCode, broadcasts -> {
-            mediatorLiveDataMerger.setValue(filterBroadcastsOnCourse(activeBroadcasts, courseCode));
-        });
+        Observer<Object> onInputsChanged = unused -> {
+            // Only propagate changes to broadcast list when both course filter and broadcasts list is available
+            if (activeBroadcasts.getValue() != null && courseCode.getValue() != null) {
+                mediatorLiveDataMerger.setValue(filterBroadcastsOnCourse(activeBroadcasts.getValue(), courseCode.getValue()));
+            }
+        };
+        // Trigger onInputsChanged either when list of broadcasts or course filter changes
+        mediatorLiveDataMerger.addSource(activeBroadcasts, onInputsChanged);
+        mediatorLiveDataMerger.addSource(courseCode, onInputsChanged);
 
         return mediatorLiveDataMerger;
     }
 
-    private static List<Broadcast> filterBroadcastsOnCourse(LiveData<List<Broadcast>> broadcasts, LiveData<String> courseCode) {
-        if (broadcasts.getValue() == null || courseCode.getValue() == null) {
-            return Collections.emptyList();
-        }
-
-        boolean noCourseSelected = courseCode.getValue().isEmpty();
+    /**
+     * Takes a list of broadcasts, the a course to filter on and gives back the list of broadcasts
+     * where broadcasts for other courses are filtered away.
+     *
+     * @param broadcasts the list of broadcasts
+     * @param courseCode the course to filter on
+     * @return a filtered list containing only relevant broadcasts
+     */
+    private static List<Broadcast> filterBroadcastsOnCourse(List<Broadcast> broadcasts, String courseCode) {
+        boolean noCourseSelected = courseCode.isEmpty();
         if (noCourseSelected) {
-            return broadcasts.getValue();
+            return broadcasts;
         }
 
         List<Broadcast> filteredBroadcasts = new ArrayList<>();
-        for (Broadcast broadcast : broadcasts.getValue()) {
-            if (broadcast.getCourse().toString().equals(courseCode.getValue())) {
+        for (Broadcast broadcast : broadcasts) {
+            if (broadcast.getCourse().toString().equals(courseCode)) {
                 filteredBroadcasts.add(broadcast);
             }
         }
