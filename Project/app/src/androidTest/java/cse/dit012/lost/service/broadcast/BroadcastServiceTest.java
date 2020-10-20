@@ -4,18 +4,18 @@ import org.junit.Test;
 
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import cse.dit012.lost.BroadcastRepositoryProvider;
 import cse.dit012.lost.model.MapCoordinates;
 import cse.dit012.lost.model.broadcast.Broadcast;
-import cse.dit012.lost.model.broadcast.BroadcastId;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;
 import cse.dit012.lost.model.course.CourseCode;
 import cse.dit012.lost.model.user.UserId;
 import java9.util.concurrent.CompletableFuture;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Author: Mathias Drage
@@ -30,11 +30,11 @@ public class BroadcastServiceTest {
     @Test
     public void createBroadcast() throws ExecutionException, InterruptedException {
         CompletableFuture<Broadcast> result = bs.createBroadcast(new UserId("uid"),
-                new MapCoordinates(1,1),
+                new MapCoordinates(1, 1),
                 new CourseCode("testCourse"),
                 "description");
         Broadcast b = result.get();
-        assertEquals(b,br.getById(b.getId()).get());
+        assertEquals(b, br.getById(b.getId()).get());
     }
 
     /**
@@ -44,12 +44,12 @@ public class BroadcastServiceTest {
     @Test
     public void updateBroadcastLastActive() throws ExecutionException, InterruptedException {
         CompletableFuture<Broadcast> result = bs.createBroadcast(new UserId("uid"),
-                new MapCoordinates(1,1),
+                new MapCoordinates(1, 1),
                 new CourseCode("testCourse"),
                 "description");
         Date date = result.get().getLastActive();
         result = bs.updateBroadcastLastActive(result.get().getId());
-        assertNotEquals(date,result.get().getLastActive());
+        assertNotEquals(date, result.get().getLastActive());
     }
 
     /**
@@ -59,7 +59,7 @@ public class BroadcastServiceTest {
     @Test
     public void setBroadcastInactive() throws ExecutionException, InterruptedException {
         CompletableFuture<Broadcast> result = bs.createBroadcast(new UserId("uid"),
-                new MapCoordinates(1,1),
+                new MapCoordinates(1, 1),
                 new CourseCode("testCourse"),
                 "description");
         Date date = result.get().getLastActive();
@@ -73,13 +73,13 @@ public class BroadcastServiceTest {
     @Test
     public void editBroadcast() throws ExecutionException, InterruptedException {
         CompletableFuture<Broadcast> result = bs.createBroadcast(new UserId("uid"),
-                new MapCoordinates(1,1),
+                new MapCoordinates(1, 1),
                 new CourseCode("testCourse"),
                 "description");
         Broadcast b = result.get();
-        result = bs.editBroadcast(b.getId(),new CourseCode("another course"),"new description");
-        assertEquals(b,result.get());
+        result = bs.editBroadcast(b.getId(), new CourseCode("another course"), "new description");
+        assertEquals(b, result.get());
         assertTrue(result.get().getId().equals(b.getId()));
-        assertEquals(result.get().getDescription(),"new description");
+        assertEquals(result.get().getDescription(), "new description");
     }
 }

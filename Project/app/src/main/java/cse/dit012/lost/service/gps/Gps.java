@@ -11,12 +11,15 @@ import cse.dit012.lost.model.MapCoordinates;
 
 /**
  * Provides the GPS location of the Android device.
+ * <p>
  * Author: Mathias Drage
- * Used by: {@link GpsService}
+ * Uses: {@link GpsService}, {@link MapCoordinates}
+ * Used by: {@link GpsServiceFactory}
  */
 final class Gps implements GpsService {
     private LatLng lastKnownLocation;
 
+    @Override
     @SuppressLint("MissingPermission")
     public MapCoordinates getLocation(Context context) {
         // Communicates with the android system to manage location

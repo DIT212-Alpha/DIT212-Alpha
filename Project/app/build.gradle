@@ -136,7 +136,12 @@ task jacocoTestReport(type: JacocoReport) {
             '**/BuildConfig.*',
             '**/Manifest*.*',
             '**/*Test*.*',
-            'android/**/*.*'
+            'android/**/*.*',
+            '**/BR.class',
+            '**/BuildConfig.class',
+            '**/DataBinderMapperImpl*.class',
+            '**/DataBindingInfo.class',
+            '**/*Directions.class'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"

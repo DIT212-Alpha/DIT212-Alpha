@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @Author: Sophia Pham
- * */
+ */
 
 public class CourseCodeTest {
     String course = "DIT000";
@@ -23,12 +23,12 @@ public class CourseCodeTest {
     }
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         assertEquals(code.toString(), course);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void emptyString(){
+    @Test(expected = IllegalArgumentException.class)
+    public void emptyString() {
         new CourseCode("");
     }
 

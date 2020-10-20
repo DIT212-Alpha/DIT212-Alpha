@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @Author: Sophia Pham
- * */
+ */
 
 public class BroadcastIdTest {
     String id = "0";
@@ -23,7 +23,7 @@ public class BroadcastIdTest {
     }
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         assertEquals(bId.toString(), id);
     }
 }

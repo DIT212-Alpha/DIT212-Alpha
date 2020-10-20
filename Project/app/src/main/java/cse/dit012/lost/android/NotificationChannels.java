@@ -7,10 +7,13 @@ import android.content.Context;
 import android.os.Build;
 
 import cse.dit012.lost.R;
+import cse.dit012.lost.android.service.ActiveBroadcastService;
 
 /**
  * Constants and methods for setting up Android notification channels.
+ * <p>
  * Author: Benjamin Sannholm
+ * Used by: {@link ActiveBroadcastService}
  */
 public final class NotificationChannels {
     public static final String NOTIFICATION_CHANNEL_ACTIVE_BROADCAST_ID = "active_broadcast";

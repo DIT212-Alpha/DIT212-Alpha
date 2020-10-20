@@ -34,6 +34,8 @@ import java9.util.concurrent.CompletableFuture;
  * User interface for logging in the user through various services.
  * <p>
  * Author: Bashar Oumari
+ * Uses: res/layout/fragment_login.xml, {@link AuthenticatedUserService}, {@link LoginService}, {@link LoginServiceFactory}
+ * Used by: res/navigation/nav_graph.xml
  */
 public final class LoginScreenFragment extends Fragment {
     private static final NavOptions NAV_OPTIONS = new NavOptions.Builder()
@@ -42,8 +44,10 @@ public final class LoginScreenFragment extends Fragment {
 
     private FragmentLoginBinding fragmentLoginBinding;
 
+    // Navigation controller
     private NavController navController;
 
+    // Launcher for starting the Google login process
     private final ActivityResultLauncher<Intent> googleSignInActivityLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 loginUsingService(LoginServiceFactory.createGoogleService(result));
@@ -72,14 +76,18 @@ public final class LoginScreenFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         navController = Navigation.findNavController(view);
 
         checkIfUserIsAlreadySignedIn();
         setUpButtons();
     }
 
+    /**
+     * Logins in using a given login service and handles the outcome.
+     *
+     * @param service the {@link LoginService} to use
+     * @return a future completing with the result of the login or failing
+     */
     private CompletableFuture<Void> loginUsingService(LoginService service) {
         return service.login().thenAccept(unused -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -93,7 +101,7 @@ public final class LoginScreenFragment extends Fragment {
     }
 
     /**
-     * check if the user is not null and proceed to the map
+     * Check if the user is logged in and and proceeds to the map if so
      */
     private void checkIfUserIsAlreadySignedIn() {
         if (AuthenticatedUserService.userService.isLoggedIn()) {
@@ -111,19 +119,22 @@ public final class LoginScreenFragment extends Fragment {
         fragmentLoginBinding.cirLoginButton.setOnClickListener(view -> mailLoginUser());
     }
 
+    /**
+     * Starts the process of logging in using Google authentication
+     */
     private void beginGoogleLogin() {
         googleSignInActivityLauncher.launch(getGoogleSignInIntent());
     }
 
     /**
-     * proceed to registerFragment
+     * Proceeds to registration screen
      */
     private void proceedToRegisterFragment() {
         navController.navigate(R.id.action_loginFragment_to_registerFragment);
     }
 
     /**
-     * Checks if the email and password fields are not empty
+     * Checks if the email and password field values are valid
      *
      * @param email    email of the user
      * @param password password of the user
@@ -149,7 +160,7 @@ public final class LoginScreenFragment extends Fragment {
     }
 
     /**
-     * user mail login, and proceed to mapFragment
+     * Starts the process of logging in using e-mail and password
      */
     private void mailLoginUser() {
         fragmentLoginBinding.progressBar.setVisibility(View.VISIBLE);

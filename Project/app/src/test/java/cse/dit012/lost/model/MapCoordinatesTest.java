@@ -2,7 +2,6 @@ package cse.dit012.lost.model;
 
 import org.junit.Test;
 
-import static java.lang.Math.max;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -14,10 +13,10 @@ public class MapCoordinatesTest {
     double latitude = 1;
     double longitude = 1;
     MapCoordinates mapCoordinates = new MapCoordinates(latitude, longitude);
-    MapCoordinates mapCoordinates2 = new MapCoordinates(2,2);
+    MapCoordinates mapCoordinates2 = new MapCoordinates(2, 2);
 
     @Test
-    public void getLatitude(){
+    public void getLatitude() {
         assertEquals(mapCoordinates.getLatitude(), latitude, 0);
     }
 
@@ -29,22 +28,22 @@ public class MapCoordinatesTest {
     @Test
     public void equalsTest() {
         assertEquals(new MapCoordinates(latitude, longitude), mapCoordinates);
-        assertNotEquals(mapCoordinates,mapCoordinates2);
+        assertNotEquals(mapCoordinates, mapCoordinates2);
     }
 
     @Test
     public void hashCodeTest() {
         assertEquals(new MapCoordinates(latitude, longitude).hashCode(), mapCoordinates.hashCode());
-        assertNotEquals(mapCoordinates,mapCoordinates2);
+        assertNotEquals(mapCoordinates, mapCoordinates2);
     }
 
     @Test
-    public void toStringTest(){
+    public void toStringTest() {
         assertEquals(new MapCoordinates(latitude, longitude).toString(), mapCoordinates.toString());
     }
 
     @Test
-    public void distanceTo(){
+    public void distanceTo() {
         double meters = mapCoordinates.distanceTo(mapCoordinates);
         assertEquals(0, meters, 0.5);
     }

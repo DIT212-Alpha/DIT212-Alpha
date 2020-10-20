@@ -14,11 +14,24 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java9.util.concurrent.CompletableFuture;
 
+/**
+ * Login service utilizing a Google account.
+ * <p>
+ * Author: Bashar Oumari
+ * Uses: {@link LoginService}
+ * Used by: {@link LoginServiceFactory}
+ */
 final class GoogleLoginService implements LoginService {
     public static final String TAG = "GoogleLoginService";
 
     private final ActivityResult result;
 
+    /**
+     * Creates a login service that attempts to login to Firebase using
+     * the given result from a Google sign-in.
+     *
+     * @param result the result of a Google sign-in
+     */
     public GoogleLoginService(ActivityResult result) {
         this.result = result;
     }
@@ -28,13 +41,13 @@ final class GoogleLoginService implements LoginService {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
         if (result.getResultCode() != Activity.RESULT_OK) {
-            Log.e(TAG, "Activity result code not ok");
-            future.completeExceptionally(new RuntimeException("Activity result code not ok"));
+            Log.e(TAG, "Activity result code from Google sign-in not ok");
+            future.completeExceptionally(new RuntimeException("Activity result code from Google sign-in not ok"));
             return future;
         }
 
         try {
-            // if Google sign in was successful, then authenticate with Firebase
+            // If Google sign in was successful, then authenticate with Firebase
             GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(result.getData())
                     .getResult(ApiException.class);
             AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);

@@ -2,13 +2,11 @@ package cse.dit012.lost.android.ui.screen.welcome;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,27 +27,21 @@ import cse.dit012.lost.R;
 import cse.dit012.lost.databinding.FragmentRegisterBinding;
 
 /**
- * User interface for register an account, used for registering with mail and password
- * this class will be refactored and some functionality will be added
+ * User interface for registering an account. Used for registering with e-mail and password.
+ * <p>
  * Author: Bashar Oumari
+ * Uses: res/layout/fragment_login.xml
+ * Used by: res/navigation/nav_graph.xml
  */
 public final class RegistrationScreenFragment extends Fragment {
-    EditText userName;
-    EditText surName;
-    EditText userEmail;
-    EditText userPassword;
-
-    Button registerButton;
-
-    ProgressBar progressBar;
-    NavController navController;
-
     private static final NavOptions NAV_OPTIONS = new NavOptions.Builder()
             .setPopUpTo(R.id.registerFragment, true)
             .build();
 
-    private FirebaseAuth registerAuthentication;
-    FragmentRegisterBinding fragmentRegisterBinding;
+    private FragmentRegisterBinding fragmentRegisterBinding;
+
+    // Navigation controller
+    private NavController navController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -61,17 +53,7 @@ public final class RegistrationScreenFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        progressBar = fragmentRegisterBinding.progressBar;
-        registerAuthentication = FirebaseAuth.getInstance();
         navController = Navigation.findNavController(view);
-
-        userName = fragmentRegisterBinding.registerTextUserName;
-        surName = fragmentRegisterBinding.registerTextSurName;
-        userEmail = fragmentRegisterBinding.registerTextEmail;
-        userPassword = fragmentRegisterBinding.registerTextPassword;
-        registerButton = fragmentRegisterBinding.cirRegisterButton;
-
 
         setupRegisterButton();
     }
@@ -79,35 +61,32 @@ public final class RegistrationScreenFragment extends Fragment {
     /**
      * Validate the obtained email and password from user
      *
-     * @param email    - users email
-     * @param password - users password
-     * @return {boolean}
+     * @param email    the user's e-mail
+     * @param password the user's password
+     * @return true if valid, false otherwise
      */
-
     private boolean validate(String email, String password) {
-
-        // Reset errors.
-        userName.setError(null);
-        userPassword.setError(null);
+        // Reset errors
+        fragmentRegisterBinding.registerTextUserName.setError(null);
+        fragmentRegisterBinding.registerTextPassword.setError(null);
 
         if (TextUtils.isEmpty(email)) {
-            progressBar.setVisibility(View.INVISIBLE);
-            userEmail.setError("Email is required");
-
+            fragmentRegisterBinding.progressBar.setVisibility(View.INVISIBLE);
+            fragmentRegisterBinding.registerTextEmail.setError("Email is required");
             return false;
-        } else if (!EmailValidate(email)) {
-            userEmail.setError("Enter a valid email");
-            progressBar.setVisibility(View.INVISIBLE);
+        } else if (!isEmailValid(email)) {
+            fragmentRegisterBinding.registerTextEmail.setError("Enter a valid email");
+            fragmentRegisterBinding.progressBar.setVisibility(View.INVISIBLE);
             return false;
         }
 
         if (TextUtils.isEmpty(password)) {
-            userPassword.setError("Password is required");
-            progressBar.setVisibility(View.INVISIBLE);
+            fragmentRegisterBinding.registerTextPassword.setError("Password is required");
+            fragmentRegisterBinding.progressBar.setVisibility(View.INVISIBLE);
             return false;
-        } else if (!PasswordValidate(password)) {
-            userPassword.setError("Password must contain at least 6 characters");
-            progressBar.setVisibility(View.INVISIBLE);
+        } else if (!isPasswordValid(password)) {
+            fragmentRegisterBinding.registerTextPassword.setError("Password must contain at least 6 characters");
+            fragmentRegisterBinding.progressBar.setVisibility(View.INVISIBLE);
             return false;
         }
 
@@ -115,72 +94,65 @@ public final class RegistrationScreenFragment extends Fragment {
     }
 
     /**
-     * Check if the email is of a good kind
+     * Check if the e-mail is of a good kind
      *
-     * @param email - mail of the user
-     * @return - boolean
+     * @param email the e-mail to check
+     * @return true if valid, false otherwise
      */
-
-    public boolean EmailValidate(String email) {
+    private boolean isEmailValid(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
-    //Check password with minimum requirement here(it should be minimum 6 characters)
-
     /**
-     * checks the minimum requirement for password
+     * Checks the minimum requirement for password (it should be minimum 6 characters)
      *
-     * @param password - password of the user
-     * @return - boolean
+     * @param password the password to validate
+     * @return true if valid, false otherwise
      */
-    public boolean PasswordValidate(String password) {
-        return password.length() >= 7;
+    private boolean isPasswordValid(String password) {
+        return password.length() >= 6;
     }
 
     /**
      * Setup the register button
      */
-
     private void setupRegisterButton() {
-        registerButton.setOnClickListener(this::registerWithMailAndPassword);
+        fragmentRegisterBinding.cirRegisterButton.setOnClickListener(view -> registerWithMailAndPassword());
     }
 
     /**
-     * register the user with the email and password obtained
-     *
-     * @param view
+     * Register the user with the email and password obtained from input fields
      */
-    private void registerWithMailAndPassword(View view) {
-
-        progressBar.setVisibility(View.VISIBLE);
-        String email = userEmail.getText().toString();
-        String password = userPassword.getText().toString();
-        String firstname = userName.getText().toString();
-        String lastname = surName.getText().toString();
+    private void registerWithMailAndPassword() {
+        fragmentRegisterBinding.progressBar.setVisibility(View.VISIBLE);
+        String email = fragmentRegisterBinding.registerTextEmail.getText().toString();
+        String password = fragmentRegisterBinding.registerTextPassword.getText().toString();
+        String firstname = fragmentRegisterBinding.registerTextUserName.getText().toString();
+        String lastname = fragmentRegisterBinding.registerTextSurName.getText().toString();
 
         if (validate(email, password)) {
-
-            registerAuthentication.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-
+            // Create user in Firebase
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
-                    progressBar.setVisibility(View.INVISIBLE);
-
+                    Log.w("RegistrationScreen", "Failed to register user", task.getException());
+                    fragmentRegisterBinding.progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "Registration unsuccessful!", Toast.LENGTH_LONG).show();
-                    task.getException().printStackTrace();
-                } else {
-                    AuthResult result = task.getResult();
-                    result.getUser().updateProfile(
-                            new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(firstname + " " + lastname)
-                                    .build()
-                    ).addOnSuccessListener(command -> {
-                        Toast.makeText(getContext(), "Registration Successful! Welcome", Toast.LENGTH_LONG).show();
-                        navController.navigate(R.id.action_registerFragment_to_mapScreenFragment, null, NAV_OPTIONS);
-                        progressBar.setVisibility(View.INVISIBLE);
-                    });
+                    return;
                 }
+
+                // Set user display name from first- and lastname
+                AuthResult result = task.getResult();
+                result.getUser().updateProfile(
+                        new UserProfileChangeRequest.Builder()
+                                .setDisplayName(firstname + " " + lastname)
+                                .build()
+                ).addOnSuccessListener(command -> {
+                    Toast.makeText(getContext(), "Registration Successful! Welcome", Toast.LENGTH_LONG).show();
+                    navController.navigate(R.id.action_registerFragment_to_mapScreenFragment, null, NAV_OPTIONS);
+                    fragmentRegisterBinding.progressBar.setVisibility(View.INVISIBLE);
+                });
             });
         }
     }

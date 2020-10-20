@@ -4,6 +4,14 @@ import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
 
+import cse.dit012.lost.android.service.ActiveBroadcastService;
+import cse.dit012.lost.android.ui.map.LostMapFragment;
+import cse.dit012.lost.android.ui.screen.map.AddBroadcastFragment;
+import cse.dit012.lost.model.broadcast.Broadcast;
+import cse.dit012.lost.persistance.firebase.FirebaseBroadcastRepository;
+import cse.dit012.lost.service.broadcast.BroadcastService;
+import cse.dit012.lost.service.gps.GpsService;
+
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -11,8 +19,12 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.toRadians;
 
 /**
- * Representation of the lat and long coordinates of a point on the map.
+ * Representation of the latitude and longitude coordinates of a point on the map.
+ * <p>
  * Author: Benjamin Sannholm
+ * Used by: {@link ActiveBroadcastService}, {@link AddBroadcastFragment}, {@link Broadcast},
+ * {@link BroadcastService}, BroadcastServiceImpl, {@link FirebaseBroadcastRepository}, Gps,
+ * {@link GpsService}, {@link LostMapFragment}
  */
 public final class MapCoordinates {
     private final double latitude;
@@ -43,28 +55,6 @@ public final class MapCoordinates {
         return longitude;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MapCoordinates that = (MapCoordinates) o;
-        return Double.compare(that.getLatitude(), getLatitude()) == 0 &&
-                Double.compare(that.getLongitude(), getLongitude()) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getLatitude(), getLongitude());
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("latitude", latitude)
-                .add("longitude", longitude)
-                .toString();
-    }
-
     /**
      * Calculates the distance between two points on a sphere.
      * Inspired by: https://stackoverflow.com/a/27943
@@ -86,5 +76,27 @@ public final class MapCoordinates {
         double d = R * c; // Distance in meters
 
         return d;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MapCoordinates that = (MapCoordinates) o;
+        return Double.compare(that.getLatitude(), getLatitude()) == 0 &&
+                Double.compare(that.getLongitude(), getLongitude()) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLatitude(), getLongitude());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("latitude", latitude)
+                .add("longitude", longitude)
+                .toString();
     }
 }

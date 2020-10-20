@@ -4,11 +4,18 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import cse.dit012.lost.BroadcastRepositoryProvider;
+import cse.dit012.lost.android.ui.screen.map.MapViewModel;
+import cse.dit012.lost.persistance.firebase.FirebaseBroadcastRepository;
 import java9.util.concurrent.CompletableFuture;
 
 /**
  * Repository responsible for storing and retrieving information about broadcasts.
+ * <p>
  * Author: Benjamin Sannholm
+ * Uses: {@link Broadcast}, {@link BroadcastId}
+ * Used by: {@link BroadcastRepositoryProvider}, BroadcastServiceImpl,
+ * {@link FirebaseBroadcastRepository}, {@link MapViewModel}
  */
 public interface BroadcastRepository {
     /**
@@ -50,7 +57,7 @@ public interface BroadcastRepository {
     /**
      * Retrieves a live list of all currently active broadcasts.
      *
-     * @return the list of broadcasts
+     * @return a {@link LiveData} containing the list of broadcasts
      */
     LiveData<List<Broadcast>> observeActiveBroadcasts();
 }
