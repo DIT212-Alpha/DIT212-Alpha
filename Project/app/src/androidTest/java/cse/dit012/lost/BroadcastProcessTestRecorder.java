@@ -91,12 +91,12 @@ public class BroadcastProcessTestRecorder {
         onView(withId(R.id.addBtn))
                 .perform(click());
 
-        Thread.sleep(500);
+        Thread.sleep(2000);
 
         onView(withId(R.id.map))
                 .perform(clickPercent(0.5f, 0.5f));
 
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         onView(withId(R.id.editInfoWindowButton))
                 .perform(click());

@@ -50,7 +50,7 @@ public class LoginRegisterProcessTestRecorder {
         onView(withId(R.id.cirLoginButton))
                 .perform(click());
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         onView(withId(R.id.editTextEmail))
                 .perform(replaceText("test@test.com"), closeSoftKeyboard());
