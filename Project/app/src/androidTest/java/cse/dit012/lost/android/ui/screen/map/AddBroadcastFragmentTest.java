@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import cse.dit012.lost.BroadcastRepositoryProvider;
+import cse.dit012.lost.persistance.BroadcastRepositoryProvider;
 import cse.dit012.lost.R;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;

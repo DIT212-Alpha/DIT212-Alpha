@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import cse.dit012.lost.BroadcastRepositoryProvider;
+import cse.dit012.lost.persistance.BroadcastRepositoryProvider;
 import cse.dit012.lost.android.ui.screen.map.MapViewModel;
 import cse.dit012.lost.persistance.firebase.FirebaseBroadcastRepository;
 import java9.util.concurrent.CompletableFuture;

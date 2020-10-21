@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import cse.dit012.lost.BroadcastRepositoryProvider;
+import cse.dit012.lost.persistance.BroadcastRepositoryProvider;
 import cse.dit012.lost.android.ui.map.LostMapFragment;
 import cse.dit012.lost.model.broadcast.Broadcast;
 import cse.dit012.lost.model.broadcast.BroadcastRepository;

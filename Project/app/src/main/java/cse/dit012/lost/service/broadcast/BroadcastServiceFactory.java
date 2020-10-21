@@ -1,6 +1,6 @@
 package cse.dit012.lost.service.broadcast;
 
-import cse.dit012.lost.BroadcastRepositoryProvider;
+import cse.dit012.lost.persistance.BroadcastRepositoryProvider;
 import cse.dit012.lost.service.authenticateduser.AuthenticatedUserService;
 
 /**

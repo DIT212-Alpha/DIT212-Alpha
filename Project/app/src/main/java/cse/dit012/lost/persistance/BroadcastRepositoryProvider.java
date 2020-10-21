@@ -1,4 +1,4 @@
-package cse.dit012.lost;
+package cse.dit012.lost.persistance;
 
 import com.google.firebase.database.FirebaseDatabase;
 
