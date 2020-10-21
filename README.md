@@ -10,7 +10,7 @@ The motivation behind the specific application was to learn the Android developm
 **Usernames  - Real name**
 - [git.nuclear](https://github.com/Bashar3) - Bashar Oumari
 - [Sannholm](https://github.com/Sannholm) - Benjamin Sannholm
-- [drage1994](https://github.com/drage1994) - Mattias
+- [drage1994](https://github.com/drage1994) - Mattias Drage
 - [sophiapham](https://github.com/sophiapham) (a.k.a. Pixie Waffle) - Sophia Pham 
 - [Pontare25](https://github.com/Pontare25)  - Pontus Nellgård
 
