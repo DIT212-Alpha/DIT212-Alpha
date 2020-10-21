@@ -61,9 +61,9 @@ If you find a broadcast you can press its pin to interact with it and see its de
 - info window
 
 # Team members
-**Usernames  - Real name**\
-- git.nuclear - Bashar Oumari
-- Sannholm - Benjamin Sannholm
-- drage1994 - Mattias
-- sophiapham - Sophia Pham
-- Pontare25  - Pontus Nellgård 
+**Usernames  - Real name**
+- [git.nuclear](https://github.com/Bashar3) - Bashar Oumari
+- [Sannholm](https://github.com/Sannholm) - Benjamin Sannholm
+- [drage1994](https://github.com/drage1994) - Mattias
+- [sophiapham](https://github.com/sophiapham) - Sophia Pham
+- [Pontare25](https://github.com/Pontare25)  - Pontus Nellgård 
