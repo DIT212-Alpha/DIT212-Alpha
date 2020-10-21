@@ -14,8 +14,8 @@ The motivation behind the specific application was to learn the Android developm
 - [sophiapham](https://github.com/sophiapham) (a.k.a. Pixie Waffle) - Sophia Pham 
 - [Pontare25](https://github.com/Pontare25)  - Pontus Nellgård
 
-# Build status
-For Scrumboard see [Scrumboard](https://github.com/DIT212-Alpha/DIT212-Alpha/projects/1)
+# Scrum
+For Scrum board see [GitHub Projects board](https://github.com/DIT212-Alpha/DIT212-Alpha/projects/1)
 
 # Installation
 To run the application
@@ -37,13 +37,6 @@ You should now be greeted with a map.
 The screen also contains a button in the lower left hand corner titled "Broadcast". Pressing this button will take you to the AddBroadcast screen where you can specify a specific course and set a description and then press add. The application will automatically attach your currrent location to the Broadcast and create a red pin on the map assigned to the broadcast you just created.
 You can also pan around the map to see other broadcasts by searching for active broadcasts tied to a coursecode in the search bar at the top.
 If you find a broadcast you can press its pin to interact with it and see its description. If you are the creator you can also choose to either modify or delete it. The application will also detect if you stray too far from the original position and deactivate the broadcast automatically.
-
-# Screenshots
-<!-- ![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")-->
-
-# Code Example
-
-# Code style
 
 # Frameworks used
 - The application is written in Java using [Android Studio](https://developer.android.com/studio)
