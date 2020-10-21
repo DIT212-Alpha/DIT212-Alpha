@@ -20,7 +20,7 @@ For Scrumboard see [Scrumboard](https://github.com/DIT212-Alpha/DIT212-Alpha/pro
 - For handling dependencies [Gradle](https://gradle.org/) has been used.
 - The application is centered around the [google maps API](https://developers.google.com/maps/documentation/android-sdk/start)
 - [Jetpack Navigation](https://developer.android.com/guide/navigation), a framework used to easily transition between different UI:s
-- Info window
+- Info window ([InteractiveInfoWindowAndroid](https://github.com/Appolica/InteractiveInfoWindowAndroid)) 
 - [JUnit 5](https://junit.org/junit5/), Framework for testing
 - [Espresso](https://developer.android.com/training/testing/espresso), Framework for android UI tests
 - [JaCoCo](https://www.eclemma.org/jacoco/), Java Code Coverage Library a tool for Java which generates a code coverage report.
@@ -58,7 +58,7 @@ If you find a broadcast you can press its pin to interact with it and see its de
 - android studio
 - google maps
 - firebase
-- info window
+- InteractiveInfoWindowAndroid by [Appolica](https://github.com/Appolica)
 
 # Team members
 **Usernames  - Real name**
